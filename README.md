@@ -1,15 +1,12 @@
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+## VisualDebugger
 
-#VisualDebugger
-
- ![Platform](https://img.shields.io/badge/platforms-iOS%208.0+%20%7C%20macOS%2010.10+%20%7C%20tvOS%209.0+%20%7C%20watchOS%202.0+-333333.svg)
-
-The most elegant and easiest way to visual you data in playground
+ The most elegant and easiest way to visual you data in playground
 
 it's perfect to work with [TestDrive](https://github.com/JohnSundell/TestDrive), to try it just type: "testDrive VisualDebugger"
 
 ## Features
 
+- [x] support CocoaPods, Carthage, Swift Package Manager
 - [x] support visual debug draw bezier path
 - [x] support visual debug [CGPoint], with different styles
 - [x] support visual debug CGAffineTransform
