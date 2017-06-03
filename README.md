@@ -6,6 +6,8 @@
 
 The most elegant and easiest way to visual you data in playground
 
+it's perfect to work with [TestDrive](https://github.com/JohnSundell/TestDrive), to try it just type: "testDrive VisualDebugger"
+
 ## Features
 
 - [x] support visual debug draw bezier path
