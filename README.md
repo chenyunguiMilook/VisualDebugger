@@ -44,6 +44,8 @@ github "chenyunguiMilook/VisualDebugger" ~> 1.0.0
 2. Congratulations!  
 
 
+
+
 ####Swift Package Manager
 
 You can use [The Swift Package Manager](https://swift.org/package-manager) to install `VisualDebugger` by adding the proper description to your `Package.swift` file:
