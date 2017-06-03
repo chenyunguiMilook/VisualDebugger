@@ -14,6 +14,10 @@ The most elegant and easiest way to visual you data in playground
 - [x] support choose proper 2d coordinate system
 - [x] Single source file
 
+## Sneak peek
+<img src="./Images/snapshot1.png" title="Debug Point and BezierPath" />
+<img src="./Images/snapshot2.png" title="Debug CGAffineTransform" />
+
 ## Requirements
 
 - iOS 8.0+ | macOS 10.11+ | tvOS 9.0+ 
