@@ -489,7 +489,7 @@ extension CALayer {
 
 extension CATextLayer {
     
-    convenience init(text:String, attributes:[String: Any] = [:]) {
+    convenience init(text:String, attributes:[NSAttributedStringKey: Any] = [:]) {
         self.init()
         
         let string = NSAttributedString(string: text, attributes: attributes)
@@ -503,9 +503,9 @@ extension CATextLayer {
         self.init()
         
         let font = font ?? AppFont.default
-        var attrs:[String: Any] = [:]
-        attrs[NSForegroundColorAttributeName] = color
-        attrs[NSFontAttributeName]            = font
+        var attrs:[NSAttributedStringKey: Any] = [:]
+        attrs[.foregroundColor] = color
+        attrs[.font]            = font
         let string = NSAttributedString(string:axisLabel, attributes: attrs)
         
         let size = CGSize(width: 1000, height: 1000)
@@ -518,9 +518,9 @@ extension CATextLayer {
         self.init()
         
         let font = font ?? AppFont.default
-        var attrs:[String: Any] = [:]
-        attrs[NSForegroundColorAttributeName] = color
-        attrs[NSFontAttributeName]            = font
+        var attrs:[NSAttributedStringKey: Any] = [:]
+        attrs[.foregroundColor] = color
+        attrs[.font]            = font
         let string = NSAttributedString(string:indexLabel, attributes: attrs)
         
         let size = CGSize(width: 1000, height: 1000)
