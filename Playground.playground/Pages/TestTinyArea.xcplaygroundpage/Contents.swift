@@ -88,7 +88,12 @@ points3.getDebugView(in: .yDown, visibleRect: nil, scale: 1, numDivisions: 6, sh
 
 
 
+let path = UIBezierPath()
+path.move(to: .zero)
+path.addLine(to: CGPoint(x: 10, y: 0))
+path.close()
 
+path.debugView
 
 
 

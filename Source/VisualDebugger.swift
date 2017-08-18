@@ -284,7 +284,13 @@ public extension Debuggable {
     }
     
     public func getDebugView(in coordinate:CoordinateSystemType, visibleRect:CGRect? = nil, scale: CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true) -> AppView {
-        let bounds = visibleRect ?? self.bounds
+        var bounds = visibleRect ?? self.bounds
+        if bounds.size == .zero {
+            bounds = CGRect(origin: bounds.origin, size: CGSize(width: 1, height: 1))
+        } else if bounds.width == 0 || bounds.height == 0 {
+            let maxEdge = max(bounds.width, bounds.height)
+            bounds = CGRect(x: bounds.origin.x, y: bounds.origin.y, width: maxEdge, height: maxEdge)
+        }
         let layer = CoordinateSystem(type: coordinate, area: bounds, scale: scale, numSegments: numDivisions, showOrigin: showOrigin)
         layer.render(object: self)
         return debugLayer(layer, withMargin: layer.segmentLength)
