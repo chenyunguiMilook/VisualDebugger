@@ -284,7 +284,7 @@ public extension Debuggable {
     }
     
     public func getDebugView(in coordinate:CoordinateSystemType, visibleRect:CGRect? = nil, scale: CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true) -> AppView {
-        let bounds = visibleRect ?? self.bounds
+        let bounds = visibleRect ?? self.bounds.fixed()
         let layer = CoordinateSystem(type: coordinate, area: bounds, scale: scale, numSegments: numDivisions, showOrigin: showOrigin)
         layer.render(object: self)
         return debugLayer(layer, withMargin: layer.segmentLength)
@@ -367,7 +367,7 @@ public extension Collection {
         }
         
         // 4. create coordinate layer and render objects
-        guard let area = bounds, !area.isEmpty else { return AppView(frame: CGRect(x: 0, y: 0, width: 1, height: 1)) }
+        guard let area = bounds?.fixed(), !area.isEmpty else { return AppView(frame: CGRect(x: 0, y: 0, width: 1, height: 1)) }
         let layer = CoordinateSystem(type: coordinate, area: area, scale: scale, numSegments: numDivisions, showOrigin: showOrigin)
         
         for object in debugArray {
@@ -480,7 +480,7 @@ extension CALayer {
         #if os(iOS)
             self.contentsScale = UIScreen.main.scale
         #elseif os(macOS)
-            self.contentsScale = NSScreen.main()?.backingScaleFactor ?? 1
+            self.contentsScale = NSScreen.main?.backingScaleFactor ?? 1
         #endif
     }
 }
@@ -489,7 +489,7 @@ extension CALayer {
 
 extension CATextLayer {
     
-    convenience init(text:String, attributes:[String: Any] = [:]) {
+    convenience init(text:String, attributes:[NSAttributedStringKey: Any] = [:]) {
         self.init()
         
         let string = NSAttributedString(string: text, attributes: attributes)
@@ -503,9 +503,9 @@ extension CATextLayer {
         self.init()
         
         let font = font ?? AppFont.default
-        var attrs:[String: Any] = [:]
-        attrs[NSForegroundColorAttributeName] = color
-        attrs[NSFontAttributeName]            = font
+        var attrs:[NSAttributedStringKey: Any] = [:]
+        attrs[.foregroundColor] = color
+        attrs[.font]            = font
         let string = NSAttributedString(string:axisLabel, attributes: attrs)
         
         let size = CGSize(width: 1000, height: 1000)
@@ -518,9 +518,9 @@ extension CATextLayer {
         self.init()
         
         let font = font ?? AppFont.default
-        var attrs:[String: Any] = [:]
-        attrs[NSForegroundColorAttributeName] = color
-        attrs[NSFontAttributeName]            = font
+        var attrs:[NSAttributedStringKey: Any] = [:]
+        attrs[.foregroundColor] = color
+        attrs[.font]            = font
         let string = NSAttributedString(string:indexLabel, attributes: attrs)
         
         let size = CGSize(width: 1000, height: 1000)
@@ -650,6 +650,13 @@ extension CGRect {
     
     public var affineRect: AffineRect {
         return AffineRect(x: origin.x, y: origin.y, width: width, height: height)
+    }
+    
+    fileprivate func fixed() -> CGRect {
+        guard self.width == 0 || self.height == 0 else { return self }
+        let width = self.width == 0 ? min(self.height / 2, 1) : self.width
+        let height = self.height == 0 ? min(self.width / 2, 1) : self.height
+        return CGRect(origin: self.origin, size: CGSize(width: width, height: height))
     }
 }
 
