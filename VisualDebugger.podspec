@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name        = "VisualDebugger"
-  s.version     = "1.0.0"
+  s.version     = "1.0.1"
   s.summary     = "The most elegant and easiest way to visual you data in playground"
   s.homepage    = "https://github.com/chenyunguiMilook/VisualDebugger"
   s.license     = { :type => "MIT" }
