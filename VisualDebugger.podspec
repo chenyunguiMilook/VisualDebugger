@@ -1,3 +1,6 @@
+#pod lint VisualDebugger.podspec
+#pod trunk push VisualDebugger.podspec
+
 Pod::Spec.new do |s|
   s.name        = "VisualDebugger"
   s.version     = "1.0.1"
