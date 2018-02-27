@@ -480,7 +480,7 @@ extension CALayer {
         #if os(iOS)
             self.contentsScale = UIScreen.main.scale
         #elseif os(macOS)
-            self.contentsScale = NSScreen.main()?.backingScaleFactor ?? 1
+            self.contentsScale = NSScreen.main?.backingScaleFactor ?? 1
         #endif
     }
 }
