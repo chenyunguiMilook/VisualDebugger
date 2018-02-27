@@ -32,7 +32,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
-  pod 'VisualDebugger', '~> 1.0.0'
+  pod 'VisualDebugger', '~> 1.0.1'
 end
 ```
 
