@@ -51,3 +51,24 @@ func * (p:CGPoint, m: CGAffineTransform) -> CGPoint {
 func *(lhs: [CGPoint], rhs: CGAffineTransform) -> [CGPoint] {
     return lhs.map{ $0 * rhs }
 }
+
+
+
+extension CGAffineTransform {
+    
+    public func debugView(of options: DebugOptions = [], use rect: AffineRect = .unit, image: CGImage? = nil) -> AppView {
+        let config = DebugConfig(options: options)
+        return getDebugView(in:               config.coordinate,
+                            visibleRect:      nil,
+                            affineRect:       rect,
+                            image:            image,
+                            scale:            config.scale,
+                            numDivisions:     config.numDivisions,
+                            showOrigin:       config.showOrigin)
+    }
+    
+    public func getDebugView(in coordinate:CoordinateSystemType, visibleRect:CGRect? = nil, affineRect:AffineRect = .unit, image: CGImage? = nil, scale:CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true) -> AppView {
+        let t = AffineTransform(rect: affineRect, image: image ?? getTransformImage(), transform: self)
+        return t.getDebugView(in: coordinate, visibleRect: visibleRect, scale: scale, numDivisions: numDivisions, showOrigin: showOrigin)
+    }
+}

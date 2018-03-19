@@ -31,3 +31,4 @@ public protocol Debuggable {
     var bounds: CGRect { get }
     func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor)
 }
+

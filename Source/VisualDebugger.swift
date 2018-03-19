@@ -45,30 +45,6 @@ import QuartzCore
     public typealias AppImage = NSImage
 #endif
 
-// MARK: - Debugger view
-
-#if os(macOS)
-    internal class FlippedView : AppView {
-        override var isFlipped: Bool { return true }
-    }
-#endif
-
-public func debugLayer(_ layer:CALayer, withMargin margin:CGFloat) -> AppView {
-    
-    layer.frame.origin.x += margin
-    layer.frame.origin.y += margin
-    
-    let width = layer.bounds.width + margin * 2
-    let height = layer.bounds.height + margin * 2
-    let frame = CGRect(x: 0, y: 0, width: width, height: height)
-    #if os(iOS) || os(tvOS)
-        let view = AppView(frame: frame)
-    #elseif os(macOS)
-        let view = FlippedView(frame: frame)
-    #endif
-    view.addSublayer(layer)
-    return view
-}
 
 public extension Debuggable {
     
@@ -179,65 +155,7 @@ public extension Collection {
     }
 }
 
-extension CGAffineTransform {
-    
-    public func debugView(of options: DebugOptions = [], use rect: AffineRect = .unit, image: CGImage? = nil) -> AppView {
-        let config = DebugConfig(options: options)
-        return getDebugView(in:               config.coordinate,
-                            visibleRect:      nil,
-                            affineRect:       rect,
-                            image:            image,
-                            scale:            config.scale,
-                            numDivisions:     config.numDivisions,
-                            showOrigin:       config.showOrigin)
-    }
-    
-    public func getDebugView(in coordinate:CoordinateSystemType, visibleRect:CGRect? = nil, affineRect:AffineRect = .unit, image: CGImage? = nil, scale:CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true) -> AppView {
-        let t = AffineTransform(rect: affineRect, image: image ?? getTransformImage(), transform: self)
-        return t.getDebugView(in: coordinate, visibleRect: visibleRect, scale: scale, numDivisions: numDivisions, showOrigin: showOrigin)
-    }
-}
 
-
-
-// MARK: - NumberFormatter
-
-
-// MARK: - AppView
-
-extension AppView {
-    
-    func addSublayer(_ layer:CALayer) {
-        #if os(iOS)
-            self.layer.addSublayer(layer)
-        #elseif os(macOS)
-            if self.layer == nil {
-                self.layer = CALayer()
-            }
-            self.layer?.addSublayer(layer)
-        #endif
-    }
-}
-
-// MARK: - CALayer
-
-extension CALayer {
-    
-    func setCenter(_ center:CGPoint) {
-        let bounds = self.bounds
-        let labelCenter = CGPoint(x: bounds.midX, y: bounds.midY)
-        let offset = CGPoint(x: center.x - labelCenter.x, y: center.y - labelCenter.y)
-        self.frame.origin = offset
-    }
-    
-    func applyDefaultContentScale() {
-        #if os(iOS)
-            self.contentsScale = UIScreen.main.scale
-        #elseif os(macOS)
-            self.contentsScale = NSScreen.main?.backingScaleFactor ?? 1
-        #endif
-    }
-}
 
 // MARK: - AppFont
 
@@ -247,72 +165,6 @@ extension AppFont {
         return AppFont(name: ".HelveticaNeueInterface-Thin", size: 10) ?? AppFont.systemFont(ofSize: 10)
     }
 }
-
-
-// MARK: - Collection
-
-
-#if os(macOS)
-    
-    import AppKit
-    
-    public extension NSImage {
-        
-        public var cgImage: CGImage? {
-            return self.cgImage(forProposedRect: nil, context: nil, hints: nil)
-        }
-    }
-    
-    public extension NSBezierPath {
-        
-        public var cgPath: CGPath {
-            let path = CGMutablePath()
-            guard self.elementCount > 0 else { return path }
-            var points = [NSPoint](repeating: NSPoint.zero, count: 3)
-            
-            for index in 0..<elementCount {
-                let pathType = self.element(at: index, associatedPoints: &points)
-                switch pathType {
-                case .moveToBezierPathElement:    path.move(to: points[0])
-                case .lineToBezierPathElement:    path.addLine(to: points[0])
-                case .curveToBezierPathElement:   path.addCurve(to: points[2], control1: points[0], control2: points[1])
-                case .closePathBezierPathElement: path.closeSubpath()
-                }
-            }
-            return path
-        }
-        
-        public func apply(_ t:CGAffineTransform) {
-            let transform = AppKit.AffineTransform(m11: t.a, m12: t.b, m21: t.c, m22: t.d, tX: t.tx, tY: t.ty)
-            self.transform(using: transform)
-        }
-        
-        public func addLine(to point:CGPoint) {
-            self.line(to: point)
-        }
-        
-        public func addCurve(to point:CGPoint, controlPoint1 point1:CGPoint, controlPoint2 point2:CGPoint) {
-            self.curve(to: point, controlPoint1: point1, controlPoint2: point2)
-        }
-        
-        private func interpolate(_ p1:CGPoint, _ p2:CGPoint, _ ratio:CGFloat) -> CGPoint {
-            return CGPoint(x: p1.x + (p2.x-p1.x) * ratio, y: p1.y + (p2.y-p1.y) * ratio)
-        }
-        
-        public func addQuadCurve(to end:CGPoint, controlPoint:CGPoint) {
-            let start = self.currentPoint
-            let control1 = interpolate(start, controlPoint, 0.666666)
-            let control2 = interpolate(end,   controlPoint, 0.666666)
-            self.curve(to: end, controlPoint1: control1, controlPoint2: control2)
-        }
-        
-        public func addArc(withCenter center:CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, clockwise: Bool) {
-            self.appendArc(withCenter: center, radius : radius, startAngle : startAngle, endAngle : endAngle, clockwise : clockwise)
-        }
-    }
-    
-#endif
-
 
 // MARK: rendering work
 
@@ -558,42 +410,7 @@ extension AffineRect : Debuggable {
     }
 }
 
-// MARK: - AffineTransform
 
-public struct AffineTransform {
-    
-    public var rect: AffineRect
-    public var image: CGImage
-    public var transform: CGAffineTransform
-    internal var images: [AffineImage]!
-    
-    public init(rect: AffineRect, image: CGImage, transform: CGAffineTransform) {
-        self.rect = rect
-        self.image = image
-        self.transform = transform
-        self.images = getImages()
-    }
-    
-    private func getImages() -> [AffineImage] {
-        let start = AffineImage(image: self.image, rect: self.rect, opacity: 0.4)
-        let end = AffineImage(image: self.image, rect: self.rect * self.transform, opacity: 0.8)
-        return [start, end]
-    }
-}
-
-extension AffineTransform : Debuggable {
-    
-    public var bounds: CGRect {
-        let result = images[0].bounds
-        return images.reduce(result, { $0.union($1.bounds) })
-    }
-    
-    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
-        for image in self.images {
-            image.debug(in: layer, with: transform, color: color)
-        }
-    }
-}
 
 // MARK: - AffineTransforms
 
@@ -646,50 +463,10 @@ extension AffineTransforms : Debuggable {
     }
 }
 
-// MARK: - AffineImage
-
-public struct AffineImage {
-    
-    public var image: CGImage
-    public var rect: AffineRect
-    public var opacity: CGFloat
-}
-
 func clockwiseInYDown(v0: CGPoint, v1: CGPoint, v2: CGPoint) -> Bool {
     return (v2.x - v0.x) * (v1.y - v2.y) < (v2.y - v0.y) * (v1.x - v2.x)
 }
 
-extension AffineImage : Debuggable {
-    
-    public var bounds: CGRect {
-        return rect.bounds
-    }
-    
-    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
-        let target = self.rect * transform
-        let targetCenter = target.center
-        
-        let clockwise = clockwiseInYDown(v0: target.v3, v1: target.v0, v2: target.v1)
-        let scaleOffset: CGFloat = clockwise ? 1 : -1
-        
-        let imageSize = CGSize(width: image.width, height: image.height)
-        let imageRect = CGRect(origin: .zero, size: imageSize)
-        let imageCenter = CGPoint(x: imageRect.midX, y: imageRect.midY)
-        
-        let scale = CGAffineTransform(scaleX: target.width/imageSize.width, y: (target.height/imageSize.height) * scaleOffset)
-        let rotate = CGAffineTransform(rotationAngle: target.angle)
-        let translate = CGAffineTransform(translationX: targetCenter.x - imageCenter.x, y: targetCenter.y - imageCenter.y)
-        
-        let imageLayer = CALayer()
-        imageLayer.contents = image
-        imageLayer.frame = imageRect
-        imageLayer.opacity = Float(opacity)
-        imageLayer.setAffineTransform(scale * rotate * translate)
-        imageLayer.applyDefaultContentScale()
-        
-        layer.addSublayer(imageLayer)
-    }
-}
 // MARK: - CGImage
 
 extension CGImage : Debuggable {

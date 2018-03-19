@@ -64,6 +64,18 @@
 		BB6F11BC205F866D003B27B6 /* AxisLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11BB205F866D003B27B6 /* AxisLabel.swift */; };
 		BB6F11BD205F866D003B27B6 /* AxisLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11BB205F866D003B27B6 /* AxisLabel.swift */; };
 		BB6F11BE205F866D003B27B6 /* AxisLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11BB205F866D003B27B6 /* AxisLabel.swift */; };
+		BB6F11C0205FAF48003B27B6 /* AffineImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11BF205FAF48003B27B6 /* AffineImage.swift */; };
+		BB6F11C1205FAF48003B27B6 /* AffineImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11BF205FAF48003B27B6 /* AffineImage.swift */; };
+		BB6F11C2205FAF48003B27B6 /* AffineImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11BF205FAF48003B27B6 /* AffineImage.swift */; };
+		BB6F11C4205FAFC6003B27B6 /* AffineTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11C3205FAFC6003B27B6 /* AffineTransform.swift */; };
+		BB6F11C5205FAFC6003B27B6 /* AffineTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11C3205FAFC6003B27B6 /* AffineTransform.swift */; };
+		BB6F11C6205FAFC6003B27B6 /* AffineTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11C3205FAFC6003B27B6 /* AffineTransform.swift */; };
+		BB6F11C8205FB1DF003B27B6 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11C7205FB1DF003B27B6 /* AppView.swift */; };
+		BB6F11C9205FB1DF003B27B6 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11C7205FB1DF003B27B6 /* AppView.swift */; };
+		BB6F11CA205FB1DF003B27B6 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11C7205FB1DF003B27B6 /* AppView.swift */; };
+		BB6F11CC205FB333003B27B6 /* NSBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11CB205FB333003B27B6 /* NSBezierPath.swift */; };
+		BB6F11CD205FB333003B27B6 /* NSBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11CB205FB333003B27B6 /* NSBezierPath.swift */; };
+		BB6F11CE205FB333003B27B6 /* NSBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11CB205FB333003B27B6 /* NSBezierPath.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +133,10 @@
 		BB6F11B3205F85D9003B27B6 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		BB6F11B7205F8625003B27B6 /* AxisSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxisSegment.swift; sourceTree = "<group>"; };
 		BB6F11BB205F866D003B27B6 /* AxisLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxisLabel.swift; sourceTree = "<group>"; };
+		BB6F11BF205FAF48003B27B6 /* AffineImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineImage.swift; sourceTree = "<group>"; };
+		BB6F11C3205FAFC6003B27B6 /* AffineTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineTransform.swift; sourceTree = "<group>"; };
+		BB6F11C7205FB1DF003B27B6 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		BB6F11CB205FB333003B27B6 /* NSBezierPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSBezierPath.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,9 +273,11 @@
 		BB6F1184205F6B5A003B27B6 /* data */ = {
 			isa = PBXGroup;
 			children = (
-				BB6F117F205F6AFE003B27B6 /* AxisData.swift */,
 				BB6F1185205F6BA5003B27B6 /* DebugConfig.swift */,
 				BB6F11A3205F718F003B27B6 /* AffineRect.swift */,
+				BB6F11BF205FAF48003B27B6 /* AffineImage.swift */,
+				BB6F11C3205FAFC6003B27B6 /* AffineTransform.swift */,
+				BB6F117F205F6AFE003B27B6 /* AxisData.swift */,
 				BB6F11A7205F745B003B27B6 /* AxisArrow.swift */,
 				BB6F11B7205F8625003B27B6 /* AxisSegment.swift */,
 				BB6F11BB205F866D003B27B6 /* AxisLabel.swift */,
@@ -274,8 +292,10 @@
 				BB6F1193205F6CDC003B27B6 /* CGPoint+Behavior.swift */,
 				BB6F1197205F6D10003B27B6 /* CATextLayer+Behavior.swift */,
 				BB6F119B205F6D47003B27B6 /* AppColor.swift */,
+				BB6F11C7205FB1DF003B27B6 /* AppView.swift */,
 				BB6F119F205F6E10003B27B6 /* CGAffineTransform.swift */,
 				BB6F11AF205F859F003B27B6 /* NumberFormater+Behavior.swift */,
+				BB6F11CB205FB333003B27B6 /* NSBezierPath.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -521,6 +541,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB6F117C205F6AD8003B27B6 /* Enums.swift in Sources */,
+				BB6F11CC205FB333003B27B6 /* NSBezierPath.swift in Sources */,
 				BB6F11BC205F866D003B27B6 /* AxisLabel.swift in Sources */,
 				BB6F1194205F6CDC003B27B6 /* CGPoint+Behavior.swift in Sources */,
 				BB6F1186205F6BA5003B27B6 /* DebugConfig.swift in Sources */,
@@ -528,9 +549,12 @@
 				BB6F11B8205F8625003B27B6 /* AxisSegment.swift in Sources */,
 				BB6F11B0205F859F003B27B6 /* NumberFormater+Behavior.swift in Sources */,
 				BB6F11B4205F85D9003B27B6 /* Utils.swift in Sources */,
+				BB6F11C8205FB1DF003B27B6 /* AppView.swift in Sources */,
+				BB6F11C0205FAF48003B27B6 /* AffineImage.swift in Sources */,
 				BB6F1180205F6AFE003B27B6 /* AxisData.swift in Sources */,
 				BB6F1190205F6CCB003B27B6 /* CGRect+Behavior.swift in Sources */,
 				BB6F118B205F6BE9003B27B6 /* DebugOptions.swift in Sources */,
+				BB6F11C4205FAFC6003B27B6 /* AffineTransform.swift in Sources */,
 				BB6F1198205F6D10003B27B6 /* CATextLayer+Behavior.swift in Sources */,
 				BB6F11A0205F6E10003B27B6 /* CGAffineTransform.swift in Sources */,
 				BB6F11AC205F84FB003B27B6 /* CoordinateSystem.swift in Sources */,
@@ -552,6 +576,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB6F1183205F6B51003B27B6 /* AxisData.swift in Sources */,
+				BB6F11CE205FB333003B27B6 /* NSBezierPath.swift in Sources */,
 				BB6F11BE205F866D003B27B6 /* AxisLabel.swift in Sources */,
 				BB6F1196205F6CDC003B27B6 /* CGPoint+Behavior.swift in Sources */,
 				BB6F1189205F6BBB003B27B6 /* DebugConfig.swift in Sources */,
@@ -559,9 +584,12 @@
 				BB6F11BA205F8625003B27B6 /* AxisSegment.swift in Sources */,
 				BB6F11B2205F859F003B27B6 /* NumberFormater+Behavior.swift in Sources */,
 				BB6F11B6205F85D9003B27B6 /* Utils.swift in Sources */,
+				BB6F11CA205FB1DF003B27B6 /* AppView.swift in Sources */,
+				BB6F11C2205FAF48003B27B6 /* AffineImage.swift in Sources */,
 				BB6F1188205F6BB5003B27B6 /* Enums.swift in Sources */,
 				BB6F1192205F6CCB003B27B6 /* CGRect+Behavior.swift in Sources */,
 				BB6F118D205F6BE9003B27B6 /* DebugOptions.swift in Sources */,
+				BB6F11C6205FAFC6003B27B6 /* AffineTransform.swift in Sources */,
 				BB6F119A205F6D10003B27B6 /* CATextLayer+Behavior.swift in Sources */,
 				BB6F11A2205F6E10003B27B6 /* CGAffineTransform.swift in Sources */,
 				BB6F11AE205F84FB003B27B6 /* CoordinateSystem.swift in Sources */,
@@ -576,6 +604,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB6F117D205F6AD8003B27B6 /* Enums.swift in Sources */,
+				BB6F11CD205FB333003B27B6 /* NSBezierPath.swift in Sources */,
 				BB6F11BD205F866D003B27B6 /* AxisLabel.swift in Sources */,
 				BB6F1195205F6CDC003B27B6 /* CGPoint+Behavior.swift in Sources */,
 				BB6F1187205F6BA5003B27B6 /* DebugConfig.swift in Sources */,
@@ -583,9 +612,12 @@
 				BB6F11B9205F8625003B27B6 /* AxisSegment.swift in Sources */,
 				BB6F11B1205F859F003B27B6 /* NumberFormater+Behavior.swift in Sources */,
 				BB6F11B5205F85D9003B27B6 /* Utils.swift in Sources */,
+				BB6F11C9205FB1DF003B27B6 /* AppView.swift in Sources */,
+				BB6F11C1205FAF48003B27B6 /* AffineImage.swift in Sources */,
 				BB6F1181205F6AFE003B27B6 /* AxisData.swift in Sources */,
 				BB6F1191205F6CCB003B27B6 /* CGRect+Behavior.swift in Sources */,
 				BB6F118C205F6BE9003B27B6 /* DebugOptions.swift in Sources */,
+				BB6F11C5205FAFC6003B27B6 /* AffineTransform.swift in Sources */,
 				BB6F1199205F6D10003B27B6 /* CATextLayer+Behavior.swift in Sources */,
 				BB6F11A1205F6E10003B27B6 /* CGAffineTransform.swift in Sources */,
 				BB6F11AD205F84FB003B27B6 /* CoordinateSystem.swift in Sources */,
