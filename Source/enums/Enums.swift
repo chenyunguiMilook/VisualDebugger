@@ -32,3 +32,10 @@ public protocol Debuggable {
     func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor)
 }
 
+
+
+
+
+
+
+
