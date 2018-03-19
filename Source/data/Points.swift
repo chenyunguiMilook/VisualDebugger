@@ -16,7 +16,7 @@ import Cocoa
 public struct Points {
     
     public enum Representation {
-        case dot
+        case dots
         case path
         case orderedPath
         case polygon

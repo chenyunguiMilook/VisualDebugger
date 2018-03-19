@@ -17,7 +17,7 @@ struct AxisSegment {
     var start: CGPoint
     var end: CGPoint
     
-    func getLabels(axis: AxisType, segmentValue: CGFloat, numSegments: Int, numFormater: NumberFormatter) -> [AxisLabel] {
+    func getLabels(axis: CoordinateSystem.Axis, segmentValue: CGFloat, numSegments: Int, numFormater: NumberFormatter) -> [AxisLabel] {
         switch axis {
         case .x:
             return (0 ... numSegments).map {

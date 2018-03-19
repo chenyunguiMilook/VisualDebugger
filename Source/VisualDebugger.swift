@@ -61,7 +61,7 @@ public extension Debuggable {
                             showOrigin:    config.showOrigin)
     }
     
-    public func getDebugView(in coordinate:CoordinateSystemType, visibleRect:CGRect? = nil, scale: CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true) -> AppView {
+    public func getDebugView(in coordinate:CoordinateSystem.Mode, visibleRect:CGRect? = nil, scale: CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true) -> AppView {
         let bounds = visibleRect ?? self.bounds.fixed()
         let layer = CoordinateSystem(type: coordinate, area: bounds, scale: scale, numSegments: numDivisions, showOrigin: showOrigin)
         layer.render(object: self)
@@ -87,7 +87,7 @@ public extension Collection {
                             indexOrderRepresentation: config.indexOrderRepresentation)
     }
     
-    public func getDebugView(in coordinate:CoordinateSystemType, visibleRect:CGRect? = nil, affineRect:AffineRect = .unit, image: AppImage? = nil, scale:CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true, indexOrderRepresentation: IndexOrderRepresentation = .none) -> AppView {
+    public func getDebugView(in coordinate:CoordinateSystem.Mode, visibleRect:CGRect? = nil, affineRect:AffineRect = .unit, image: AppImage? = nil, scale:CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true, indexOrderRepresentation: IndexOrderRepresentation = .none) -> AppView {
         
         func getPointsWrapper(points: [CGPoint], by indexOrderRepresentation: IndexOrderRepresentation) -> Debuggable {
             switch indexOrderRepresentation {

@@ -13,14 +13,6 @@ import UIKit
 import Cocoa
 #endif
 
-public enum CoordinateSystemType {
-    case yDown, yUp
-}
-
-public enum AxisType {
-    case x, y
-}
-
 public enum IndexOrderRepresentation : Int {
     case none
     case indexLabel

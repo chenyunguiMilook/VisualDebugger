@@ -10,13 +10,13 @@ import CoreGraphics
 
 public struct DebugConfig {
     
-    public var coordinate: CoordinateSystemType = .yDown
+    public var coordinate: CoordinateSystem.Mode = .yDown
     public var scale: CGFloat = 1.5
     public var numDivisions: Int = 5
     public var showOrigin: Bool = false
     public var indexOrderRepresentation: IndexOrderRepresentation
     
-    public init(coordinate: CoordinateSystemType = .yDown,
+    public init(coordinate: CoordinateSystem.Mode = .yDown,
                 scale: CGFloat = 1.5,
                 numDivisions: Int = 5,
                 showOrigin: Bool = false,
