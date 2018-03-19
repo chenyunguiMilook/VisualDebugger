@@ -326,25 +326,25 @@ extension CGImage : Debuggable {
     }
 }
 
-extension Array where Element == CGPoint {
-    
-}
-
-extension Array : Debuggable where Element : Debuggable {
-    
-    public var bounds: CGRect {
-        guard !self.isEmpty else { return .zero }
-        var rect = self[0].bounds
-        for i in 1 ..< self.count {
-            rect = self[i].bounds.union(rect)
-        }
-        return rect
-    }
-    
-    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
-        
-    }
-}
+//extension Array where Element == CGPoint {
+//
+//}
+//
+//extension Array : Debuggable where Element : Debuggable {
+//
+//    public var bounds: CGRect {
+//        guard !self.isEmpty else { return .zero }
+//        var rect = self[0].bounds
+//        for i in 1 ..< self.count {
+//            rect = self[i].bounds.union(rect)
+//        }
+//        return rect
+//    }
+//
+//    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
+//
+//    }
+//}
 
 // TODO: - Axis implements Debuggable also
 

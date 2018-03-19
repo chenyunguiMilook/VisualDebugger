@@ -6,7 +6,11 @@
 //
 
 import Foundation
+#if os(iOS) || os(tvOS)
 import UIKit
+#else
+import Cocoa
+#endif
 
 public class CoordinateSystem : CALayer {
     
