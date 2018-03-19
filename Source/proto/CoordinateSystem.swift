@@ -14,7 +14,7 @@ import Cocoa
 
 public class CoordinateSystem : CALayer {
     
-    public enum Mode {
+    public enum Kind {
         case yDown, yUp
     }
     
@@ -24,7 +24,7 @@ public class CoordinateSystem : CALayer {
     
     public let minWidth: CGFloat = 250
     
-    public var type: Mode
+    public var type: Kind
     public var area:CGRect
     public var segmentLength:CGFloat = 50
     public var scale: CGFloat = 1.5
@@ -39,7 +39,7 @@ public class CoordinateSystem : CALayer {
         return minWidth / CGFloat(numSegments)
     }
     
-    public init(type: Mode, area:CGRect, scale:CGFloat, numSegments:Int, showOrigin:Bool, precision:Int = 5) {
+    public init(type: Kind, area:CGRect, scale:CGFloat, numSegments:Int, showOrigin:Bool, precision:Int = 5) {
         self.type = type
         self.area = area
         self.scale =  scale
@@ -120,7 +120,7 @@ public class CoordinateSystem : CALayer {
     }
 }
 
-func renderAxis(axis: CoordinateSystem.Axis, coordinate: CoordinateSystem.Mode, labels: [AxisLabel], labelOffset: CGFloat, thickness: CGFloat, to layer: CALayer) {
+func renderAxis(axis: CoordinateSystem.Axis, coordinate: CoordinateSystem.Kind, labels: [AxisLabel], labelOffset: CGFloat, thickness: CGFloat, to layer: CALayer) {
     
     let path = AppBezierPath()
     let half = thickness/2

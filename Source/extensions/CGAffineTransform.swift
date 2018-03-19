@@ -67,7 +67,7 @@ extension CGAffineTransform {
                             showOrigin:       config.showOrigin)
     }
     
-    public func getDebugView(in coordinate:CoordinateSystem.Mode, visibleRect:CGRect? = nil, affineRect:AffineRect = .unit, image: CGImage? = nil, scale:CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true) -> AppView {
+    public func getDebugView(in coordinate:CoordinateSystem.Kind, visibleRect:CGRect? = nil, affineRect:AffineRect = .unit, image: CGImage? = nil, scale:CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true) -> AppView {
         let t = AffineTransform(rect: affineRect, image: image ?? getTransformImage(), transform: self)
         return t.getDebugView(in: coordinate, visibleRect: visibleRect, scale: scale, numDivisions: numDivisions, showOrigin: showOrigin)
     }
