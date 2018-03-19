@@ -166,61 +166,7 @@ extension AppFont {
     }
 }
 
-// MARK: rendering work
 
-func renderAxis(axis: AxisType, coordinate: CoordinateSystemType, labels: [AxisLabel], labelOffset: CGFloat, thickness: CGFloat, to layer: CALayer) {
-    
-    let path = AppBezierPath()
-    let half = thickness/2
-    let start = labels[0].position
-    var vector = (labels[1].position - start)
-    vector = vector.normalized(to: min(vector.length/2, thickness*3))
-    let end = labels.last!.position + vector
-    
-    var labelOffsetX: CGFloat = 0
-    var labelOffsetY: CGFloat = 0
-    var lineOffsetX: CGFloat = 0
-    var lineOffsetY: CGFloat = 0
-    switch (axis, coordinate) {
-    case (.x, .yUp):   labelOffsetY =  labelOffset; lineOffsetY =  half
-    case (.x, .yDown): labelOffsetY = -labelOffset; lineOffsetY = -half
-    case (.y, .yUp):   labelOffsetX = -labelOffset; lineOffsetX = -half
-    case (.y, .yDown): labelOffsetX = -labelOffset; lineOffsetX = -half
-    }
-    
-    // 1. draw main axis
-    path.move(to: start)
-    path.addLine(to: end)
-    
-    // 2. draw short lines
-    for i in 0 ..< labels.count {
-        let position = labels[i].position
-        let lineEnd = CGPoint(x: position.x + lineOffsetX, y: position.y + lineOffsetY)
-        path.move(to: position)
-        path.addLine(to: lineEnd)
-    }
-    
-    // 3. draw end arrow
-    path.append(AxisArrow().pathAtEndOfSegment(segStart: start, segEnd: end))
-    
-    // 4. add bezier path layer
-    let shapeLayer = CAShapeLayer()
-    shapeLayer.lineWidth = 0.5
-    shapeLayer.path = path.cgPath
-    shapeLayer.strokeColor = AppColor.lightGray.cgColor
-    shapeLayer.fillColor = nil
-    shapeLayer.masksToBounds = false
-    layer.addSublayer(shapeLayer)
-    
-    // 5. add labels layer
-    for label in labels {
-        let x = label.position.x + labelOffsetX
-        let y = label.position.y + labelOffsetY
-        let center = CGPoint(x: x, y: y)
-        label.label.setCenter(center)
-        layer.addSublayer(label.label)
-    }
-}
 
 
 
@@ -267,75 +213,7 @@ extension PointsDotRepresenter : Debuggable {
     }
 }
 
-// MARK: - PointsLabelRepresenter
 
-public struct PointsLabelRepresenter {
-    public var points: [CGPoint]
-}
-
-extension PointsLabelRepresenter : Debuggable {
-    
-    public var bounds: CGRect {
-        return self.points.bounds
-    }
-    
-    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
-        let pnts = self.points * transform
-        for (i, point) in pnts.enumerated() {
-            let textLayer = CATextLayer(indexLabel: "\(i)", color: color)
-            textLayer.setCenter(point)
-            textLayer.applyDefaultContentScale()
-            layer.addSublayer(textLayer)
-        }
-    }
-}
-
-// MARK: - PointsGradientRepresenter
-
-public struct PointsGradientRepresenter {
-    public var points: [CGPoint]
-}
-
-extension PointsGradientRepresenter : Debuggable {
-    
-    public var bounds: CGRect {
-        return self.points.bounds
-    }
-    
-    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
-        let pnts = self.points * transform
-        for (i, center) in pnts.enumerated() {
-            let path: AppBezierPath
-            if i == 0 || i == points.count-1 {
-                let rect = CGRect(x: center.x-kPointRadius/2, y: center.y-kPointRadius/2, width: kPointRadius, height: kPointRadius)
-                path = AppBezierPath(rect: rect)
-            } else {
-                path = center.getBezierPath(radius: kPointRadius)
-            }
-            let ratio = CGFloat(i)/CGFloat(points.count)
-            let toColor = AppColor(red: 0, green: 0, blue: 0, alpha: 0.3)
-            let color = interpolate(from: .red, to: toColor, ratio: ratio)
-            let shape = CAShapeLayer(path: path.cgPath, strokeColor: nil, fillColor: color, lineWidth: 0)
-            layer.addSublayer(shape)
-        }
-    }
-}
-
-// MARK: - Point
-
-extension CGPoint : Debuggable {
-    
-    public var bounds: CGRect {
-        return CGRect(origin: self, size: .zero)
-    }
-    
-    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
-        let newPoint = self * transform
-        let path = newPoint.getBezierPath(radius: kPointRadius)
-        let shapeLayer = CAShapeLayer(path: path.cgPath, strokeColor: nil, fillColor: color, lineWidth: 0)
-        layer.addSublayer(shapeLayer)
-    }
-}
 
 // MARK: - BezierPath
 

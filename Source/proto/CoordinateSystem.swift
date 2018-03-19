@@ -108,10 +108,59 @@ public class CoordinateSystem : CALayer {
     }
 }
 
-
-
-
-
+func renderAxis(axis: AxisType, coordinate: CoordinateSystemType, labels: [AxisLabel], labelOffset: CGFloat, thickness: CGFloat, to layer: CALayer) {
+    
+    let path = AppBezierPath()
+    let half = thickness/2
+    let start = labels[0].position
+    var vector = (labels[1].position - start)
+    vector = vector.normalized(to: min(vector.length/2, thickness*3))
+    let end = labels.last!.position + vector
+    
+    var labelOffsetX: CGFloat = 0
+    var labelOffsetY: CGFloat = 0
+    var lineOffsetX: CGFloat = 0
+    var lineOffsetY: CGFloat = 0
+    switch (axis, coordinate) {
+    case (.x, .yUp):   labelOffsetY =  labelOffset; lineOffsetY =  half
+    case (.x, .yDown): labelOffsetY = -labelOffset; lineOffsetY = -half
+    case (.y, .yUp):   labelOffsetX = -labelOffset; lineOffsetX = -half
+    case (.y, .yDown): labelOffsetX = -labelOffset; lineOffsetX = -half
+    }
+    
+    // 1. draw main axis
+    path.move(to: start)
+    path.addLine(to: end)
+    
+    // 2. draw short lines
+    for i in 0 ..< labels.count {
+        let position = labels[i].position
+        let lineEnd = CGPoint(x: position.x + lineOffsetX, y: position.y + lineOffsetY)
+        path.move(to: position)
+        path.addLine(to: lineEnd)
+    }
+    
+    // 3. draw end arrow
+    path.append(AxisArrow().pathAtEndOfSegment(segStart: start, segEnd: end))
+    
+    // 4. add bezier path layer
+    let shapeLayer = CAShapeLayer()
+    shapeLayer.lineWidth = 0.5
+    shapeLayer.path = path.cgPath
+    shapeLayer.strokeColor = AppColor.lightGray.cgColor
+    shapeLayer.fillColor = nil
+    shapeLayer.masksToBounds = false
+    layer.addSublayer(shapeLayer)
+    
+    // 5. add labels layer
+    for label in labels {
+        let x = label.position.x + labelOffsetX
+        let y = label.position.y + labelOffsetY
+        let center = CGPoint(x: x, y: y)
+        label.label.setCenter(center)
+        layer.addSublayer(label.label)
+    }
+}
 
 
 
