@@ -273,6 +273,10 @@
 			isa = PBXGroup;
 			children = (
 				BB6F11AB205F84FB003B27B6 /* CoordinateSystem.swift */,
+				BB6F117F205F6AFE003B27B6 /* AxisData.swift */,
+				BB6F11A7205F745B003B27B6 /* AxisArrow.swift */,
+				BB6F11B7205F8625003B27B6 /* AxisSegment.swift */,
+				BB6F11BB205F866D003B27B6 /* AxisLabel.swift */,
 				BB6F11B3205F85D9003B27B6 /* Utils.swift */,
 				BB6F11D3205FB7AF003B27B6 /* GradientImage.swift */,
 			);
@@ -286,10 +290,6 @@
 				BB6F11A3205F718F003B27B6 /* AffineRect.swift */,
 				BB6F11BF205FAF48003B27B6 /* AffineImage.swift */,
 				BB6F11C3205FAFC6003B27B6 /* AffineTransform.swift */,
-				BB6F117F205F6AFE003B27B6 /* AxisData.swift */,
-				BB6F11A7205F745B003B27B6 /* AxisArrow.swift */,
-				BB6F11B7205F8625003B27B6 /* AxisSegment.swift */,
-				BB6F11BB205F866D003B27B6 /* AxisLabel.swift */,
 				BB6F11CF205FB6CE003B27B6 /* Points.swift */,
 			);
 			path = data;
