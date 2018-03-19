@@ -16,6 +16,54 @@
 		9C7DFC661A9102BD005AA3F7 /* VisualDebugger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C7DFC5B1A9102BD005AA3F7 /* VisualDebugger.framework */; };
 		A8491E1E19CD6DAE00CCFAE6 /* VisualDebugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* VisualDebugger.swift */; };
 		A8580F791BCF5C5B00DA927B /* VisualDebugger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7236B4F61BAC14150020529B /* VisualDebugger.framework */; };
+		BB6F117C205F6AD8003B27B6 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F117B205F6AD8003B27B6 /* Enums.swift */; };
+		BB6F117D205F6AD8003B27B6 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F117B205F6AD8003B27B6 /* Enums.swift */; };
+		BB6F1180205F6AFE003B27B6 /* AxisData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F117F205F6AFE003B27B6 /* AxisData.swift */; };
+		BB6F1181205F6AFE003B27B6 /* AxisData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F117F205F6AFE003B27B6 /* AxisData.swift */; };
+		BB6F1183205F6B51003B27B6 /* AxisData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F117F205F6AFE003B27B6 /* AxisData.swift */; };
+		BB6F1186205F6BA5003B27B6 /* DebugConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F1185205F6BA5003B27B6 /* DebugConfig.swift */; };
+		BB6F1187205F6BA5003B27B6 /* DebugConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F1185205F6BA5003B27B6 /* DebugConfig.swift */; };
+		BB6F1188205F6BB5003B27B6 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F117B205F6AD8003B27B6 /* Enums.swift */; };
+		BB6F1189205F6BBB003B27B6 /* DebugConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F1185205F6BA5003B27B6 /* DebugConfig.swift */; };
+		BB6F118B205F6BE9003B27B6 /* DebugOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F118A205F6BE9003B27B6 /* DebugOptions.swift */; };
+		BB6F118C205F6BE9003B27B6 /* DebugOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F118A205F6BE9003B27B6 /* DebugOptions.swift */; };
+		BB6F118D205F6BE9003B27B6 /* DebugOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F118A205F6BE9003B27B6 /* DebugOptions.swift */; };
+		BB6F1190205F6CCB003B27B6 /* CGRect+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F118F205F6CCB003B27B6 /* CGRect+Behavior.swift */; };
+		BB6F1191205F6CCB003B27B6 /* CGRect+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F118F205F6CCB003B27B6 /* CGRect+Behavior.swift */; };
+		BB6F1192205F6CCB003B27B6 /* CGRect+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F118F205F6CCB003B27B6 /* CGRect+Behavior.swift */; };
+		BB6F1194205F6CDC003B27B6 /* CGPoint+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F1193205F6CDC003B27B6 /* CGPoint+Behavior.swift */; };
+		BB6F1195205F6CDC003B27B6 /* CGPoint+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F1193205F6CDC003B27B6 /* CGPoint+Behavior.swift */; };
+		BB6F1196205F6CDC003B27B6 /* CGPoint+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F1193205F6CDC003B27B6 /* CGPoint+Behavior.swift */; };
+		BB6F1198205F6D10003B27B6 /* CATextLayer+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F1197205F6D10003B27B6 /* CATextLayer+Behavior.swift */; };
+		BB6F1199205F6D10003B27B6 /* CATextLayer+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F1197205F6D10003B27B6 /* CATextLayer+Behavior.swift */; };
+		BB6F119A205F6D10003B27B6 /* CATextLayer+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F1197205F6D10003B27B6 /* CATextLayer+Behavior.swift */; };
+		BB6F119C205F6D47003B27B6 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F119B205F6D47003B27B6 /* AppColor.swift */; };
+		BB6F119D205F6D47003B27B6 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F119B205F6D47003B27B6 /* AppColor.swift */; };
+		BB6F119E205F6D47003B27B6 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F119B205F6D47003B27B6 /* AppColor.swift */; };
+		BB6F11A0205F6E10003B27B6 /* CGAffineTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F119F205F6E10003B27B6 /* CGAffineTransform.swift */; };
+		BB6F11A1205F6E10003B27B6 /* CGAffineTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F119F205F6E10003B27B6 /* CGAffineTransform.swift */; };
+		BB6F11A2205F6E10003B27B6 /* CGAffineTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F119F205F6E10003B27B6 /* CGAffineTransform.swift */; };
+		BB6F11A4205F718F003B27B6 /* AffineRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11A3205F718F003B27B6 /* AffineRect.swift */; };
+		BB6F11A5205F718F003B27B6 /* AffineRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11A3205F718F003B27B6 /* AffineRect.swift */; };
+		BB6F11A6205F718F003B27B6 /* AffineRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11A3205F718F003B27B6 /* AffineRect.swift */; };
+		BB6F11A8205F745B003B27B6 /* AxisArrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11A7205F745B003B27B6 /* AxisArrow.swift */; };
+		BB6F11A9205F745B003B27B6 /* AxisArrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11A7205F745B003B27B6 /* AxisArrow.swift */; };
+		BB6F11AA205F745B003B27B6 /* AxisArrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11A7205F745B003B27B6 /* AxisArrow.swift */; };
+		BB6F11AC205F84FB003B27B6 /* CoordinateSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11AB205F84FB003B27B6 /* CoordinateSystem.swift */; };
+		BB6F11AD205F84FB003B27B6 /* CoordinateSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11AB205F84FB003B27B6 /* CoordinateSystem.swift */; };
+		BB6F11AE205F84FB003B27B6 /* CoordinateSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11AB205F84FB003B27B6 /* CoordinateSystem.swift */; };
+		BB6F11B0205F859F003B27B6 /* NumberFormater+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11AF205F859F003B27B6 /* NumberFormater+Behavior.swift */; };
+		BB6F11B1205F859F003B27B6 /* NumberFormater+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11AF205F859F003B27B6 /* NumberFormater+Behavior.swift */; };
+		BB6F11B2205F859F003B27B6 /* NumberFormater+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11AF205F859F003B27B6 /* NumberFormater+Behavior.swift */; };
+		BB6F11B4205F85D9003B27B6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11B3205F85D9003B27B6 /* Utils.swift */; };
+		BB6F11B5205F85D9003B27B6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11B3205F85D9003B27B6 /* Utils.swift */; };
+		BB6F11B6205F85D9003B27B6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11B3205F85D9003B27B6 /* Utils.swift */; };
+		BB6F11B8205F8625003B27B6 /* AxisSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11B7205F8625003B27B6 /* AxisSegment.swift */; };
+		BB6F11B9205F8625003B27B6 /* AxisSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11B7205F8625003B27B6 /* AxisSegment.swift */; };
+		BB6F11BA205F8625003B27B6 /* AxisSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11B7205F8625003B27B6 /* AxisSegment.swift */; };
+		BB6F11BC205F866D003B27B6 /* AxisLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11BB205F866D003B27B6 /* AxisLabel.swift */; };
+		BB6F11BD205F866D003B27B6 /* AxisLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11BB205F866D003B27B6 /* AxisLabel.swift */; };
+		BB6F11BE205F866D003B27B6 /* AxisLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11BB205F866D003B27B6 /* AxisLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +105,22 @@
 		A8491E1D19CD6DAE00CCFAE6 /* VisualDebugger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualDebugger.swift; sourceTree = "<group>"; };
 		A8580F741BCF5C5B00DA927B /* VisualDebugger tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "VisualDebugger tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8580F781BCF5C5B00DA927B /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
+		BB6F117B205F6AD8003B27B6 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		BB6F117F205F6AFE003B27B6 /* AxisData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxisData.swift; sourceTree = "<group>"; };
+		BB6F1185205F6BA5003B27B6 /* DebugConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugConfig.swift; sourceTree = "<group>"; };
+		BB6F118A205F6BE9003B27B6 /* DebugOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugOptions.swift; sourceTree = "<group>"; };
+		BB6F118F205F6CCB003B27B6 /* CGRect+Behavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Behavior.swift"; sourceTree = "<group>"; };
+		BB6F1193205F6CDC003B27B6 /* CGPoint+Behavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Behavior.swift"; sourceTree = "<group>"; };
+		BB6F1197205F6D10003B27B6 /* CATextLayer+Behavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CATextLayer+Behavior.swift"; sourceTree = "<group>"; };
+		BB6F119B205F6D47003B27B6 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
+		BB6F119F205F6E10003B27B6 /* CGAffineTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransform.swift; sourceTree = "<group>"; };
+		BB6F11A3205F718F003B27B6 /* AffineRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineRect.swift; sourceTree = "<group>"; };
+		BB6F11A7205F745B003B27B6 /* AxisArrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxisArrow.swift; sourceTree = "<group>"; };
+		BB6F11AB205F84FB003B27B6 /* CoordinateSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateSystem.swift; sourceTree = "<group>"; };
+		BB6F11AF205F859F003B27B6 /* NumberFormater+Behavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormater+Behavior.swift"; sourceTree = "<group>"; };
+		BB6F11B3205F85D9003B27B6 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		BB6F11B7205F8625003B27B6 /* AxisSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxisSegment.swift; sourceTree = "<group>"; };
+		BB6F11BB205F866D003B27B6 /* AxisLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxisLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +197,10 @@
 		2E4FEFDD19575BE100351305 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				BB6F118E205F6C99003B27B6 /* extensions */,
+				BB6F1184205F6B5A003B27B6 /* data */,
+				BB6F1182205F6B38003B27B6 /* proto */,
+				BB6F117A205F6AC0003B27B6 /* enums */,
 				2E4FEFE019575BE100351305 /* VisualDebugger.h */,
 				A8491E1D19CD6DAE00CCFAE6 /* VisualDebugger.swift */,
 				2E4FEFDE19575BE100351305 /* Supporting Files */,
@@ -166,6 +234,50 @@
 				A8580F781BCF5C5B00DA927B /* Info-tvOS.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BB6F117A205F6AC0003B27B6 /* enums */ = {
+			isa = PBXGroup;
+			children = (
+				BB6F117B205F6AD8003B27B6 /* Enums.swift */,
+				BB6F118A205F6BE9003B27B6 /* DebugOptions.swift */,
+			);
+			path = enums;
+			sourceTree = "<group>";
+		};
+		BB6F1182205F6B38003B27B6 /* proto */ = {
+			isa = PBXGroup;
+			children = (
+				BB6F11AB205F84FB003B27B6 /* CoordinateSystem.swift */,
+				BB6F11B3205F85D9003B27B6 /* Utils.swift */,
+			);
+			path = proto;
+			sourceTree = "<group>";
+		};
+		BB6F1184205F6B5A003B27B6 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				BB6F117F205F6AFE003B27B6 /* AxisData.swift */,
+				BB6F1185205F6BA5003B27B6 /* DebugConfig.swift */,
+				BB6F11A3205F718F003B27B6 /* AffineRect.swift */,
+				BB6F11A7205F745B003B27B6 /* AxisArrow.swift */,
+				BB6F11B7205F8625003B27B6 /* AxisSegment.swift */,
+				BB6F11BB205F866D003B27B6 /* AxisLabel.swift */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		BB6F118E205F6C99003B27B6 /* extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BB6F118F205F6CCB003B27B6 /* CGRect+Behavior.swift */,
+				BB6F1193205F6CDC003B27B6 /* CGPoint+Behavior.swift */,
+				BB6F1197205F6D10003B27B6 /* CATextLayer+Behavior.swift */,
+				BB6F119B205F6D47003B27B6 /* AppColor.swift */,
+				BB6F119F205F6E10003B27B6 /* CGAffineTransform.swift */,
+				BB6F11AF205F859F003B27B6 /* NumberFormater+Behavior.swift */,
+			);
+			path = extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -313,7 +425,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0930;
 				TargetAttributes = {
 					2E4FEFDA19575BE100351305 = {
 						CreatedOnToolsVersion = 6.0;
@@ -408,7 +520,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB6F117C205F6AD8003B27B6 /* Enums.swift in Sources */,
+				BB6F11BC205F866D003B27B6 /* AxisLabel.swift in Sources */,
+				BB6F1194205F6CDC003B27B6 /* CGPoint+Behavior.swift in Sources */,
+				BB6F1186205F6BA5003B27B6 /* DebugConfig.swift in Sources */,
+				BB6F11A4205F718F003B27B6 /* AffineRect.swift in Sources */,
+				BB6F11B8205F8625003B27B6 /* AxisSegment.swift in Sources */,
+				BB6F11B0205F859F003B27B6 /* NumberFormater+Behavior.swift in Sources */,
+				BB6F11B4205F85D9003B27B6 /* Utils.swift in Sources */,
+				BB6F1180205F6AFE003B27B6 /* AxisData.swift in Sources */,
+				BB6F1190205F6CCB003B27B6 /* CGRect+Behavior.swift in Sources */,
+				BB6F118B205F6BE9003B27B6 /* DebugOptions.swift in Sources */,
+				BB6F1198205F6D10003B27B6 /* CATextLayer+Behavior.swift in Sources */,
+				BB6F11A0205F6E10003B27B6 /* CGAffineTransform.swift in Sources */,
+				BB6F11AC205F84FB003B27B6 /* CoordinateSystem.swift in Sources */,
 				A8491E1E19CD6DAE00CCFAE6 /* VisualDebugger.swift in Sources */,
+				BB6F11A8205F745B003B27B6 /* AxisArrow.swift in Sources */,
+				BB6F119C205F6D47003B27B6 /* AppColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,7 +551,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB6F1183205F6B51003B27B6 /* AxisData.swift in Sources */,
+				BB6F11BE205F866D003B27B6 /* AxisLabel.swift in Sources */,
+				BB6F1196205F6CDC003B27B6 /* CGPoint+Behavior.swift in Sources */,
+				BB6F1189205F6BBB003B27B6 /* DebugConfig.swift in Sources */,
+				BB6F11A6205F718F003B27B6 /* AffineRect.swift in Sources */,
+				BB6F11BA205F8625003B27B6 /* AxisSegment.swift in Sources */,
+				BB6F11B2205F859F003B27B6 /* NumberFormater+Behavior.swift in Sources */,
+				BB6F11B6205F85D9003B27B6 /* Utils.swift in Sources */,
+				BB6F1188205F6BB5003B27B6 /* Enums.swift in Sources */,
+				BB6F1192205F6CCB003B27B6 /* CGRect+Behavior.swift in Sources */,
+				BB6F118D205F6BE9003B27B6 /* DebugOptions.swift in Sources */,
+				BB6F119A205F6D10003B27B6 /* CATextLayer+Behavior.swift in Sources */,
+				BB6F11A2205F6E10003B27B6 /* CGAffineTransform.swift in Sources */,
+				BB6F11AE205F84FB003B27B6 /* CoordinateSystem.swift in Sources */,
 				7236B4EE1BAC14150020529B /* VisualDebugger.swift in Sources */,
+				BB6F11AA205F745B003B27B6 /* AxisArrow.swift in Sources */,
+				BB6F119E205F6D47003B27B6 /* AppColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,7 +575,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB6F117D205F6AD8003B27B6 /* Enums.swift in Sources */,
+				BB6F11BD205F866D003B27B6 /* AxisLabel.swift in Sources */,
+				BB6F1195205F6CDC003B27B6 /* CGPoint+Behavior.swift in Sources */,
+				BB6F1187205F6BA5003B27B6 /* DebugConfig.swift in Sources */,
+				BB6F11A5205F718F003B27B6 /* AffineRect.swift in Sources */,
+				BB6F11B9205F8625003B27B6 /* AxisSegment.swift in Sources */,
+				BB6F11B1205F859F003B27B6 /* NumberFormater+Behavior.swift in Sources */,
+				BB6F11B5205F85D9003B27B6 /* Utils.swift in Sources */,
+				BB6F1181205F6AFE003B27B6 /* AxisData.swift in Sources */,
+				BB6F1191205F6CCB003B27B6 /* CGRect+Behavior.swift in Sources */,
+				BB6F118C205F6BE9003B27B6 /* DebugOptions.swift in Sources */,
+				BB6F1199205F6D10003B27B6 /* CATextLayer+Behavior.swift in Sources */,
+				BB6F11A1205F6E10003B27B6 /* CGAffineTransform.swift in Sources */,
+				BB6F11AD205F84FB003B27B6 /* CoordinateSystem.swift in Sources */,
 				9C459EF51A910361008C9A41 /* VisualDebugger.swift in Sources */,
+				BB6F11A9205F745B003B27B6 /* AxisArrow.swift in Sources */,
+				BB6F119D205F6D47003B27B6 /* AppColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,12 +642,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -541,12 +703,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

@@ -45,152 +45,7 @@ import QuartzCore
     public typealias AppImage = NSImage
 #endif
 
-// MARK: - enums
-
-public enum CoordinateSystemType {
-    case yDown, yUp
-}
-
-public enum AxisType {
-    case x, y
-}
-
-/// Data structure to hold all necessary infomation for axis
-
-public struct AxisData {
-    
-    // start value of the axis
-    public var startValue:CGFloat
-    // length value of the axis
-    public var lengthValue: CGFloat
-    // the value of each segment
-    public var segmentValue:CGFloat
-    // number segments of starting (reach to 0)
-    public var startSegments:Int
-    // total segments
-    public var numSegments:Int
-    
-    /// the origin value in the coordinate system
-    public var originValue: CGFloat {
-        return self.startValue + self.segmentValue * CGFloat(self.startSegments)
-    }
-    
-    /// end value of the axis
-    public var endValue: CGFloat {
-        return self.startValue + self.lengthValue
-    }
-    
-    public init(min minValue:CGFloat, max maxValue:CGFloat, segmentValue:CGFloat) {
-        self.startValue = floor(minValue / segmentValue) * segmentValue
-        self.segmentValue = segmentValue
-        self.startSegments = Int(ceil(abs(startValue) / segmentValue))
-        self.numSegments = Int(ceil((maxValue-startValue) / segmentValue))
-        self.lengthValue = segmentValue * CGFloat(numSegments)
-    }
-}
-
-public class CoordinateSystem : CALayer {
-    
-    public let minWidth: CGFloat = 250
-    
-    public var type:CoordinateSystemType
-    public var area:CGRect
-    public var segmentLength:CGFloat = 50
-    public var scale: CGFloat = 1.5
-    public var numSegments:Int
-    public var showOrigin:Bool
-    
-    // for transform values to current coordinate system space
-    public internal(set) var matrix = CGAffineTransform.identity
-    
-    internal var colorIndex:Int = 0
-    internal var minSegmentLength: CGFloat {
-        return minWidth / CGFloat(numSegments)
-    }
-    
-    public init(type: CoordinateSystemType, area:CGRect, scale:CGFloat, numSegments:Int, showOrigin:Bool, precision:Int = 5) {
-        self.type = type
-        self.area = area
-        self.scale =  scale
-        self.numSegments = numSegments
-        self.showOrigin = showOrigin
-        super.init()
-        
-        let rect = showOrigin ? self.getRectFromOrigin(by: area) : area
-        let maxValue = max(rect.size.width, rect.size.height)
-        let segmentValue = CGFloat(getDivision(Double(maxValue), segments: numSegments))
-        
-        let xAxisData = AxisData(min: rect.minX, max: rect.maxX, segmentValue: segmentValue)
-        let yAxisData = AxisData(min: rect.minY, max: rect.maxY, segmentValue: segmentValue)
-        
-        let valueRect = CGRect(x: xAxisData.startValue, y: yAxisData.startValue, width: xAxisData.lengthValue, height: yAxisData.lengthValue)
-        let xAxisY: CGFloat = (valueRect.minY < 0 && valueRect.maxY >= 0) ? 0 : yAxisData.startValue
-        let yAxisX: CGFloat = (valueRect.minX < 0 && valueRect.maxX >= 0) ? 0 : xAxisData.startValue
-        
-        // calculate axis segments in value space
-        let xAxisSegment = AxisSegment(start: CGPoint(x: xAxisData.startValue, y: xAxisY), end: CGPoint(x: xAxisData.endValue, y: xAxisY))
-        let yAxisSegment = AxisSegment(start: CGPoint(x: yAxisX, y: yAxisData.startValue), end: CGPoint(x: yAxisX, y: yAxisData.endValue))
-        
-        // get axis labels and transform to render space
-        let precision = calculatePrecision(Double(segmentValue))
-        let formater = NumberFormatter(precision: precision)
-        var xAxisLabels = xAxisSegment.getLabels(axis: .x, segmentValue: segmentValue, numSegments: xAxisData.numSegments, numFormater: formater)
-        var yAxisLabels = yAxisSegment.getLabels(axis: .y, segmentValue: segmentValue, numSegments: yAxisData.numSegments, numFormater: formater)
-        
-        // calculate the proper segment length
-        let xLabelBounds = xAxisLabels.reduce(CGRect.zero) { $0.union($1.label.bounds) }
-        self.segmentLength = xLabelBounds.width < minSegmentLength ? minSegmentLength : xLabelBounds.width
-        self.segmentLength = ceil(segmentLength * scale)
-        
-        // calculate the matrix for transform value from value space to render space
-        let scale = self.segmentLength / segmentValue
-        self.matrix = CGAffineTransform(translationX: -valueRect.origin.x, y: -valueRect.origin.y)
-        self.matrix.scaleBy(x: scale, y: scale)
-        
-        if self.type == .yUp {
-            let renderHeight = valueRect.height * scale
-            self.matrix.scaleBy(x: 1, y: -1)
-            self.matrix.translateBy(x: 0, y: renderHeight)
-        }
-        
-        // get axis labels and transform to render space
-        xAxisLabels = xAxisLabels * self.matrix
-        yAxisLabels = yAxisLabels * self.matrix
-        
-        // render axis to self
-        let thickness: CGFloat = 8
-        renderAxis(axis: .x, coordinate: self.type, labels: xAxisLabels, labelOffset: ceil(xLabelBounds.height), thickness: thickness, to: self)
-        renderAxis(axis: .y, coordinate: self.type, labels: yAxisLabels, labelOffset: ceil(xLabelBounds.width/2) + thickness, thickness: thickness, to: self)
-        
-        // setup frame
-        self.frame = valueRect.applying(self.matrix)
-    }
-    
-    public required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func getRectFromOrigin(by bounds:CGRect) -> CGRect {
-        let minX = min(0, bounds.minX)
-        let minY = min(0, bounds.minY)
-        let maxX = max(0, bounds.maxX)
-        let maxY = max(0, bounds.maxY)
-        return CGRect(x: minX, y: minY, width: maxX-minX, height: maxY-minY)
-    }
-    
-    public func getNextColor() -> AppColor {
-        let color = AppColor.get(self.colorIndex % colors.count)
-        self.colorIndex += 1
-        return color
-    }
-    
-    public func render(object: Debuggable, color: AppColor? = nil) {
-        object.debug(in: self, with: self.matrix, color: color ?? getNextColor())
-    }
-}
-
 // MARK: - Debugger view
-
 
 #if os(macOS)
     internal class FlippedView : AppView {
@@ -213,59 +68,6 @@ public func debugLayer(_ layer:CALayer, withMargin margin:CGFloat) -> AppView {
     #endif
     view.addSublayer(layer)
     return view
-}
-
-public enum IndexOrderRepresentation : Int {
-    case none
-    case indexLabel
-    case gradient
-}
-
-public struct DebugOptions: OptionSet {
-    
-    public let rawValue: Int
-    
-    public init(rawValue: Int) {
-        self.rawValue = rawValue
-    }
-    
-    public static let flipped    = DebugOptions(rawValue: 1 << 0)
-    public static let big        = DebugOptions(rawValue: 1 << 1)
-    public static let gradient   = DebugOptions(rawValue: 1 << 2)
-    public static let showLabels = DebugOptions(rawValue: 1 << 3)
-    public static let showOrigin = DebugOptions(rawValue: 1 << 4)
-}
-
-public struct DebugConfig {
-    
-    public var coordinate: CoordinateSystemType = .yDown
-    public var scale: CGFloat = 1.5
-    public var numDivisions: Int = 5
-    public var showOrigin: Bool = false
-    public var indexOrderRepresentation: IndexOrderRepresentation
-    
-    public init(coordinate: CoordinateSystemType = .yDown,
-                scale: CGFloat = 1.5,
-                numDivisions: Int = 5,
-                showOrigin: Bool = false,
-                indexOrderRepresentation: IndexOrderRepresentation = .none) {
-        
-        self.coordinate               = coordinate
-        self.scale                    = scale
-        self.numDivisions             = numDivisions
-        self.showOrigin               = showOrigin
-        self.indexOrderRepresentation = indexOrderRepresentation
-    }
-    
-    public init(options: DebugOptions) {
-        self.coordinate = options.contains(.flipped) ? .yUp : .yDown
-        self.scale = options.contains(.big) ? 3 : 1.5
-        self.numDivisions = 5
-        self.showOrigin = options.contains(.showOrigin)
-        self.indexOrderRepresentation = .none
-        if options.contains(.showLabels) { self.indexOrderRepresentation = .indexLabel }
-        if options.contains(.gradient) { self.indexOrderRepresentation = .gradient }
-    }
 }
 
 public extension Debuggable {
@@ -396,58 +198,10 @@ extension CGAffineTransform {
     }
 }
 
-// MARK: - Utilities
 
-public func getDivision(_ value:Double, segments:Int = 5) -> Float {
-    
-    let logValue = log10(value)
-    let exp =  logValue < 0 ? -floor(abs(logValue)) : floor(logValue)
-    var bigger = pow(10, exp)
-    bigger = bigger < value ? pow(10, exp+1) : bigger
-    
-    let step = 0.25
-    for presision in [1, 2] {
-        for i in stride(from: step, to: 0.05, by: -0.05) {
-            for j in stride(from: i, through: 1.0, by: i) {
-                let length = bigger * j
-                if value == length {
-                    return Float(length) / Float(segments)
-                } else if value < length {
-                    let division = length / Double(segments)
-                    if division * Double(segments - presision) < value {
-                        return Float(division)
-                    }
-                }
-            }
-        }
-    }
-    return Float(bigger) / Float(segments)
-}
-
-func calculatePrecision(_ value: Double) -> Int {
-    let exp = log10(value)
-    if exp < 0 {
-        return Int(ceil(abs(exp))) + 1
-    }
-    return 1
-}
 
 // MARK: - NumberFormatter
 
-extension NumberFormatter {
-    
-    convenience init(precision:Int) {
-        self.init()
-        self.numberStyle = .decimal
-        self.maximumFractionDigits = precision
-        self.roundingMode = .halfUp
-    }
-    
-    func formatNumber(_ number:CGFloat) -> String {
-        let number = NSNumber(value: Double(number))
-        return self.string(from: number) ?? "\(number)"
-    }
-}
 
 // MARK: - AppView
 
@@ -485,59 +239,6 @@ extension CALayer {
     }
 }
 
-// MARK: - CATextLayer
-
-extension CATextLayer {
-    
-    convenience init(text:String, attributes:[NSAttributedStringKey: Any] = [:]) {
-        self.init()
-        
-        let string = NSAttributedString(string: text, attributes: attributes)
-        let size = CGSize(width: 1000, height: 1000)
-        self.frame = string.boundingRect(with: size, options: .usesLineFragmentOrigin, context: nil)
-        self.string = string
-        self.applyDefaultContentScale()
-    }
-    
-    convenience init(axisLabel:String, color:AppColor = .gray, font:AppFont? = nil) {
-        self.init()
-        
-        let font = font ?? AppFont.default
-        var attrs:[NSAttributedStringKey: Any] = [:]
-        attrs[.foregroundColor] = color
-        attrs[.font]            = font
-        let string = NSAttributedString(string:axisLabel, attributes: attrs)
-        
-        let size = CGSize(width: 1000, height: 1000)
-        self.frame = string.boundingRect(with: size, options: .usesLineFragmentOrigin, context: nil)
-        self.string = string
-        self.applyDefaultContentScale()
-    }
-    
-    convenience init(indexLabel:String, color:AppColor = .gray, font:AppFont? = nil) {
-        self.init()
-        
-        let font = font ?? AppFont.default
-        var attrs:[NSAttributedStringKey: Any] = [:]
-        attrs[.foregroundColor] = color
-        attrs[.font]            = font
-        let string = NSAttributedString(string:indexLabel, attributes: attrs)
-        
-        let size = CGSize(width: 1000, height: 1000)
-        let bounds = string.boundingRect(with: size, options: .usesLineFragmentOrigin, context: nil)
-        var width = bounds.width + bounds.height/2
-        width = width < bounds.height ? bounds.height : width
-        self.frame = CGRect(x: 0, y: 0, width: width, height: bounds.height)
-        
-        self.string = string
-        self.borderColor = color.cgColor
-        self.borderWidth = 0.5
-        self.cornerRadius = bounds.height/2
-        self.alignmentMode = kCAAlignmentCenter
-        self.applyDefaultContentScale()
-    }
-}
-
 // MARK: - AppFont
 
 extension AppFont {
@@ -547,164 +248,9 @@ extension AppFont {
     }
 }
 
-// MARK: - AppColor
-
-let colors:[Int] = [
-    0x50aada, 0x8de050, 0xffdc58, 0xffb768, 0xff4d54, 0x9635af,
-    0x3591c2, 0x5dbb33, 0xf2cb2e, 0xff9e35, 0xff1220, 0x63177a,
-    0x267298, 0x6ba737, 0xe2af0f, 0xef932b, 0xce0e27, 0x4c0c60,
-    0x074d6d, 0x4a7d23, 0xc3880a, 0xd07218, 0xaa0517, 0x360540,
-]
-
-extension AppColor {
-    
-    convenience init(hex:Int, alpha:CGFloat) {
-        let r = CGFloat((hex & 0xFF0000) >> 16) / 255.0
-        let g = CGFloat((hex & 0xFF00) >> 8) / 255.0
-        let b = CGFloat((hex & 0xFF)) / 255.0
-        self.init(red: r, green:g, blue:b, alpha:alpha)
-    }
-    
-    static func get(_ index:Int) -> AppColor {
-        return AppColor(hex: colors[index], alpha: 1)
-    }
-}
-
-func interpolate(from color0: AppColor, to color1: AppColor, ratio: CGFloat) -> AppColor {
-    let comp0 = color0.cgColor.components!
-    let comp1 = color1.cgColor.components!
-    let r = (1 - ratio) * comp0[0] + ratio * comp1[0]
-    let g = (1 - ratio) * comp0[1] + ratio * comp1[1]
-    let b = (1 - ratio) * comp0[2] + ratio * comp1[2]
-    let a = (1 - ratio) * comp0[3] + ratio * comp1[3]
-    return AppColor(red: r, green: g, blue: b, alpha: a)
-}
-
 
 // MARK: - Collection
 
-extension Collection where Iterator.Element == CGPoint {
-    
-    var bounds:CGRect {
-        guard let pnt = self.first else { return CGRect.zero }
-        var (minX, maxX, minY, maxY) = (pnt.x, pnt.x, pnt.y, pnt.y)
-        
-        for point in self {
-            minX = point.x < minX ? point.x : minX
-            minY = point.y < minY ? point.y : minY
-            maxX = point.x > maxX ? point.x : maxX
-            maxY = point.y > maxY ? point.y : maxY
-        }
-        return CGRect(x: minX, y: minY, width: (maxX-minX), height: (maxY-minY))
-    }
-}
-
-// MARK: - CGPoint
-
-extension CGPoint {
-    
-    func getBezierPath(radius: CGFloat) -> AppBezierPath {
-        let x = (self.x - radius/2.0)
-        let y = (self.y - radius/2.0)
-        let rect = CGRect(x: x, y: y, width: radius, height: radius)
-        return AppBezierPath(ovalIn: rect)
-    }
-    
-    var length:CGFloat {
-        return sqrt(self.x * self.x + self.y * self.y)
-    }
-    
-    func normalized(to length:CGFloat = 1) -> CGPoint {
-        let len = length/self.length
-        return CGPoint(x: self.x * len, y: self.y * len)
-    }
-}
-
-func +(p1: CGPoint, p2: CGPoint) -> CGPoint {
-    return CGPoint(x: p1.x + p2.x, y: p1.y + p2.y)
-}
-
-func -(p1: CGPoint, p2: CGPoint) -> CGPoint {
-    return CGPoint(x: p1.x - p2.x, y: p1.y - p2.y)
-}
-
-func calculateAngle(_ point1:CGPoint, _ point2:CGPoint) -> CGFloat {
-    return atan2(point2.y - point1.y, point2.x - point1.x)
-}
-
-func calculateDistance(_ point1:CGPoint, _ point2:CGPoint) -> CGFloat {
-    let x = point2.x - point1.x
-    let y = point2.y - point1.y
-    return sqrt(x*x + y*y)
-}
-
-func calculateCenter(_ point1:CGPoint, _ point2:CGPoint) -> CGPoint {
-    return CGPoint(x: point1.x+(point2.x-point1.x)/2.0, y: point1.y+(point2.y-point1.y)/2.0)
-}
-
-// MARK: - CGRect
-
-extension CGRect {
-    
-    public static let unit: CGRect = CGRect(x: 0, y: 0, width: 1, height: 1)
-    
-    public var affineRect: AffineRect {
-        return AffineRect(x: origin.x, y: origin.y, width: width, height: height)
-    }
-    
-    fileprivate func fixed() -> CGRect {
-        guard self.width == 0 || self.height == 0 else { return self }
-        let width = self.width == 0 ? min(self.height / 2, 1) : self.width
-        let height = self.height == 0 ? min(self.width / 2, 1) : self.height
-        return CGRect(origin: self.origin, size: CGSize(width: width, height: height))
-    }
-}
-
-// MARK: - CGAffineTransform
-
-extension CGAffineTransform {
-    
-    func rotated(by angle: CGFloat) -> CGAffineTransform {
-        return self * CGAffineTransform(rotationAngle: angle)
-    }
-    
-    func scaledBy(x sx: CGFloat, y sy: CGFloat) -> CGAffineTransform {
-        return self * CGAffineTransform(scaleX: sx, y: sy)
-    }
-    
-    func translatedBy(x tx: CGFloat, y ty: CGFloat) -> CGAffineTransform {
-        return self * CGAffineTransform(translationX: tx, y: ty)
-    }
-    
-    // mutating
-    mutating func rotate(by angle:CGFloat) {
-        self = self.rotated(by: angle)
-    }
-    
-    mutating func scaleBy(x:CGFloat, y:CGFloat)  {
-        self = self.scaledBy(x: x, y: y)
-    }
-    
-    mutating func translateBy(x:CGFloat, y:CGFloat) {
-        self = self.translatedBy(x: x, y: y)
-    }
-    
-    mutating func invert() {
-        self = self.inverted()
-    }
-}
-
-func * (m1: CGAffineTransform, m2: CGAffineTransform) -> CGAffineTransform {
-    return m1.concatenating(m2)
-}
-
-func * (p:CGPoint, m: CGAffineTransform) -> CGPoint {
-    return p.applying(m)
-}
-
-func *(lhs: [CGPoint], rhs: CGAffineTransform) -> [CGPoint] {
-    return lhs.map{ $0 * rhs }
-}
 
 #if os(macOS)
     
@@ -767,116 +313,6 @@ func *(lhs: [CGPoint], rhs: CGAffineTransform) -> [CGPoint] {
     
 #endif
 
-
-// AffineRect for rendering image
-
-public struct AffineRect {
-    
-    public var v0: CGPoint // top left
-    public var v1: CGPoint // top right
-    public var v2: CGPoint // bottom right
-    public var v3: CGPoint // bottom left
-    
-    public init(x: CGFloat, y: CGFloat, width: CGFloat, height: CGFloat) {
-        self.v0 = CGPoint(x: x,       y: y)
-        self.v1 = CGPoint(x: x+width, y: y)
-        self.v2 = CGPoint(x: x+width, y: y+height)
-        self.v3 = CGPoint(x: x,       y: y+height)
-    }
-    
-    public init(v0: CGPoint, v1: CGPoint, v2: CGPoint, v3: CGPoint) {
-        self.v0 = v0
-        self.v1 = v1
-        self.v2 = v2
-        self.v3 = v3
-    }
-}
-
-extension AffineRect {
-    public static let unit: AffineRect = AffineRect(x: 0, y: 0, width: 1, height: 1)
-    public var bounds: CGRect { return [v0, v1, v2, v3].bounds }
-    public var center: CGPoint { return calculateCenter(v0, v2) }
-    public var angle: CGFloat { return calculateAngle(v0, v1) }
-    public var width: CGFloat { return calculateDistance(v0, v1) }
-    public var height: CGFloat { return calculateDistance(v0, v3) }
-}
-
-public func * (rect: AffineRect, t: CGAffineTransform) -> AffineRect {
-    let v0 = rect.v0.applying(t)
-    let v1 = rect.v1.applying(t)
-    let v2 = rect.v2.applying(t)
-    let v3 = rect.v3.applying(t)
-    return AffineRect(v0: v0, v1: v1, v2: v2, v3: v3)
-}
-
-
-/// axis label alway hold the correct value, no matter current position
-struct AxisLabel {
-    var label: CATextLayer
-    var position: CGPoint
-    
-    func applying(_ transform: CGAffineTransform) -> AxisLabel {
-        let position = self.position.applying(transform)
-        return AxisLabel(label: self.label, position: position)
-    }
-}
-
-func *(labels: [AxisLabel], transform: CGAffineTransform) -> [AxisLabel] {
-    return labels.map{ $0.applying(transform) }
-}
-
-struct AxisSegment {
-    var start: CGPoint
-    var end: CGPoint
-    
-    func getLabels(axis: AxisType, segmentValue: CGFloat, numSegments: Int, numFormater: NumberFormatter) -> [AxisLabel] {
-        switch axis {
-        case .x:
-            return (0 ... numSegments).map {
-                let value = start.x + CGFloat($0) * segmentValue
-                let string = numFormater.formatNumber(value)
-                let label = CATextLayer(axisLabel: string)
-                let position = CGPoint(x: value, y: start.y)
-                return AxisLabel(label: label, position: position)
-            }
-        case .y:
-            return (0 ... numSegments).map {
-                let value = start.y + CGFloat($0) * segmentValue
-                let string = numFormater.formatNumber(value)
-                let label = CATextLayer(axisLabel: string)
-                let position = CGPoint(x: start.x, y: value)
-                return AxisLabel(label: label, position: position)
-            }
-        }
-    }
-}
-
-struct AxisArrow {
-    
-    let w1: CGFloat = 0
-    let w2: CGFloat = 5
-    let h: CGFloat = 3
-    
-    var path: AppBezierPath {
-        let path = AppBezierPath()
-        path.move(to: .zero)
-        path.addLine(to: CGPoint(x: -w1, y:  h))
-        path.addLine(to: CGPoint(x:  w2, y:  0))
-        path.addLine(to: CGPoint(x: -w1, y: -h))
-        path.addLine(to: .zero)
-        path.close()
-        return path
-    }
-    
-    func pathAtEndOfSegment(segStart p0: CGPoint, segEnd p1: CGPoint) -> AppBezierPath {
-        let angle = atan2(p1.y-p0.y, p1.x-p0.x)
-        var t = CGAffineTransform(rotationAngle: angle)
-        t = t.concatenating(CGAffineTransform(translationX: p1.x, y: p1.y))
-        let p = self.path
-        p.apply(t)
-        return p
-    }
-}
 
 // MARK: rendering work
 
@@ -990,10 +426,6 @@ extension CAShapeLayer {
     }
 }
 
-public protocol Debuggable {
-    var bounds: CGRect { get }
-    func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor)
-}
 
 // MARK: - PointsDotRepresenter
 
@@ -1274,5 +706,51 @@ extension CGImage : Debuggable {
     }
 }
 
+extension Array where Element == CGPoint {
+    
+}
+
+extension Array : Debuggable where Element : Debuggable {
+    
+    public var bounds: CGRect {
+        guard !self.isEmpty else { return .zero }
+        var rect = self[0].bounds
+        for i in 1 ..< self.count {
+            rect = self[i].bounds.union(rect)
+        }
+        return rect
+    }
+    
+    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
+        
+    }
+}
 
 // TODO: - Axis implements Debuggable also
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
