@@ -47,7 +47,7 @@ public class CoordinateSystem : CALayer {
         self.showOrigin = showOrigin
         super.init()
         
-        let rect = showOrigin ? self.getRectFromOrigin(by: area) : area
+        let rect = showOrigin ? area.rectFromOrigin : area
         let maxValue = max(rect.size.width, rect.size.height)
         let segmentValue = CGFloat(getDivision(Double(maxValue), segments: numSegments))
         
@@ -83,7 +83,7 @@ public class CoordinateSystem : CALayer {
             self.matrix.scaleBy(x: 1, y: -1)
             self.matrix.translateBy(x: 0, y: renderHeight)
         }
-        
+        // until now we got correct transform matrix
         // get axis labels and transform to render space
         xAxisLabels = xAxisLabels * self.matrix
         yAxisLabels = yAxisLabels * self.matrix
@@ -99,14 +99,6 @@ public class CoordinateSystem : CALayer {
     
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func getRectFromOrigin(by bounds:CGRect) -> CGRect {
-        let minX = min(0, bounds.minX)
-        let minY = min(0, bounds.minY)
-        let maxX = max(0, bounds.maxX)
-        let maxY = max(0, bounds.maxY)
-        return CGRect(x: minX, y: minY, width: maxX-minX, height: maxY-minY)
     }
     
     public func getNextColor() -> AppColor {

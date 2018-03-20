@@ -45,21 +45,20 @@ import QuartzCore
     public typealias AppImage = NSImage
 #endif
 
-
 public extension Debuggable {
     
     public var debugView:AppView {
         return self.getDebugView(in: .yDown)
     }
     
-    public func debugView(of options: DebugOptions = [], in visibleRect: CGRect? = nil) -> AppView {
-        let config = DebugConfig(options: options)
-        return getDebugView(in:            config.coordinate,
-                            visibleRect:   visibleRect,
-                            scale:         config.scale,
-                            numDivisions:  config.numDivisions,
-                            showOrigin:    config.showOrigin)
-    }
+//    public func getDebugView(of options: DebugOptions = [], in visibleRect: CGRect? = nil) -> AppView {
+//        let config = DebugConfig(options: options)
+//        return getDebugView(in:            config.coordinate,
+//                            visibleRect:   visibleRect,
+//                            scale:         config.scale,
+//                            numDivisions:  config.numDivisions,
+//                            showOrigin:    config.showOrigin)
+//    }
     
     public func getDebugView(in coordinate:CoordinateSystem.Kind, visibleRect:CGRect? = nil, scale: CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true) -> AppView {
         let bounds = visibleRect ?? self.bounds.fixed()
@@ -69,117 +68,19 @@ public extension Debuggable {
     }
 }
 
-//public extension Collection {
-//
-//    public var debugView:AppView {
-//        return self.getDebugView(in: .yDown)
-//    }
-//
-//    public func debugView(of options: DebugOptions = [], in visibleRect: CGRect? = nil, use affineRect: AffineRect = .unit, image: AppImage? = nil) -> AppView {
-//        let config = DebugConfig(options: options)
-//        return getDebugView(in:               config.coordinate,
-//                            visibleRect:      visibleRect,
-//                            affineRect:       affineRect,
-//                            image:            image,
-//                            scale:            config.scale,
-//                            numDivisions:     config.numDivisions,
-//                            showOrigin:       config.showOrigin)
-//    }
-//
-//    public func getDebugView(in coordinate:CoordinateSystem.Kind, visibleRect:CGRect? = nil, affineRect:AffineRect = .unit, image: AppImage? = nil, scale:CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true) -> AppView {
-//
-//        // earlier check if is [CGPoint] or [CGAffineTransform]
-//        var debugObject: Debuggable?
-//        if let transforms = self as? [CGAffineTransform] {
-//            debugObject = AffineTransforms(rect: affineRect, image: image?.cgImage ?? getTransformImage(), transforms: transforms)
-//        }
-//        if debugObject != nil {
-//            return debugObject!.getDebugView(in: coordinate, visibleRect: visibleRect, scale: scale, numDivisions: numDivisions, showOrigin: showOrigin)
-//        }
-//
-//        // 1. convert to Debuggable array
-//        var debugArray = [Debuggable]()
-//        for element in self {
-//            switch element {
-//            case let image as AppImage:
-//                debugArray.append(image.cgImage!)
-//            case let path as AppBezierPath:
-//                debugArray.append(path)
-//            case let debuggable as Debuggable:
-//                debugArray.append(debuggable)
-//            case let transfrom as CGAffineTransform:
-//                debugArray.append(AffineTransform(rect: affineRect, image: image?.cgImage ?? getTransformImage(), transform: transfrom))
-//            case let transforms as [CGAffineTransform]:
-//                debugArray.append(AffineTransforms(rect: affineRect, image: image?.cgImage ?? getTransformImage(), transforms: transforms))
-//            case let points as [CGPoint]:
-//                debugArray.append(getPointsWrapper(points: points, by: indexOrderRepresentation))
-//            default:
-//                break
-//            }
-//        }
-//
-//        // 2. make sure debugArray not empty
-//        guard !debugArray.isEmpty else {
-//            return AppView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
-//        }
-//
-//        // 3. calculate visible rect
-//        var bounds = visibleRect
-//        if bounds == nil {
-//            bounds = debugArray[0].bounds
-//            for i in 1 ..< debugArray.count {
-//                bounds = bounds!.union(debugArray[i].bounds)
-//            }
-//        }
-//
-//        // 4. create coordinate layer and render objects
-//        guard let area = bounds?.fixed(), !area.isEmpty else { return AppView(frame: CGRect(x: 0, y: 0, width: 1, height: 1)) }
-//        let layer = CoordinateSystem(type: coordinate, area: area, scale: scale, numSegments: numDivisions, showOrigin: showOrigin)
-//
-//        for object in debugArray {
-//            layer.render(object: object)
-//        }
-//        return debugLayer(layer, withMargin: layer.segmentLength)
-//    }
-//}
-
-// MARK: - AffineTransforms
-
-public struct AffineTransforms {
+extension Array : Debuggable where Element : Debuggable {
     
-    public var rect: AffineRect
-    public var image: CGImage
-    public var transforms: [CGAffineTransform]
-    internal var images: [AffineImage]!
-    
-    public init(rect: AffineRect, image: CGImage, transforms: [CGAffineTransform]) {
-        self.rect = rect
-        self.image = image
-        self.transforms = transforms
-        self.images = getImages()
+    public var bounds: CGRect {
+        return self.map{ $0.bounds }.bounds
     }
     
-    private func getImages() -> [AffineImage] {
-        let minAlpha: CGFloat = 0.4
-        let maxAlpha: CGFloat = 0.8
-        let alphaPading: CGFloat = (maxAlpha - minAlpha) / CGFloat(transforms.count)
-        var lastRect = rect
-        var lastAlpha = minAlpha
-        var result = [AffineImage]()
-        
-        let image = AffineImage(image: self.image, rect: lastRect, opacity: lastAlpha)
-        result.append(image)
-        
-        for transform in transforms {
-            lastRect = lastRect * transform
-            lastAlpha += alphaPading
-            let image = AffineImage(image: self.image, rect: lastRect, opacity: lastAlpha)
-            result.append(image)
+    public func debug(in coordinate: CoordinateSystem) {
+        for element in self {
+            element.debug(in: coordinate)
+            print("call from here")
         }
-        return result
     }
 }
-
 
 
 

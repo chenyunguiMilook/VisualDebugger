@@ -17,7 +17,5 @@ public struct DebugOptions: OptionSet {
     
     public static let flipped    = DebugOptions(rawValue: 1 << 0)
     public static let big        = DebugOptions(rawValue: 1 << 1)
-    public static let gradient   = DebugOptions(rawValue: 1 << 2)
-    public static let showLabels = DebugOptions(rawValue: 1 << 3)
-    public static let showOrigin = DebugOptions(rawValue: 1 << 4)
+    public static let showOrigin = DebugOptions(rawValue: 1 << 2)
 }

@@ -22,6 +22,14 @@ extension CGRect {
         let height = self.height == 0 ? min(self.width / 2, 1) : self.height
         return CGRect(origin: self.origin, size: CGSize(width: width, height: height))
     }
+    
+    public var rectFromOrigin: CGRect {
+        let minX = min(0, self.minX)
+        let minY = min(0, self.minY)
+        let maxX = max(0, self.maxX)
+        let maxY = max(0, self.maxY)
+        return CGRect(x: minX, y: minY, width: maxX-minX, height: maxY-minY)
+    }
 }
 
 extension Array where Element == CGRect {

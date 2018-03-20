@@ -118,7 +118,17 @@ let points: [CGPoint] = [CGPoint(x: 236.315262, y: 221.128799),
                          CGPoint(x: 165.524597, y: 235.124481),]
 
 
-points.debugView(of: [.gradient, .big])
+//points.debugView(of: [.big])
 
 let path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 100, height: 100))
-[points, path].debugView
+let path2 = UIBezierPath.init(rect: CGRect.init(x: 0, y: 0, width: 40, height: 40))
+[path, path2].debugView
+
+points.dots.debugView
+
+
+
+
+
+
+

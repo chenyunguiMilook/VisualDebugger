@@ -58,7 +58,7 @@ func calculateCenter(_ point1:CGPoint, _ point2:CGPoint) -> CGPoint {
 
 extension Array where Element == CGPoint {
     
-    var bounds:CGRect {
+    public var bounds:CGRect {
         guard let pnt = self.first else { return CGRect.zero }
         var (minX, maxX, minY, maxY) = (pnt.x, pnt.x, pnt.y, pnt.y)
         
@@ -75,11 +75,11 @@ extension Array where Element == CGPoint {
 // MARK: - Point
 
 extension CGPoint : Debuggable {
-    
+
     public var bounds: CGRect {
         return CGRect(origin: self, size: .zero)
     }
-    
+
     public func debug(in coordinate: CoordinateSystem) {
         let newPoint = self * coordinate.matrix
         let path = newPoint.getBezierPath(radius: kPointRadius)
