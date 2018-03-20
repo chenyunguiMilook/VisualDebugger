@@ -164,18 +164,6 @@ extension AppFont {
 
 let kPointRadius: CGFloat = 3
 
-extension CAShapeLayer {
-    
-    convenience init(path: CGPath, strokeColor: AppColor?, fillColor: AppColor?, lineWidth: CGFloat) {
-        self.init()
-        self.frame = CGRect(x: 0, y: 0, width: 1, height: 1)
-        self.path = path
-        self.strokeColor = strokeColor?.cgColor
-        self.fillColor = fillColor?.cgColor
-        self.lineWidth = lineWidth
-        self.applyDefaultContentScale()
-    }
-}
 
 
 
@@ -191,31 +179,7 @@ extension AppBezierPath : Debuggable {
     }
 }
 
-// MARK: - AffineRect
 
-extension AffineRect : Debuggable {
-    
-    public func debug(in coordinate: CoordinateSystem) {
-        let rect = self * coordinate.matrix
-        let shape = AppBezierPath()
-        shape.move(to: rect.v0)
-        shape.addLine(to: rect.v1)
-        shape.addLine(to: rect.v2)
-        shape.addLine(to: rect.v3)
-        shape.close()
-        coordinate.addSublayer(CAShapeLayer(path: shape.cgPath, strokeColor: nil, fillColor: coordinate.getNextColor().withAlphaComponent(0.2), lineWidth: 0))
-        
-        let xPath = AppBezierPath()
-        xPath.move(to: rect.v0)
-        xPath.addLine(to: rect.v1)
-        coordinate.addSublayer(CAShapeLayer(path: xPath.cgPath, strokeColor: .red, fillColor: nil, lineWidth: 1))
-        
-        let yPath = AppBezierPath()
-        yPath.move(to: rect.v0)
-        yPath.addLine(to: rect.v3)
-        coordinate.addSublayer(CAShapeLayer(path: yPath.cgPath, strokeColor: .green, fillColor: nil, lineWidth: 1))
-    }
-}
 
 // MARK: - AffineTransforms
 
@@ -253,50 +217,6 @@ public struct AffineTransforms {
         return result
     }
 }
-
-
-func clockwiseInYDown(v0: CGPoint, v1: CGPoint, v2: CGPoint) -> Bool {
-    return (v2.x - v0.x) * (v1.y - v2.y) < (v2.y - v0.y) * (v1.x - v2.x)
-}
-
-// MARK: - CGImage
-
-extension CGImage : Debuggable {
-    
-    public var bounds: CGRect {
-        let size = CGSize(width: width, height: height)
-        return CGRect(origin: .zero, size: size)
-    }
-    
-    public func debug(in coordinate: CoordinateSystem) {
-        let affineRect = self.bounds.affineRect
-        let affineImage = AffineImage(image: self, rect: affineRect, opacity: 1)
-        affineImage.debug(in: coordinate)
-    }
-}
-
-//extension Array where Element == CGPoint {
-//
-//}
-//
-//extension Array : Debuggable where Element : Debuggable {
-//
-//    public var bounds: CGRect {
-//        guard !self.isEmpty else { return .zero }
-//        var rect = self[0].bounds
-//        for i in 1 ..< self.count {
-//            rect = self[i].bounds.union(rect)
-//        }
-//        return rect
-//    }
-//
-//    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
-//
-//    }
-//}
-
-// TODO: - Axis implements Debuggable also
-
 
 
 

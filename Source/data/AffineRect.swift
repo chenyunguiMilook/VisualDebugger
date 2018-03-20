@@ -6,7 +6,11 @@
 //
 
 import Foundation
-import CoreGraphics
+#if os(iOS) || os(tvOS)
+import UIKit
+#else
+import Cocoa
+#endif
 
 public struct AffineRect {
     
@@ -45,4 +49,30 @@ public func * (rect: AffineRect, t: CGAffineTransform) -> AffineRect {
     let v2 = rect.v2.applying(t)
     let v3 = rect.v3.applying(t)
     return AffineRect(v0: v0, v1: v1, v2: v2, v3: v3)
+}
+
+// MARK: - AffineRect
+
+extension AffineRect : Debuggable {
+    
+    public func debug(in coordinate: CoordinateSystem) {
+        let rect = self * coordinate.matrix
+        let shape = AppBezierPath()
+        shape.move(to: rect.v0)
+        shape.addLine(to: rect.v1)
+        shape.addLine(to: rect.v2)
+        shape.addLine(to: rect.v3)
+        shape.close()
+        coordinate.addSublayer(CAShapeLayer(path: shape.cgPath, strokeColor: nil, fillColor: coordinate.getNextColor().withAlphaComponent(0.2), lineWidth: 0))
+        
+        let xPath = AppBezierPath()
+        xPath.move(to: rect.v0)
+        xPath.addLine(to: rect.v1)
+        coordinate.addSublayer(CAShapeLayer(path: xPath.cgPath, strokeColor: .red, fillColor: nil, lineWidth: 1))
+        
+        let yPath = AppBezierPath()
+        yPath.move(to: rect.v0)
+        yPath.addLine(to: rect.v3)
+        coordinate.addSublayer(CAShapeLayer(path: yPath.cgPath, strokeColor: .green, fillColor: nil, lineWidth: 1))
+    }
 }

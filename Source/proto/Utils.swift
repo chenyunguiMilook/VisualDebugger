@@ -61,3 +61,8 @@ func calculatePrecision(_ value: Double) -> Int {
     }
     return 1
 }
+
+func clockwiseInYDown(v0: CGPoint, v1: CGPoint, v2: CGPoint) -> Bool {
+    return (v2.x - v0.x) * (v1.y - v2.y) < (v2.y - v0.y) * (v1.x - v2.x)
+}
+

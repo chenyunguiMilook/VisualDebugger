@@ -24,5 +24,14 @@ extension CGRect {
     }
 }
 
-
-
+extension Array where Element == CGRect {
+    
+    public var bounds: CGRect {
+        guard !self.isEmpty else { return .zero }
+        var rect = self[0]
+        for i in 1 ..< self.count {
+            rect = self[i].union(rect)
+        }
+        return rect
+    }
+}
