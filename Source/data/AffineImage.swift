@@ -26,8 +26,8 @@ extension AffineImage : Debuggable {
         return rect.bounds
     }
     
-    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
-        let target = self.rect * transform
+    public func debug(in coordinate: CoordinateSystem) {
+        let target = self.rect * coordinate.matrix
         let targetCenter = target.center
         
         let clockwise = clockwiseInYDown(v0: target.v3, v1: target.v0, v2: target.v1)
@@ -48,6 +48,6 @@ extension AffineImage : Debuggable {
         imageLayer.setAffineTransform(scale * rotate * translate)
         imageLayer.applyDefaultContentScale()
         
-        layer.addSublayer(imageLayer)
+        coordinate.addSublayer(imageLayer)
     }
 }

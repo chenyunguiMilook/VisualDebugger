@@ -69,91 +69,79 @@ public extension Debuggable {
     }
 }
 
-public extension Collection {
-    
-    public var debugView:AppView {
-        return self.getDebugView(in: .yDown)
-    }
-    
-    public func debugView(of options: DebugOptions = [], in visibleRect: CGRect? = nil, use affineRect: AffineRect = .unit, image: AppImage? = nil) -> AppView {
-        let config = DebugConfig(options: options)
-        return getDebugView(in:               config.coordinate,
-                            visibleRect:      visibleRect,
-                            affineRect:       affineRect,
-                            image:            image,
-                            scale:            config.scale,
-                            numDivisions:     config.numDivisions,
-                            showOrigin:       config.showOrigin,
-                            indexOrderRepresentation: config.indexOrderRepresentation)
-    }
-    
-    public func getDebugView(in coordinate:CoordinateSystem.Kind, visibleRect:CGRect? = nil, affineRect:AffineRect = .unit, image: AppImage? = nil, scale:CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true, indexOrderRepresentation: IndexOrderRepresentation = .none) -> AppView {
-        
-        func getPointsWrapper(points: [CGPoint], by indexOrderRepresentation: IndexOrderRepresentation) -> Debuggable {
-            switch indexOrderRepresentation {
-            case .none:       return PointsDotRepresenter(points:      points)
-            case .gradient:   return PointsGradientRepresenter(points: points)
-            case .indexLabel: return PointsLabelRepresenter(points:    points)
-            }
-        }
-        
-        // earlier check if is [CGPoint] or [CGAffineTransform]
-        var debugObject: Debuggable?
-        if let points = self as? [CGPoint] {
-            debugObject = getPointsWrapper(points: points, by: indexOrderRepresentation)
-        }
-        else if let transforms = self as? [CGAffineTransform] {
-            debugObject = AffineTransforms(rect: affineRect, image: image?.cgImage ?? getTransformImage(), transforms: transforms)
-        }
-        if debugObject != nil {
-            return debugObject!.getDebugView(in: coordinate, visibleRect: visibleRect, scale: scale, numDivisions: numDivisions, showOrigin: showOrigin)
-        }
-        
-        // 1. convert to Debuggable array
-        var debugArray = [Debuggable]()
-        for element in self {
-            switch element {
-            case let image as AppImage:
-                debugArray.append(image.cgImage!)
-            case let path as AppBezierPath:
-                debugArray.append(path)
-            case let debuggable as Debuggable:
-                debugArray.append(debuggable)
-            case let transfrom as CGAffineTransform:
-                debugArray.append(AffineTransform(rect: affineRect, image: image?.cgImage ?? getTransformImage(), transform: transfrom))
-            case let transforms as [CGAffineTransform]:
-                debugArray.append(AffineTransforms(rect: affineRect, image: image?.cgImage ?? getTransformImage(), transforms: transforms))
-            case let points as [CGPoint]:
-                debugArray.append(getPointsWrapper(points: points, by: indexOrderRepresentation))
-            default:
-                break
-            }
-        }
-        
-        // 2. make sure debugArray not empty
-        guard !debugArray.isEmpty else {
-            return AppView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
-        }
-        
-        // 3. calculate visible rect
-        var bounds = visibleRect
-        if bounds == nil {
-            bounds = debugArray[0].bounds
-            for i in 1 ..< debugArray.count {
-                bounds = bounds!.union(debugArray[i].bounds)
-            }
-        }
-        
-        // 4. create coordinate layer and render objects
-        guard let area = bounds?.fixed(), !area.isEmpty else { return AppView(frame: CGRect(x: 0, y: 0, width: 1, height: 1)) }
-        let layer = CoordinateSystem(type: coordinate, area: area, scale: scale, numSegments: numDivisions, showOrigin: showOrigin)
-        
-        for object in debugArray {
-            layer.render(object: object)
-        }
-        return debugLayer(layer, withMargin: layer.segmentLength)
-    }
-}
+//public extension Collection {
+//
+//    public var debugView:AppView {
+//        return self.getDebugView(in: .yDown)
+//    }
+//
+//    public func debugView(of options: DebugOptions = [], in visibleRect: CGRect? = nil, use affineRect: AffineRect = .unit, image: AppImage? = nil) -> AppView {
+//        let config = DebugConfig(options: options)
+//        return getDebugView(in:               config.coordinate,
+//                            visibleRect:      visibleRect,
+//                            affineRect:       affineRect,
+//                            image:            image,
+//                            scale:            config.scale,
+//                            numDivisions:     config.numDivisions,
+//                            showOrigin:       config.showOrigin)
+//    }
+//
+//    public func getDebugView(in coordinate:CoordinateSystem.Kind, visibleRect:CGRect? = nil, affineRect:AffineRect = .unit, image: AppImage? = nil, scale:CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true) -> AppView {
+//
+//        // earlier check if is [CGPoint] or [CGAffineTransform]
+//        var debugObject: Debuggable?
+//        if let transforms = self as? [CGAffineTransform] {
+//            debugObject = AffineTransforms(rect: affineRect, image: image?.cgImage ?? getTransformImage(), transforms: transforms)
+//        }
+//        if debugObject != nil {
+//            return debugObject!.getDebugView(in: coordinate, visibleRect: visibleRect, scale: scale, numDivisions: numDivisions, showOrigin: showOrigin)
+//        }
+//
+//        // 1. convert to Debuggable array
+//        var debugArray = [Debuggable]()
+//        for element in self {
+//            switch element {
+//            case let image as AppImage:
+//                debugArray.append(image.cgImage!)
+//            case let path as AppBezierPath:
+//                debugArray.append(path)
+//            case let debuggable as Debuggable:
+//                debugArray.append(debuggable)
+//            case let transfrom as CGAffineTransform:
+//                debugArray.append(AffineTransform(rect: affineRect, image: image?.cgImage ?? getTransformImage(), transform: transfrom))
+//            case let transforms as [CGAffineTransform]:
+//                debugArray.append(AffineTransforms(rect: affineRect, image: image?.cgImage ?? getTransformImage(), transforms: transforms))
+//            case let points as [CGPoint]:
+//                debugArray.append(getPointsWrapper(points: points, by: indexOrderRepresentation))
+//            default:
+//                break
+//            }
+//        }
+//
+//        // 2. make sure debugArray not empty
+//        guard !debugArray.isEmpty else {
+//            return AppView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
+//        }
+//
+//        // 3. calculate visible rect
+//        var bounds = visibleRect
+//        if bounds == nil {
+//            bounds = debugArray[0].bounds
+//            for i in 1 ..< debugArray.count {
+//                bounds = bounds!.union(debugArray[i].bounds)
+//            }
+//        }
+//
+//        // 4. create coordinate layer and render objects
+//        guard let area = bounds?.fixed(), !area.isEmpty else { return AppView(frame: CGRect(x: 0, y: 0, width: 1, height: 1)) }
+//        let layer = CoordinateSystem(type: coordinate, area: area, scale: scale, numSegments: numDivisions, showOrigin: showOrigin)
+//
+//        for object in debugArray {
+//            layer.render(object: object)
+//        }
+//        return debugLayer(layer, withMargin: layer.segmentLength)
+//    }
+//}
 
 
 
@@ -190,40 +178,16 @@ extension CAShapeLayer {
 }
 
 
-// MARK: - PointsDotRepresenter
-
-public struct PointsDotRepresenter {
-    public var points: [CGPoint]
-}
-
-extension PointsDotRepresenter : Debuggable {
-    
-    public var bounds: CGRect {
-        return self.points.bounds
-    }
-    
-    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
-        let pnts = self.points * transform
-        let path = AppBezierPath()
-        for center in pnts {
-            path.append(center.getBezierPath(radius: kPointRadius))
-        }
-        let shape = CAShapeLayer(path: path.cgPath, strokeColor: nil, fillColor: color, lineWidth: 0)
-        layer.addSublayer(shape)
-    }
-}
-
-
 
 // MARK: - BezierPath
 
 extension AppBezierPath : Debuggable {
     
-    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
-        var mutableTransform = transform
+    public func debug(in coordinate: CoordinateSystem) {
+        var mutableTransform = coordinate.matrix
         guard let cgPath = self.cgPath.copy(using: &mutableTransform) else { return }
-        let shapeLayer = CAShapeLayer(path: cgPath, strokeColor: color, fillColor: nil, lineWidth: 1)
-        layer.addSublayer(shapeLayer)
+        let shapeLayer = CAShapeLayer(path: cgPath, strokeColor: coordinate.getNextColor(), fillColor: nil, lineWidth: 1)
+        coordinate.addSublayer(shapeLayer)
     }
 }
 
@@ -231,29 +195,27 @@ extension AppBezierPath : Debuggable {
 
 extension AffineRect : Debuggable {
     
-    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
-        let rect = self * transform
+    public func debug(in coordinate: CoordinateSystem) {
+        let rect = self * coordinate.matrix
         let shape = AppBezierPath()
         shape.move(to: rect.v0)
         shape.addLine(to: rect.v1)
         shape.addLine(to: rect.v2)
         shape.addLine(to: rect.v3)
         shape.close()
-        layer.addSublayer(CAShapeLayer(path: shape.cgPath, strokeColor: nil, fillColor: color.withAlphaComponent(0.2), lineWidth: 0))
+        coordinate.addSublayer(CAShapeLayer(path: shape.cgPath, strokeColor: nil, fillColor: coordinate.getNextColor().withAlphaComponent(0.2), lineWidth: 0))
         
         let xPath = AppBezierPath()
         xPath.move(to: rect.v0)
         xPath.addLine(to: rect.v1)
-        layer.addSublayer(CAShapeLayer(path: xPath.cgPath, strokeColor: .red, fillColor: nil, lineWidth: 1))
+        coordinate.addSublayer(CAShapeLayer(path: xPath.cgPath, strokeColor: .red, fillColor: nil, lineWidth: 1))
         
         let yPath = AppBezierPath()
         yPath.move(to: rect.v0)
         yPath.addLine(to: rect.v3)
-        layer.addSublayer(CAShapeLayer(path: yPath.cgPath, strokeColor: .green, fillColor: nil, lineWidth: 1))
+        coordinate.addSublayer(CAShapeLayer(path: yPath.cgPath, strokeColor: .green, fillColor: nil, lineWidth: 1))
     }
 }
-
-
 
 // MARK: - AffineTransforms
 
@@ -292,19 +254,6 @@ public struct AffineTransforms {
     }
 }
 
-extension AffineTransforms : Debuggable {
-    
-    public var bounds: CGRect {
-        let result = images[0].bounds
-        return images.reduce(result, { $0.union($1.bounds) })
-    }
-    
-    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
-        for image in self.images {
-            image.debug(in: layer, with: transform, color: color)
-        }
-    }
-}
 
 func clockwiseInYDown(v0: CGPoint, v1: CGPoint, v2: CGPoint) -> Bool {
     return (v2.x - v0.x) * (v1.y - v2.y) < (v2.y - v0.y) * (v1.x - v2.x)
@@ -319,10 +268,10 @@ extension CGImage : Debuggable {
         return CGRect(origin: .zero, size: size)
     }
     
-    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
+    public func debug(in coordinate: CoordinateSystem) {
         let affineRect = self.bounds.affineRect
         let affineImage = AffineImage(image: self, rect: affineRect, opacity: 1)
-        affineImage.debug(in: layer, with: transform, color: color)
+        affineImage.debug(in: coordinate)
     }
 }
 

@@ -40,9 +40,9 @@ extension AffineTransform : Debuggable {
         return images.reduce(result, { $0.union($1.bounds) })
     }
     
-    public func debug(in layer: CALayer, with transform: CGAffineTransform, color: AppColor) {
+    public func debug(in coordinate: CoordinateSystem) {
         for image in self.images {
-            image.debug(in: layer, with: transform, color: color)
+            image.debug(in: coordinate)
         }
     }
 }

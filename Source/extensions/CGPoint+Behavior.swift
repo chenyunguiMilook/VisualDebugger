@@ -7,6 +7,11 @@
 
 import Foundation
 import CoreGraphics
+#if os(iOS) || os(tvOS)
+import UIKit
+#else
+import Cocoa
+#endif
 
 extension CGPoint {
     
@@ -65,8 +70,21 @@ extension Array where Element == CGPoint {
     }
 }
 
+// MARK: - Point
 
-
+extension CGPoint : Debuggable {
+    
+    public var bounds: CGRect {
+        return CGRect(origin: self, size: .zero)
+    }
+    
+    public func debug(in coordinate: CoordinateSystem) {
+        let newPoint = self * coordinate.matrix
+        let path = newPoint.getBezierPath(radius: kPointRadius)
+        let shapeLayer = CAShapeLayer(path: path.cgPath, strokeColor: nil, fillColor: coordinate.getNextColor(), lineWidth: 0)
+        coordinate.addSublayer(shapeLayer)
+    }
+}
 
 
 
