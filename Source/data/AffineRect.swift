@@ -55,7 +55,7 @@ public func * (rect: AffineRect, t: CGAffineTransform) -> AffineRect {
 
 extension AffineRect : Debuggable {
     
-    public func debug(in coordinate: CoordinateSystem) {
+    public func debug(in coordinate: CoordinateSystem, color: AppColor?) {
         let rect = self * coordinate.matrix
         let shape = AppBezierPath()
         shape.move(to: rect.v0)
@@ -63,7 +63,9 @@ extension AffineRect : Debuggable {
         shape.addLine(to: rect.v2)
         shape.addLine(to: rect.v3)
         shape.close()
-        coordinate.addSublayer(CAShapeLayer(path: shape.cgPath, strokeColor: nil, fillColor: coordinate.getNextColor().withAlphaComponent(0.2), lineWidth: 0))
+        
+        let color = color ?? coordinate.getNextColor().withAlphaComponent(0.2)
+        coordinate.addSublayer(CAShapeLayer(path: shape.cgPath, strokeColor: nil, fillColor: color, lineWidth: 0))
         
         let xPath = AppBezierPath()
         xPath.move(to: rect.v0)

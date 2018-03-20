@@ -69,10 +69,11 @@ import Cocoa
 
 extension AppBezierPath : Debuggable {
     
-    public func debug(in coordinate: CoordinateSystem) {
+    public func debug(in coordinate: CoordinateSystem, color: AppColor?) {
         var mutableTransform = coordinate.matrix
         guard let cgPath = self.cgPath.copy(using: &mutableTransform) else { return }
-        let shapeLayer = CAShapeLayer(path: cgPath, strokeColor: coordinate.getNextColor(), fillColor: nil, lineWidth: 1)
+        let shapeLayer = CAShapeLayer(path: cgPath, strokeColor: color ?? coordinate.getNextColor(), fillColor: nil, lineWidth: 1)
+            shapeLayer.applyDefaultContentScale()
         coordinate.addSublayer(shapeLayer)
     }
 }

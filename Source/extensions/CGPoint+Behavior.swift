@@ -80,10 +80,11 @@ extension CGPoint : Debuggable {
         return CGRect(origin: self, size: .zero)
     }
 
-    public func debug(in coordinate: CoordinateSystem) {
+    public func debug(in coordinate: CoordinateSystem, color: AppColor?) {
         let newPoint = self * coordinate.matrix
         let path = newPoint.getBezierPath(radius: kPointRadius)
-        let shapeLayer = CAShapeLayer(path: path.cgPath, strokeColor: nil, fillColor: coordinate.getNextColor(), lineWidth: 0)
+        let color = color ?? coordinate.getNextColor()
+        let shapeLayer = CAShapeLayer(path: path.cgPath, strokeColor: nil, fillColor: color, lineWidth: 0)
         coordinate.addSublayer(shapeLayer)
     }
 }

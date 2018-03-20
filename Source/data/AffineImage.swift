@@ -26,7 +26,7 @@ extension AffineImage : Debuggable {
         return rect.bounds
     }
     
-    public func debug(in coordinate: CoordinateSystem) {
+    public func debug(in coordinate: CoordinateSystem, color: AppColor?) {
         let target = self.rect * coordinate.matrix
         let targetCenter = target.center
         

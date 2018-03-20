@@ -10,7 +10,7 @@ import CoreGraphics
 
 public protocol Debuggable {
     var bounds: CGRect { get }
-    func debug(in coordinate: CoordinateSystem)
+    func debug(in coordinate: CoordinateSystem, color: AppColor?)
 }
 
 

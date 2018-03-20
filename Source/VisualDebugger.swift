@@ -74,15 +74,28 @@ extension Array : Debuggable where Element : Debuggable {
         return self.map{ $0.bounds }.bounds
     }
     
-    public func debug(in coordinate: CoordinateSystem) {
+    public func debug(in coordinate: CoordinateSystem, color: AppColor?) {
+        let color = color ?? coordinate.getNextColor()
         for element in self {
-            element.debug(in: coordinate)
-            print("call from here")
+            element.debug(in: coordinate, color: color)
         }
     }
 }
 
-
+public func debug(_ array: [Debuggable],
+                  coordinate: CoordinateSystem.Kind = .yUp,
+                  visibleRect: CGRect? = nil,
+                  scale: CGFloat = 1.5,
+                  numDivisions: Int = 5,
+                  showOrigin: Bool = true) -> AppView {
+    
+    let bounds = visibleRect ?? (array.map{ $0.bounds }.bounds)
+    let coordinate = CoordinateSystem.init(type: coordinate, area: bounds, scale: scale, numSegments: numDivisions, showOrigin: showOrigin)
+    for element in array {
+        element.debug(in: coordinate, color: nil)
+    }
+    return debugLayer(coordinate, withMargin: coordinate.segmentLength)
+}
 
 
 

@@ -17,10 +17,10 @@ extension CGImage : Debuggable {
         return CGRect(origin: .zero, size: size)
     }
     
-    public func debug(in coordinate: CoordinateSystem) {
+    public func debug(in coordinate: CoordinateSystem, color: AppColor?) {
         let affineRect = self.bounds.affineRect
         let affineImage = AffineImage(image: self, rect: affineRect, opacity: 1)
-        affineImage.debug(in: coordinate)
+        affineImage.debug(in: coordinate, color: color)
     }
 }
 

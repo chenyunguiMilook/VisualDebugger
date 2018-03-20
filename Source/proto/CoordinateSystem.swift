@@ -108,7 +108,7 @@ public class CoordinateSystem : CALayer {
     }
     
     public func render(object: Debuggable, color: AppColor? = nil) {
-        object.debug(in: self)
+        object.debug(in: self, color: color)
     }
 }
 

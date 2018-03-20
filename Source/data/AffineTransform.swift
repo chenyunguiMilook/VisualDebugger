@@ -46,9 +46,10 @@ extension AffineTransform : Debuggable {
         return elements.reduce(result, { $0.union($1.bounds) })
     }
     
-    public func debug(in coordinate: CoordinateSystem) {
+    public func debug(in coordinate: CoordinateSystem, color: AppColor?) {
+        let color = color ?? coordinate.getNextColor()
         for element in self.elements {
-            element.debug(in: coordinate)
+            element.debug(in: coordinate, color: color)
         }
     }
 }

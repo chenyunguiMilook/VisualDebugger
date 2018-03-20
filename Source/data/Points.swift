@@ -19,6 +19,10 @@ extension Array where Element == CGPoint {
         return Points.init(points: self, representation: .dots)
     }
     
+    public var gradients: Points {
+        return Points.init(points: self, representation: .gradient)
+    }
+    
     public var path: Points {
         return Points.init(points: self, representation: .path)
     }
@@ -62,9 +66,10 @@ extension Points : Debuggable {
         return self.points.bounds
     }
     
-    public func debug(in coordinate: CoordinateSystem) {
+    public func debug(in coordinate: CoordinateSystem, color: AppColor?) {
         let points = self.points * coordinate.matrix
-        self.representation.render(points: points, with: coordinate.getNextColor(), in: coordinate)
+        let color = color ?? coordinate.getNextColor()
+        self.representation.render(points: points, with: color, in: coordinate)
     }
 }
 
@@ -96,6 +101,9 @@ extension Points.Representation {
                 let shape = CAShapeLayer(path: path.cgPath, strokeColor: nil, fillColor: color, lineWidth: 0)
                 layer.addSublayer(shape)
             }
+            
+        case .path:
+            print("path")
             
         case .indices:
             for (i, point) in points.enumerated() {
