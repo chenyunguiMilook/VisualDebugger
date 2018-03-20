@@ -46,34 +46,31 @@ import QuartzCore
 #endif
 
 public extension Debuggable {
-    
-    public var debugView:AppView {
+    public var debugView: AppView {
         return self.getDebugView(in: .yDown)
     }
-    
-//    public func getDebugView(of options: DebugOptions = [], in visibleRect: CGRect? = nil) -> AppView {
-//        let config = DebugConfig(options: options)
-//        return getDebugView(in:            config.coordinate,
-//                            visibleRect:   visibleRect,
-//                            scale:         config.scale,
-//                            numDivisions:  config.numDivisions,
-//                            showOrigin:    config.showOrigin)
-//    }
-    
-    public func getDebugView(in coordinate:CoordinateSystem.Kind, visibleRect:CGRect? = nil, scale: CGFloat = 1.5, numDivisions:Int = 5, showOrigin:Bool = true) -> AppView {
+
+    public func getDebugView(in coordinate: CoordinateSystem.Kind,
+                             visibleRect: CGRect? = nil,
+                             scale: CGFloat = 1.5,
+                             numDivisions: Int = 5,
+                             showOrigin: Bool = true) -> AppView {
         let bounds = visibleRect ?? self.bounds.fixed()
-        let layer = CoordinateSystem(type: coordinate, area: bounds, scale: scale, numSegments: numDivisions, showOrigin: showOrigin)
-        layer.render(object: self)
-        return debugLayer(layer, withMargin: layer.segmentLength)
+        let coordinate = CoordinateSystem(type: coordinate,
+                                          area: bounds,
+                                          scale: scale,
+                                          numSegments: numDivisions,
+                                          showOrigin: showOrigin)
+        self.debug(in: coordinate, color: nil)
+        return debugLayer(coordinate, withMargin: coordinate.segmentLength)
     }
 }
 
-extension Array : Debuggable where Element : Debuggable {
-    
+extension Array: Debuggable where Element: Debuggable {
     public var bounds: CGRect {
-        return self.map{ $0.bounds }.bounds
+        return self.map { $0.bounds }.bounds
     }
-    
+
     public func debug(in coordinate: CoordinateSystem, color: AppColor?) {
         let color = color ?? coordinate.getNextColor()
         for element in self {
@@ -88,34 +85,15 @@ public func debug(_ array: [Debuggable],
                   scale: CGFloat = 1.5,
                   numDivisions: Int = 5,
                   showOrigin: Bool = true) -> AppView {
-    
-    let bounds = visibleRect ?? (array.map{ $0.bounds }.bounds)
-    let coordinate = CoordinateSystem.init(type: coordinate, area: bounds, scale: scale, numSegments: numDivisions, showOrigin: showOrigin)
+    let bounds = visibleRect ?? (array.map { $0.bounds }.bounds)
+    let coordinate = CoordinateSystem(type: coordinate,
+                                      area: bounds,
+                                      scale: scale,
+                                      numSegments: numDivisions,
+                                      showOrigin: showOrigin)
     for element in array {
         element.debug(in: coordinate, color: nil)
     }
     return debugLayer(coordinate, withMargin: coordinate.segmentLength)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

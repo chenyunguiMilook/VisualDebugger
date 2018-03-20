@@ -83,6 +83,5 @@ let points3:[CGPoint] = [CGPoint(x:0.563261, y: 0.250566),
                          CGPoint(x:0.515020, y: 0.747972),
                          CGPoint(x:0.409239, y: 0.538404)]
 
-points3.debugView(of: [.showOrigin], in: .unit)
-points3.debugView(of: [.showLabels])
+points3.debugView
 
