@@ -143,44 +143,6 @@ public extension Debuggable {
 //    }
 //}
 
-
-
-// MARK: - AppFont
-
-extension AppFont {
-    
-    internal static var `default`:AppFont {
-        return AppFont(name: ".HelveticaNeueInterface-Thin", size: 10) ?? AppFont.systemFont(ofSize: 10)
-    }
-}
-
-
-
-
-
-// ========================================================================================================================
-// ===========================================|       MARK: - Debuggable       |===========================================
-// ========================================================================================================================
-
-let kPointRadius: CGFloat = 3
-
-
-
-
-// MARK: - BezierPath
-
-extension AppBezierPath : Debuggable {
-    
-    public func debug(in coordinate: CoordinateSystem) {
-        var mutableTransform = coordinate.matrix
-        guard let cgPath = self.cgPath.copy(using: &mutableTransform) else { return }
-        let shapeLayer = CAShapeLayer(path: cgPath, strokeColor: coordinate.getNextColor(), fillColor: nil, lineWidth: 1)
-        coordinate.addSublayer(shapeLayer)
-    }
-}
-
-
-
 // MARK: - AffineTransforms
 
 public struct AffineTransforms {

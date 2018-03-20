@@ -13,6 +13,8 @@ import UIKit
 import Cocoa
 #endif
 
+let kPointRadius: CGFloat = 3
+
 extension CGPoint {
     
     func getBezierPath(radius: CGFloat) -> AppBezierPath {

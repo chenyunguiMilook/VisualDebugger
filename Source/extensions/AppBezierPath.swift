@@ -9,12 +9,6 @@
 import Foundation
 import AppKit
 
-public extension NSImage {
-    
-    public var cgImage: CGImage? {
-        return self.cgImage(forProposedRect: nil, context: nil, hints: nil)
-    }
-}
 
 public extension NSBezierPath {
     
@@ -65,3 +59,22 @@ public extension NSBezierPath {
 }
 
 #endif
+
+// MARK: - BezierPath
+#if os(iOS) || os(tvOS)
+import UIKit
+#else
+import Cocoa
+#endif
+
+extension AppBezierPath : Debuggable {
+    
+    public func debug(in coordinate: CoordinateSystem) {
+        var mutableTransform = coordinate.matrix
+        guard let cgPath = self.cgPath.copy(using: &mutableTransform) else { return }
+        let shapeLayer = CAShapeLayer(path: cgPath, strokeColor: coordinate.getNextColor(), fillColor: nil, lineWidth: 1)
+        coordinate.addSublayer(shapeLayer)
+    }
+}
+
+
