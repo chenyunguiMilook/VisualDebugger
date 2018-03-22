@@ -7,6 +7,11 @@
 
 import Foundation
 import CoreGraphics
+#if os(iOS) || os(tvOS)
+    import UIKit
+#else
+    import Cocoa
+#endif
 
 extension CGRect {
     
@@ -29,6 +34,21 @@ extension CGRect {
         let maxX = max(0, self.maxX)
         let maxY = max(0, self.maxY)
         return CGRect(x: minX, y: minY, width: maxX-minX, height: maxY-minY)
+    }
+}
+
+extension CGRect : Debuggable {
+    public var bounds: CGRect {
+        return self
+    }
+    
+    public func debug(in coordinate: CoordinateSystem, color: AppColor?) {
+        let rect = self.applying(coordinate.matrix)
+        let color = color ?? coordinate.getNextColor()
+        let path = AppBezierPath.init(rect: rect)
+        let shape = CAShapeLayer.init(path: path.cgPath,
+                                      strokeColor: color, fillColor: nil, lineWidth: 1)
+        coordinate.addSublayer(shape)
     }
 }
 

@@ -66,6 +66,7 @@ public extension Debuggable {
     }
 }
 
+#if swift(>=4.1)
 extension Array: Debuggable where Element: Debuggable {
     public var bounds: CGRect {
         return self.map { $0.bounds }.bounds
@@ -78,6 +79,7 @@ extension Array: Debuggable where Element: Debuggable {
         }
     }
 }
+#endif
 
 public func debug(_ array: [Debuggable],
                   coordinate: CoordinateSystem.Kind = .yUp,

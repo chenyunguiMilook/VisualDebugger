@@ -6,5 +6,6 @@
         <page name='TestImplementation'/>
         <page name='TestDebugMatrix'/>
         <page name='TestMixDebugging'/>
+        <page name='TestRects'/>
     </pages>
 </playground>
