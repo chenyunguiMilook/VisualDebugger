@@ -32,7 +32,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
-  pod 'VisualDebugger', '~> 1.0.1'
+  pod 'VisualDebugger', '~> 1.1.0'
 end
 ```
 
@@ -40,7 +40,7 @@ end
 Create a `Cartfile` that lists the framework and run `carthage update`. Follow the [instructions](https://github.com/Carthage/Carthage#if-youre-building-for-ios) to add `$(SRCROOT)/Carthage/Build/iOS/VisualDebugger.framework` to an iOS project.
 
 ```
-github "chenyunguiMilook/VisualDebugger" ~> 1.0.0
+github "chenyunguiMilook/VisualDebugger" ~> 1.1.0
 ```
 #### Manually
 1. Download and drop ```VisualDebugger.swift``` into your project.  
