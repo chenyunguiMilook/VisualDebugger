@@ -17,6 +17,5 @@ let transform = scale * rotate * translate
 let affineRect = CGRect(origin: .zero, size: CGSize(width: 100, height: 100)).affineRect
 
 transform.getAffineTransform(rect: affineRect).debugView
-//rotate.debugView(use: affineRect)
 
 

@@ -82,11 +82,8 @@ let points3:[CGPoint] = [CGPoint(x:0.563261, y: 0.250566),
                          CGPoint(x:0.515020, y: 0.747972),
                          CGPoint(x:0.409239, y: 0.538404)]
 
-points3.debugView(of: [.showLabels])
-points3.getDebugView(in: .yDown, visibleRect: nil, scale: 1, numDivisions: 6, showOrigin: false)
-
-
-
+let pnts = Points.init(points: points3, representation: .indices)
+pnts.debugView
 
 let path = UIBezierPath()
 path.move(to: .zero)

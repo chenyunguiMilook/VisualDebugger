@@ -124,7 +124,7 @@ let path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 100, height: 100))
 let path2 = UIBezierPath.init(rect: CGRect.init(x: 0, y: 0, width: 40, height: 40))
 [path, path2].debugView
 
-debug([points, path, path2])
+//debug([points, path, path2])
 
 
 

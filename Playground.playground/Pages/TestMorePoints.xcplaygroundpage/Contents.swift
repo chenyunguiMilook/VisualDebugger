@@ -9,8 +9,8 @@ let points2:[CGPoint] = [CGPoint(x: 102.920059204102, y: 309.248260498047),CGPoi
 let points3:[CGPoint] = [CGPoint(x: 0.00143313372973353, y: -0.00193239329382777),CGPoint(x: 0.00143621955066919, y: -0.00193460355512798),CGPoint(x: 0.00143919070251286, y: -0.00193574069999158),CGPoint(x: 0.00144259433727711, y: -0.00193591101560742),CGPoint(x: 0.0014466285938397, y: -0.00193509564269334),CGPoint(x: 0.00144996808376163, y: -0.0019329950446263),CGPoint(x: 0.00145198323298246, y: -0.00193005020264536),CGPoint(x: 0.00144895480480045, y: -0.0019282060675323),CGPoint(x: 0.00144564209040254, y: -0.00192755076568574),CGPoint(x: 0.00144167093094438, y: -0.00192762282676995),CGPoint(x: 0.00143746938556433, y: -0.00192866427823901),CGPoint(x: 0.00143489660695195, y: -0.00192986987531185)]
 
 
-points2.debugView(of: [.big, .showLabels], in: CGRect(x: 0, y: 0, width: 480, height: 640))
-
-points3.debugView(of: [.showLabels])
+points2.debugView
+let pnts = Points.init(points: points2, representation: .indices)
+debug([pnts, points2, points2[10]], visibleRect: CGRect(x: 0, y: 0, width: 480, height: 640))
 
 

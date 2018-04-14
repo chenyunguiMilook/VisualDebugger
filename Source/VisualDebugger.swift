@@ -82,7 +82,7 @@ extension Array: Debuggable where Element: Debuggable {
 #endif
 
 public func debug(_ array: [Debuggable],
-                  coordinate: CoordinateSystem.Kind = .yUp,
+                  coordinate: CoordinateSystem.Kind = .yDown,
                   visibleRect: CGRect? = nil,
                   scale: CGFloat = 1.5,
                   numDivisions: Int = 5,
