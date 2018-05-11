@@ -88,6 +88,8 @@
 		BB6F11D4205FB7AF003B27B6 /* GradientImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11D3205FB7AF003B27B6 /* GradientImage.swift */; };
 		BB6F11D5205FB7AF003B27B6 /* GradientImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11D3205FB7AF003B27B6 /* GradientImage.swift */; };
 		BB6F11D6205FB7AF003B27B6 /* GradientImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F11D3205FB7AF003B27B6 /* GradientImage.swift */; };
+		BBE5347120A54DA600DE5F26 /* WeightPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE5347020A54DA600DE5F26 /* WeightPoint.swift */; };
+		BBE5347220A54DA600DE5F26 /* WeightPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE5347020A54DA600DE5F26 /* WeightPoint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +156,7 @@
 		BB6F11CB205FB333003B27B6 /* AppBezierPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBezierPath.swift; sourceTree = "<group>"; };
 		BB6F11CF205FB6CE003B27B6 /* Points.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Points.swift; sourceTree = "<group>"; };
 		BB6F11D3205FB7AF003B27B6 /* GradientImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientImage.swift; sourceTree = "<group>"; };
+		BBE5347020A54DA600DE5F26 /* WeightPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightPoint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -300,6 +303,7 @@
 				BB6F11BF205FAF48003B27B6 /* AffineImage.swift */,
 				BB6F11C3205FAFC6003B27B6 /* AffineTransform.swift */,
 				BB6F11CF205FB6CE003B27B6 /* Points.swift */,
+				BBE5347020A54DA600DE5F26 /* WeightPoint.swift */,
 			);
 			path = data;
 			sourceTree = "<group>";
@@ -587,6 +591,7 @@
 				BB6F11AC205F84FB003B27B6 /* CoordinateSystem.swift in Sources */,
 				A8491E1E19CD6DAE00CCFAE6 /* VisualDebugger.swift in Sources */,
 				BB6F11A8205F745B003B27B6 /* AxisArrow.swift in Sources */,
+				BBE5347120A54DA600DE5F26 /* WeightPoint.swift in Sources */,
 				BB6F119C205F6D47003B27B6 /* AppColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -657,6 +662,7 @@
 				BB6F11AD205F84FB003B27B6 /* CoordinateSystem.swift in Sources */,
 				9C459EF51A910361008C9A41 /* VisualDebugger.swift in Sources */,
 				BB6F11A9205F745B003B27B6 /* AxisArrow.swift in Sources */,
+				BBE5347220A54DA600DE5F26 /* WeightPoint.swift in Sources */,
 				BB6F119D205F6D47003B27B6 /* AppColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
