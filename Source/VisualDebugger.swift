@@ -51,6 +51,7 @@ public extension Debuggable {
     }
 
     public func getDebugView(in coordinate: CoordinateSystem.Kind,
+                             color: AppColor? = nil,
                              visibleRect: CGRect? = nil,
                              scale: CGFloat = 1.5,
                              numDivisions: Int = 5,
@@ -61,7 +62,7 @@ public extension Debuggable {
                                           scale: scale,
                                           numSegments: numDivisions,
                                           showOrigin: showOrigin)
-        self.debug(in: coordinate, color: nil)
+        self.debug(in: coordinate, color: color)
         return debugLayer(coordinate, withMargin: coordinate.segmentLength)
     }
 }
@@ -82,6 +83,7 @@ extension Array: Debuggable where Element: Debuggable {
 #endif
 
 public func debug(_ array: [Debuggable],
+                  colors: [AppColor]? = nil,
                   coordinate: CoordinateSystem.Kind = .yDown,
                   visibleRect: CGRect? = nil,
                   scale: CGFloat = 1.5,
@@ -93,8 +95,10 @@ public func debug(_ array: [Debuggable],
                                       scale: scale,
                                       numSegments: numDivisions,
                                       showOrigin: showOrigin)
-    for element in array {
-        element.debug(in: coordinate, color: nil)
+    
+    for (i, element) in array.enumerated() {
+        let color: AppColor? = (colors != nil && i < colors!.count) ? colors![i] : nil
+        element.debug(in: coordinate, color: color)
     }
     return debugLayer(coordinate, withMargin: coordinate.segmentLength)
 }

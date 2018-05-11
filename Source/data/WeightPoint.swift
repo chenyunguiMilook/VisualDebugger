@@ -18,6 +18,12 @@ public struct WeightPoint {
     public var x: CGFloat
     public var y: CGFloat
     public var weight: CGFloat
+    
+    public init(x: CGFloat, y: CGFloat, weight: CGFloat) {
+        self.x = x
+        self.y = y
+        self.weight = weight
+    }
 }
 
 extension WeightPoint : Debuggable {
