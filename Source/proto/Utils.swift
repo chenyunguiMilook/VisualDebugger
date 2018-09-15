@@ -22,6 +22,7 @@ public func debugLayer(_ layer: CALayer, withMargin margin: CGFloat) -> AppView 
     let frame = CGRect(x: 0, y: 0, width: width, height: height)
     #if os(iOS) || os(tvOS)
     let view = AppView(frame: frame)
+        view.backgroundColor = UIColor.white
     #elseif os(macOS)
     let view = FlippedView(frame: frame)
     #endif

@@ -46,7 +46,8 @@ public class CoordinateSystem : CALayer {
         self.numSegments = numSegments
         self.showOrigin = showOrigin
         super.init()
-        
+        self.backgroundColor = UIColor.white.cgColor
+
         let rect = showOrigin ? area.rectFromOrigin : area
         let maxValue = max(rect.size.width, rect.size.height)
         let segmentValue = CGFloat(getDivision(Double(maxValue), segments: numSegments))
