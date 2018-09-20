@@ -14,7 +14,7 @@ import Cocoa
 
 extension CATextLayer {
     
-    convenience init(text:String, attributes:[NSAttributedStringKey: Any] = [:]) {
+    convenience init(text:String, attributes:[NSAttributedString.Key: Any] = [:]) {
         self.init()
         
         let string = NSAttributedString(string: text, attributes: attributes)
@@ -28,7 +28,7 @@ extension CATextLayer {
         self.init()
         
         let font = font ?? AppFont.default
-        var attrs:[NSAttributedStringKey: Any] = [:]
+        var attrs:[NSAttributedString.Key: Any] = [:]
         attrs[.foregroundColor] = color
         attrs[.font]            = font
         let string = NSAttributedString(string:axisLabel, attributes: attrs)
@@ -43,7 +43,7 @@ extension CATextLayer {
         self.init()
         
         let font = font ?? AppFont.default
-        var attrs:[NSAttributedStringKey: Any] = [:]
+        var attrs:[NSAttributedString.Key: Any] = [:]
         attrs[.foregroundColor] = color
         attrs[.font]            = font
         let string = NSAttributedString(string:indexLabel, attributes: attrs)
@@ -58,7 +58,7 @@ extension CATextLayer {
         self.borderColor = color.cgColor
         self.borderWidth = 0.5
         self.cornerRadius = bounds.height/2
-        self.alignmentMode = kCAAlignmentCenter
+        self.alignmentMode = CATextLayerAlignmentMode.center
         self.applyDefaultContentScale()
     }
 }
