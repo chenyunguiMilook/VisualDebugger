@@ -135,6 +135,7 @@
 		A8491E1D19CD6DAE00CCFAE6 /* VisualDebugger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualDebugger.swift; sourceTree = "<group>"; };
 		A8580F741BCF5C5B00DA927B /* VisualDebugger tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "VisualDebugger tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8580F781BCF5C5B00DA927B /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
+		BB47BF972254A73300504F0C /* VisualDebugger.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = VisualDebugger.podspec; sourceTree = "<group>"; };
 		BB5D99842060BAB200457C4C /* AppImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppImage.swift; sourceTree = "<group>"; };
 		BB5D99872060BC9100457C4C /* CAShapeLayer+Behavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAShapeLayer+Behavior.swift"; sourceTree = "<group>"; };
 		BB5D998A2060BE5D00457C4C /* AppFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFont.swift; sourceTree = "<group>"; };
@@ -215,6 +216,7 @@
 		2E4FEFD119575BE100351305 = {
 			isa = PBXGroup;
 			children = (
+				BB47BF972254A73300504F0C /* VisualDebugger.podspec */,
 				2E4FEFDD19575BE100351305 /* Source */,
 				2E4FEFEA19575BE100351305 /* Tests */,
 				2E4FEFDC19575BE100351305 /* Products */,
