@@ -27,7 +27,7 @@ extension CGImage : Debuggable {
 #if os(macOS)
 import AppKit
 
-public extension NSImage {
+extension NSImage {
     
     public var cgImage: CGImage? {
         return self.cgImage(forProposedRect: nil, context: nil, hints: nil)

@@ -45,7 +45,7 @@ import QuartzCore
     public typealias AppImage = NSImage
 #endif
 
-public extension Debuggable {
+extension Debuggable {
     public var debugView: AppView {
         return self.getDebugView(in: .yDown)
     }

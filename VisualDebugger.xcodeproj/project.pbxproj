@@ -16,6 +16,10 @@
 		9C7DFC661A9102BD005AA3F7 /* VisualDebugger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C7DFC5B1A9102BD005AA3F7 /* VisualDebugger.framework */; };
 		A8491E1E19CD6DAE00CCFAE6 /* VisualDebugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8491E1D19CD6DAE00CCFAE6 /* VisualDebugger.swift */; };
 		A8580F791BCF5C5B00DA927B /* VisualDebugger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7236B4F61BAC14150020529B /* VisualDebugger.framework */; };
+		BB47BF932254A68400504F0C /* AppFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D998A2060BE5D00457C4C /* AppFont.swift */; };
+		BB47BF942254A68400504F0C /* AppImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D99842060BAB200457C4C /* AppImage.swift */; };
+		BB47BF952254A68400504F0C /* CAShapeLayer+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D99872060BC9100457C4C /* CAShapeLayer+Behavior.swift */; };
+		BB47BF962254A68800504F0C /* WeightPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE5347020A54DA600DE5F26 /* WeightPoint.swift */; };
 		BB5D99852060BAB200457C4C /* AppImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D99842060BAB200457C4C /* AppImage.swift */; };
 		BB5D99862060BAB200457C4C /* AppImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D99842060BAB200457C4C /* AppImage.swift */; };
 		BB5D99882060BC9100457C4C /* CAShapeLayer+Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D99872060BC9100457C4C /* CAShapeLayer+Behavior.swift */; };
@@ -471,11 +475,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1020;
 				TargetAttributes = {
 					2E4FEFDA19575BE100351305 = {
 						CreatedOnToolsVersion = 6.0;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 					};
 					2E4FEFE519575BE100351305 = {
 						CreatedOnToolsVersion = 6.0;
@@ -483,8 +487,12 @@
 						ProvisioningStyle = Manual;
 						TestTargetID = 2E4FEFDA19575BE100351305;
 					};
+					7236B4EC1BAC14150020529B = {
+						LastSwiftMigration = 1020;
+					};
 					9C7DFC5A1A9102BD005AA3F7 = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 1020;
 					};
 					9C7DFC641A9102BD005AA3F7 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -496,10 +504,11 @@
 			};
 			buildConfigurationList = 2E4FEFD519575BE100351305 /* Build configuration list for PBXProject "VisualDebugger" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 2E4FEFD119575BE100351305;
 			productRefGroup = 2E4FEFDC19575BE100351305 /* Products */;
@@ -608,6 +617,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB6F1183205F6B51003B27B6 /* AxisData.swift in Sources */,
+				BB47BF952254A68400504F0C /* CAShapeLayer+Behavior.swift in Sources */,
 				BB6F11CE205FB333003B27B6 /* AppBezierPath.swift in Sources */,
 				BB6F11D6205FB7AF003B27B6 /* GradientImage.swift in Sources */,
 				BB6F11BE205F866D003B27B6 /* AxisLabel.swift in Sources */,
@@ -615,11 +625,13 @@
 				BB6F1189205F6BBB003B27B6 /* DebugConfig.swift in Sources */,
 				BB6F11A6205F718F003B27B6 /* AffineRect.swift in Sources */,
 				BB6F11D2205FB6CE003B27B6 /* Points.swift in Sources */,
+				BB47BF932254A68400504F0C /* AppFont.swift in Sources */,
 				BB6F11BA205F8625003B27B6 /* AxisSegment.swift in Sources */,
 				BB6F11B2205F859F003B27B6 /* NumberFormater+Behavior.swift in Sources */,
 				BB6F11B6205F85D9003B27B6 /* Utils.swift in Sources */,
 				BB6F11CA205FB1DF003B27B6 /* AppView.swift in Sources */,
 				BB6F11C2205FAF48003B27B6 /* AffineImage.swift in Sources */,
+				BB47BF942254A68400504F0C /* AppImage.swift in Sources */,
 				BB6F1188205F6BB5003B27B6 /* Enums.swift in Sources */,
 				BB6F1192205F6CCB003B27B6 /* CGRect+Behavior.swift in Sources */,
 				BB6F118D205F6BE9003B27B6 /* DebugOptions.swift in Sources */,
@@ -629,6 +641,7 @@
 				BB6F11AE205F84FB003B27B6 /* CoordinateSystem.swift in Sources */,
 				7236B4EE1BAC14150020529B /* VisualDebugger.swift in Sources */,
 				BB6F11AA205F745B003B27B6 /* AxisArrow.swift in Sources */,
+				BB47BF962254A68800504F0C /* WeightPoint.swift in Sources */,
 				BB6F119E205F6D47003B27B6 /* AppColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -706,6 +719,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -767,6 +781,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -835,8 +850,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftyjson.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = VisualDebugger;
 				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -857,8 +871,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftyjson.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = VisualDebugger;
 				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -912,6 +925,7 @@
 				PRODUCT_NAME = VisualDebugger;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
@@ -935,6 +949,7 @@
 				PRODUCT_NAME = VisualDebugger;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
@@ -965,7 +980,7 @@
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -991,7 +1006,7 @@
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1044,6 +1059,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tangplin.VisualDebugger-tvOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Debug;
@@ -1061,6 +1077,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tangplin.VisualDebugger-tvOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Release;
