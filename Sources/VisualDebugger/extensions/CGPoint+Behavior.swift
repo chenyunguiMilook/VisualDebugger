@@ -1,93 +1,76 @@
 //
-//  CGPoint+Behavior.swift
+//  CGPoint.swift
 //  VisualDebugger
 //
-//  Created by chenyungui on 2018/3/19.
+//  Created by chenyungui on 2025/2/26.
 //
 
-import Foundation
 import CoreGraphics
-#if os(iOS) || os(tvOS)
-import UIKit
-#else
-import Cocoa
-#endif
-
-let kPointRadius: CGFloat = 3
-
-extension CGPoint {
-    
-    func getBezierPath(radius: CGFloat) -> AppBezierPath {
-        let x = (self.x - radius/2.0)
-        let y = (self.y - radius/2.0)
-        let rect = CGRect(x: x, y: y, width: radius, height: radius)
-        return AppBezierPath(ovalIn: rect)
-    }
-    
-    var length:CGFloat {
-        return sqrt(self.x * self.x + self.y * self.y)
-    }
-    
-    func normalized(to length:CGFloat = 1) -> CGPoint {
-        let len = length/self.length
-        return CGPoint(x: self.x * len, y: self.y * len)
-    }
-}
-
-func +(p1: CGPoint, p2: CGPoint) -> CGPoint {
-    return CGPoint(x: p1.x + p2.x, y: p1.y + p2.y)
-}
-
-func -(p1: CGPoint, p2: CGPoint) -> CGPoint {
-    return CGPoint(x: p1.x - p2.x, y: p1.y - p2.y)
-}
-
-func calculateAngle(_ point1:CGPoint, _ point2:CGPoint) -> CGFloat {
-    return atan2(point2.y - point1.y, point2.x - point1.x)
-}
-
-func calculateDistance(_ point1:CGPoint, _ point2:CGPoint) -> CGFloat {
-    let x = point2.x - point1.x
-    let y = point2.y - point1.y
-    return sqrt(x*x + y*y)
-}
-
-func calculateCenter(_ point1:CGPoint, _ point2:CGPoint) -> CGPoint {
-    return CGPoint(x: point1.x+(point2.x-point1.x)/2.0, y: point1.y+(point2.y-point1.y)/2.0)
-}
 
 extension Array where Element == CGPoint {
-    
-    public var bounds:CGRect {
-        guard let pnt = self.first else { return CGRect.zero }
-        var (minX, maxX, minY, maxY) = (pnt.x, pnt.x, pnt.y, pnt.y)
-        
+    public var bounds: CGRect? {
+        guard !self.isEmpty else { return nil }
+        let pnt = self.first!
+        var minX = pnt.x
+        var minY = pnt.y
+        var maxX = pnt.x
+        var maxY = pnt.y
+
         for point in self {
             minX = point.x < minX ? point.x : minX
             minY = point.y < minY ? point.y : minY
             maxX = point.x > maxX ? point.x : maxX
             maxY = point.y > maxY ? point.y : maxY
         }
-        return CGRect(x: minX, y: minY, width: (maxX-minX), height: (maxY-minY))
+
+        return CGRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
     }
 }
 
-// MARK: - Point
-
-extension CGPoint : Debuggable {
-
-    public var bounds: CGRect {
-        return CGRect(origin: self, size: .zero)
-    }
-
-    public func debug(in coordinate: CoordinateSystem, color: AppColor?) {
-        let newPoint = self * coordinate.matrix
-        let path = newPoint.getBezierPath(radius: kPointRadius)
-        let color = color ?? coordinate.getNextColor()
-        let shapeLayer = CAShapeLayer(path: path.cgPath, strokeColor: nil, fillColor: color, lineWidth: 0)
-        coordinate.addSublayer(shapeLayer)
-    }
+public func += (left: inout CGPoint, right: CGPoint) {
+    left.x += right.x
+    left.y += right.y
 }
 
+public func -= (left: inout CGPoint, right: CGPoint) {
+    left.x -= right.x
+    left.y -= right.y
+}
 
+public func - (left: CGPoint, right: CGPoint) -> CGPoint {
+    return CGPoint(x: left.x - right.x, y: left.y - right.y)
+}
 
+public func + (left: CGPoint, right: CGPoint) -> CGPoint {
+    return CGPoint(x: left.x + right.x, y: left.y + right.y)
+}
+
+public prefix func - (point: CGPoint) -> CGPoint {
+    return CGPoint(x: -point.x, y: -point.y)
+}
+
+public func / (left: CGPoint, right: CGFloat) -> CGPoint {
+    return CGPoint(x: left.x / right, y: left.y / right)
+}
+
+public func * (left: CGPoint, right: CGFloat) -> CGPoint {
+    return CGPoint(x: left.x * right, y: left.y * right)
+}
+
+public func * (left: CGFloat, right: CGPoint) -> CGPoint {
+    return CGPoint(x: left * right.x, y: left * right.y)
+}
+
+public func * (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
+    return CGPoint(x: lhs.x * rhs.x, y: lhs.y * rhs.y)
+}
+
+public func *= (lhs: inout CGPoint, rhs: CGFloat) {
+    lhs.x *= rhs
+    lhs.y *= rhs
+}
+
+public func /= (lhs: inout CGPoint, rhs: CGFloat) {
+    lhs.x /= rhs
+    lhs.y /= rhs
+}
