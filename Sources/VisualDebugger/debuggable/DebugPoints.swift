@@ -55,36 +55,36 @@ extension DebugPoints: Debuggable {
     
     public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
         for style in styles {
-            let path = style.path
-            let s = style.style
-            for point in points {
-                if let p = path * Matrix2D(translation: point) {
-                    context.render(path: p.cgPath, style: s)
-                }
+            let elements = style.getRenderElements(points: points)
+            for element in elements {
+                element.render(in: context, contentScaleFactor: contentScaleFactor, contextHeight: contextHeight)
             }
         }
     }
 }
 
 extension DebugPoints.Style {
-    public var path: AppBezierPath {
-        switch self {
-        case .dot(color: _, radius: let radius): fallthrough
-        case .circle(color: _, radius: let radius):
-            return AppBezierPath.dot(radius: radius)
-        case .cross(color: _, size: let size):
-            return AppBezierPath.cross(size: size)
-        }
-    }
     
-    public var style: ShapeRenderStyle {
+    func getRenderElements(points: [CGPoint]) -> [ContextRenderable] {
         switch self {
-        case .dot(color: let color, radius: _):
-            return ShapeRenderStyle(fill: .init(color: color))
-        case .circle(color: let color, radius: _):
-            return ShapeRenderStyle(stroke: .init(color: color, style: .init(lineWidth: 1)))
-        case .cross(color: let color, size: _):
-            return ShapeRenderStyle(stroke: .init(color: color, style: .init(lineWidth: 1)))
+        case .dot(color: let color, radius: let radius):
+            let path = AppBezierPath.dot(radius: radius)
+            let style = ShapeRenderStyle(fill: .init(color: color))
+            return points.map { point in
+                MarkRenderElement(path: path, style: style, position: point)
+            }
+        case .circle(color: let color, radius: let radius):
+            let path = AppBezierPath.dot(radius: radius)
+            let style = ShapeRenderStyle(stroke: .init(color: color, style: .init(lineWidth: 1)))
+            return points.map { point in
+                MarkRenderElement(path: path, style: style, position: point)
+            }
+        case .cross(color: let color, size: let size):
+            let path = AppBezierPath.cross(size: size)
+            let style = ShapeRenderStyle(stroke: .init(color: color, style: .init(lineWidth: 1)))
+            return points.map { point in
+                MarkRenderElement(path: path, style: style, position: point)
+            }
         }
     }
 }
