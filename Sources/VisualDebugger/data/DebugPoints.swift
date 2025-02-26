@@ -13,7 +13,7 @@ import UIKit
 import AppKit
 #endif
 
-public struct DebugPoints {
+public final class DebugPoints {
     
     public enum Style {
         case dot(color: AppColor, radius: Double)
@@ -23,11 +23,24 @@ public struct DebugPoints {
     }
     
     public let points: [CGPoint]
-    public let style: Style
+    
+    // additional style
+    private var _styles: [Style] = []
+    public var styles: [Style] {
+        [baseStyle] + _styles
+    }
 
-    public init(points: [CGPoint], style: Style = .dot(color: .yellow, radius: 2)) {
+    public var baseStyle: Style
+    
+    public init(points: [CGPoint], baseStyle: Style = .dot(color: .yellow, radius: 2), styles: [Style] = []) {
         self.points = points
-        self.style = style
+        self.baseStyle = baseStyle
+        self._styles = styles
+    }
+    
+    public func addStyle(_ style: Style) -> Self {
+        _styles.append(style)
+        return self
     }
 }
 
@@ -37,15 +50,17 @@ extension DebugPoints: Debuggable {
     }
     
     public func applying(transform: Matrix2D) -> DebugPoints {
-        DebugPoints(points: points * transform, style: style)
+        DebugPoints(points: points * transform, styles: _styles)
     }
     
     public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
-        let path = style.path
-        let s = style.style
-        for point in points {
-            if let p = path * Matrix2D(translation: point) {
-                context.render(path: p.cgPath, style: s)
+        for style in styles {
+            let path = style.path
+            let s = style.style
+            for point in points {
+                if let p = path * Matrix2D(translation: point) {
+                    context.render(path: p.cgPath, style: s)
+                }
             }
         }
     }

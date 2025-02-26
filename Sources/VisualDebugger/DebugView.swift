@@ -108,6 +108,8 @@ public final class DebugView: AppView {
             .init(x: 10, y: 10),
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)
-        ], style: .circle(color: .red, radius: 3))
+        ])
+        //.addStyle(.cross(color: .blue, size: 4))
+        
     ], coordinateSystem: .yDown)
 }
