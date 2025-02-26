@@ -20,7 +20,7 @@ public final class DebugPoints {
         case circle(color: AppColor, radius: Double)
         case cross(color: AppColor, size: Double)
         case index(style: TextRenderStyle)
-        // TODO: support label, polygon, polyShape etc...
+        // TODO: support label, polygon, polyShape, highlight(index) etc...
     }
     
     public let points: [CGPoint]
