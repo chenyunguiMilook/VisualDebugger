@@ -19,6 +19,7 @@ public final class DebugPoints {
         case dot(color: AppColor, radius: Double)
         case circle(color: AppColor, radius: Double)
         case cross(color: AppColor, size: Double)
+        case index(style: TextRenderStyle)
         // TODO: support label, polygon, polyShape etc...
     }
     
@@ -32,9 +33,9 @@ public final class DebugPoints {
 
     public var baseStyle: Style
     
-    public init(points: [CGPoint], baseStyle: Style = .dot(color: .yellow, radius: 2), styles: [Style] = []) {
+    public init(points: [CGPoint], style: Style = .dot(color: .yellow, radius: 2), styles: [Style] = []) {
         self.points = points
-        self.baseStyle = baseStyle
+        self.baseStyle = style
         self._styles = styles
     }
     
@@ -50,7 +51,7 @@ extension DebugPoints: Debuggable {
     }
     
     public func applying(transform: Matrix2D) -> DebugPoints {
-        DebugPoints(points: points * transform, styles: _styles)
+        DebugPoints(points: points * transform, style: baseStyle, styles: _styles)
     }
     
     public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
@@ -84,6 +85,10 @@ extension DebugPoints.Style {
             let style = ShapeRenderStyle(stroke: .init(color: color, style: .init(lineWidth: 1)))
             return points.map { point in
                 MarkRenderElement(path: path, style: style, position: point)
+            }
+        case .index(style: let style):
+            return points.enumerated().map { i, point in
+                TextRenderElement(text: "\(i)", style: style, position: point)
             }
         }
     }

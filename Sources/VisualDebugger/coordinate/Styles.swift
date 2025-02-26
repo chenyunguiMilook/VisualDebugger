@@ -50,6 +50,16 @@ extension TextRenderStyle {
         anchor: .topRight,
         textColor: AppColor.lightGray
     )
+    
+    public static let indexLabel = TextRenderStyle(
+        font: AppFont.italicSystemFont(ofSize: 10),
+        insets: .zero,
+        margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
+        cornerRadius: 4,
+        anchor: .midCenter,
+        textColor: AppColor.white,
+        bgColor: .blue
+    )
 }
 
 extension ShapeRenderStyle {
