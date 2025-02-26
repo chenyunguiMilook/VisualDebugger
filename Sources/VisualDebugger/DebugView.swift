@@ -88,7 +88,7 @@ public final class DebugView: AppView {
     public override func draw(_ dirtyRect: NSRect) {
         guard let context = NSGraphicsContext.current?.cgContext else { return }
         let scale: CGFloat = self.layer?.contentsScale ?? 1
-        let contextHeight = context.height
+        let contextHeight = Int(CGFloat(context.height) * scale)
         self.context.render(in: context, scale: scale, contextHeight: contextHeight)
     }
     
