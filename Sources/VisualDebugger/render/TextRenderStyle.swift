@@ -75,6 +75,7 @@ extension CGContext {
     ///   - contentScaleFactor: render scale
     ///   - contextHeight: important: this value need multiply the scale value
     ///   - flipText: whether flip text
+    #if os(iOS)
     public func render(
         text: String,
         transform: CGAffineTransform,
@@ -85,7 +86,6 @@ extension CGContext {
         flipText: Bool = false
     ) {
         guard !text.isEmpty else { return }
-
         let attributeString = NSAttributedString(string: text, attributes: style.attributes)
         let textSize = style.getTextSize(text: text)
         
@@ -103,13 +103,44 @@ extension CGContext {
         self.concatenate((flipVertically * anchorToZeroM * transform))
         self.setAlpha(alpha)
         
-        #if canImport(UIKit)
-            UIGraphicsPushContext(self)
-        #elseif canImport(AppKit)
-            let prevContext = NSGraphicsContext.current
-            let gContext = NSGraphicsContext(cgContext: self, flipped: true)
-            NSGraphicsContext.current = gContext
-        #endif
+        UIGraphicsPushContext(self)
+        if let bgColor = style.bgColor {
+            let path = AppBezierPath(roundedRect: bgBounds, cornerRadius: style.cornerRadius)
+            self.addPath(path.cgPath)
+            self.setFillColor(bgColor.cgColor)
+            self.fillPath()
+        }
+        attributeString.draw(at: .zero)
+        UIGraphicsPopContext()
+    }
+    
+    #elseif os(macOS)
+    public func render(
+        text: String,
+        transform: CGAffineTransform,
+        style: TextRenderStyle,
+        alpha: Double = 1,
+        contentScaleFactor: CGFloat = 1,
+        contextHeight: Int? = nil
+    ) {
+        guard !text.isEmpty else { return }
+        let attributeString = NSAttributedString(string: text, attributes: style.attributes)
+        let textSize = style.getTextSize(text: text)
+        
+        let textBounds = CGRect(origin: .zero, size: textSize)
+        let bgBounds = textBounds.expanding(by: style.insets)
+        let bounds = bgBounds.expanding(by: style.margin)
+        
+        self.saveGState()
+        defer { self.restoreGState() }
+        
+        let anchorToZeroM = Matrix2D(translation: -bounds.getAnchor(style.anchor))
+        self.concatenate(anchorToZeroM * transform)
+        self.setAlpha(alpha)
+        
+        let prevContext = NSGraphicsContext.current
+        let gContext = NSGraphicsContext(cgContext: self, flipped: true)
+        NSGraphicsContext.current = gContext
         
         if let bgColor = style.bgColor {
             let path = AppBezierPath(roundedRect: bgBounds, cornerRadius: style.cornerRadius)
@@ -118,13 +149,9 @@ extension CGContext {
             self.fillPath()
         }
         attributeString.draw(at: .zero)
-        
-        #if canImport(UIKit)
-            UIGraphicsPopContext()
-        #elseif canImport(AppKit)
-            NSGraphicsContext.current = prevContext
-        #endif
+        NSGraphicsContext.current = prevContext
     }
+    #endif
     
     public func fixCTM(scaleFactor: CGFloat, contextHeight: CGFloat) {
         // toYDownMatrix = scaleMatrix * moveMatrix
@@ -141,5 +168,4 @@ extension CGContext {
         }
         self.concatenate(toYDownCoord)
     }
-
 }

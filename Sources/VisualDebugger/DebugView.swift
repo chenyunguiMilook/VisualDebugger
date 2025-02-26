@@ -57,6 +57,9 @@ public final class DebugView: AppView {
         self.context = context
         super.init(frame: context.frame)
         self.translatesAutoresizingMaskIntoConstraints = false
+        #if os(macOS)
+        self.wantsLayer = true
+        #endif
     }
     
     required init?(coder: NSCoder) {
@@ -87,8 +90,8 @@ public final class DebugView: AppView {
     
     public override func draw(_ dirtyRect: NSRect) {
         guard let context = NSGraphicsContext.current?.cgContext else { return }
-        let scale: CGFloat = self.layer?.contentsScale ?? 1
-        let contextHeight = Int(CGFloat(context.height) * scale)
+        let scale: CGFloat = 1 // self.layer?.contentsScale ?? 1
+        let contextHeight = Int(bounds.height * scale)
         self.context.render(in: context, scale: scale, contextHeight: contextHeight)
     }
     
@@ -106,5 +109,5 @@ public final class DebugView: AppView {
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)
         ], style: .circle(color: .red, radius: 3))
-    ], coordinateSystem: .yUp)
+    ], coordinateSystem: .yDown)
 }
