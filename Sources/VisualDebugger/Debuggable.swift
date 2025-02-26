@@ -41,10 +41,6 @@ extension ShapeRenderElement: Debuggable {
         let p: AppBezierPath = (self.path * transform) ?? AppBezierPath()
         return ShapeRenderElement(path: p, style: self.style)
     }
-    
-    public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
-        self.render(in: context)
-    }
 }
 
 extension TextRenderElement: Debuggable {
@@ -75,9 +71,5 @@ extension MarkRenderElement: Debuggable {
     
     public func applying(transform: Matrix2D) -> MarkRenderElement {
         self * transform
-    }
-    
-    public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
-        self.render(in: context)
     }
 }

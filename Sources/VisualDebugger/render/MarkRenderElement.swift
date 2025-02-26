@@ -20,7 +20,7 @@ public struct MarkRenderElement: ContextRenderable {
         self.position = position
     }
     
-    public func render(in context: CGContext) {
+    public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
         guard let path = path * Matrix2D(translation: position) else { return }
         context.render(path: path.cgPath, style: style)
     }
