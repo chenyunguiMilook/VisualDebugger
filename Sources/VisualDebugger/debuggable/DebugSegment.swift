@@ -97,13 +97,15 @@ extension DebugSegment.Style {
         // Triangle arrow
         DebugSegment(
             start: .init(x: 20, y: 60),
-            end: .init(x: 100, y: 60)
+            end: .init(x: 100, y: 60),
+            style: .arrow(color: .yellow, dash: true, start: .circle(filled: true), end: .arrow(style: .triangle, filled: false))
         ),
         
         // Double-ended arrow
         DebugSegment(
             start: .init(x: 20, y: 100),
-            end: .init(x: 100, y: 100)
+            end: .init(x: 100, y: 100),
+            style: .arrow(color: .white, dash: false, start: .circle(filled: true), end: .arrow(style: .triangle, filled: false))
         ),
         
         // Create a flow diagram with arrows and points

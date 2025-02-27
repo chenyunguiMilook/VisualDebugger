@@ -106,6 +106,7 @@ extension SegmentRenderElement: Transformable {
             endPoint: endPoint * transform,
             startStyle: startStyle,
             endStyle: endStyle,
+            dash: dash,
             lineWidth: lineWidth,
             endpointsSize: endpointsSize
         )

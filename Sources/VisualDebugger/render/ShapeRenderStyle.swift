@@ -77,7 +77,8 @@ extension CGContext {
     
     public func render(path cgPath: CGPath, style: ShapeRenderStyle) {
         guard !cgPath.isEmpty, !style.isEmpty else { return }
-        
+        self.saveGState()
+        defer { self.restoreGState() }
         // fill
         if let fill = style.fill {
             self.addPath(cgPath)

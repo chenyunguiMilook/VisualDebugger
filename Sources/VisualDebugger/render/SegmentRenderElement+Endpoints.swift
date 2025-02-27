@@ -40,6 +40,14 @@ extension SegmentRenderElement.EndpointStyle {
     }
     
     func getRenderElement(size: Double, color: AppColor, lineWidth: Double) -> ContextRenderable {
+        func getStyle(filled: Bool) -> ShapeRenderStyle {
+            if filled {
+                ShapeRenderStyle(fill: .init(color: color))
+            } else {
+                ShapeRenderStyle(stroke: .init(color: color, style: .init(lineWidth: lineWidth)))
+            }
+        }
+        
         // first get path at origin
         switch self {
         case .arrow(let style, let filled):
@@ -62,23 +70,44 @@ extension SegmentRenderElement.EndpointStyle {
             path.addLine(to: p1)
             path.addLine(to: p2)
             path.close()
-            let rs = if filled {
-                ShapeRenderStyle(fill: .init(color: color))
-            } else {
-                ShapeRenderStyle(stroke: .init(color: color, style: .init(lineWidth: lineWidth)))
-            }
             return MarkRenderElement(
                 path: path,
-                style: rs,
+                style: getStyle(filled: filled),
                 position: .zero,
                 rotatable: true
             )
-        case .rect:
-            fatalError("need implementation")
-        case .circle:
-            fatalError("need implementation")
-        case .range: // looks like: |<
-            fatalError("need implementation")
+        case .rect(let filled):
+            let rect = CGRect(anchor: .midRight, center: .zero, size: .init(width: size, height: size))
+            let path = AppBezierPath(rect: rect)
+            return MarkRenderElement(
+                path: path,
+                style: getStyle(filled: filled),
+                position: .zero,
+                rotatable: true
+            )
+        case .circle(let filled):
+            let rect = CGRect(anchor: .midRight, center: .zero, size: .init(width: size, height: size))
+            let path = AppBezierPath(ovalIn: rect)
+            return MarkRenderElement(
+                path: path,
+                style: getStyle(filled: filled),
+                position: .zero,
+                rotatable: true
+            )
+        case .range: // looks like: >|
+            let path = AppBezierPath()
+            let half = size / 2
+            path.move(to: .init(x: 0, y: -half))
+            path.addLine(to: .init(x: 0, y: half))
+            path.move(to: .init(x: -size, y: -half))
+            path.addLine(to: .zero)
+            path.addLine(to: .init(x: -size, y: half))
+            return MarkRenderElement(
+                path: path,
+                style: getStyle(filled: false),
+                position: .zero,
+                rotatable: true
+            )
         }
     }
 }
