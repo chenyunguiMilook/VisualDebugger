@@ -19,7 +19,6 @@ public struct SegmentRenderElement: ContextRenderable {
     public let startStyle: EndpointStyle?
     public let endStyle: EndpointStyle?
 
-    private var renderElements: [ContextRenderable] = []
     var hasStart: Bool { startStyle != nil }
     var hasEnd: Bool { endStyle != nil }
     
@@ -39,11 +38,11 @@ public struct SegmentRenderElement: ContextRenderable {
         self.endStyle = endStyle
         self.endpointsSize = endpointsSize
         self.lineWidth = lineWidth
-        self.renderElements = createRenderElements()
     }
     
     public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
-        for element in renderElements {
+        let elements = self.createRenderElements()
+        for element in elements {
             element.render(in: context, contentScaleFactor: contentScaleFactor, contextHeight: contextHeight)
         }
     }
@@ -82,7 +81,8 @@ public struct SegmentRenderElement: ContextRenderable {
         if let endStyle {
             let endElement = endStyle.getRenderElement(size: endpointsSize, color: color, lineWidth: lineWidth)
             let transform = Matrix2D(rotationAngle: segment.angle) * Matrix2D(translation: endPoint)
-            elements.append(endElement.applying(transform: transform))
+            let transformed = endElement.applying(transform: transform)
+            elements.append(transformed)
         }
         
         return elements

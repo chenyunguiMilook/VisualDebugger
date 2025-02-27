@@ -30,7 +30,8 @@ public struct MarkRenderElement: ContextRenderable {
 public func *(lhs: MarkRenderElement, rhs: Matrix2D) -> MarkRenderElement {
     if lhs.rotatable {
         // 如果是可旋转的，应该旋转路径，而位置正常变换
-        let rotatedPath = (lhs.path * rhs) ?? AppBezierPath()
+        let rotation = Matrix2D(rotationAngle: rhs.decomposed().rotation)
+        let rotatedPath = (lhs.path * rotation) ?? AppBezierPath()
         return MarkRenderElement(path: rotatedPath, style: lhs.style, position: lhs.position * rhs, rotatable: lhs.rotatable)
     } else {
         // 不可旋转的情况下，路径保持不变，位置正常变换

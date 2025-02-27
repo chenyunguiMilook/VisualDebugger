@@ -36,8 +36,8 @@ public final class DebugSegment {
         style: Style = .arrow(color: .red, start: nil, end: .arrow(style: .triangle, filled: true)),
         styles: [Style] = [])
     {
-        self.end = start
-        self.start = end
+        self.start = start
+        self.end = end
         self.baseStyle = style
         self._styles = styles
     }
