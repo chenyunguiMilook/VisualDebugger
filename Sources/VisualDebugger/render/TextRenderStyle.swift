@@ -101,11 +101,8 @@ extension CGContext {
         self.setAlpha(alpha)
         
         UIGraphicsPushContext(self)
-        if let bgColor = style.bgColor {
-            let path = AppBezierPath(roundedRect: bgBounds, cornerRadius: style.cornerRadius)
-            self.addPath(path.cgPath)
-            self.setFillColor(bgColor.cgColor)
-            self.fillPath()
+        if let bgStyle = style.bgStyle {
+            renderBg(bgStyle: bgStyle, bgBounds: bgBounds)
         }
         attributeString.draw(at: .zero)
         UIGraphicsPopContext()
@@ -140,49 +137,53 @@ extension CGContext {
         NSGraphicsContext.current = gContext
         
         if let bgStyle = style.bgStyle {
-            let path: AppBezierPath
-            switch bgStyle {
-            case .rect:
-                path = AppBezierPath(rect: bgBounds)
-            case .roundRect(radius: let radius, _, _):
-                var rect = bgBounds
-                if bgBounds.width < radius * 2 {
-                    rect = CGRect.init(
-                        center: bgBounds.center,
-                        size: .init(
-                            width: radius * 2,
-                            height: bgBounds.height
-                        )
-                    )
-                }
-                path = AppBezierPath(roundedRect: rect, cornerRadius: radius)
-            case .capsule:
-                var rect = bgBounds
-                if bgBounds.width < bgBounds.height {
-                    rect = CGRect(
-                        center: bgBounds.center,
-                        size: .init(
-                            width: bgBounds.height,
-                            height: bgBounds.height
-                        )
-                    )
-                }
-                path = AppBezierPath(roundedRect: rect, cornerRadius: rect.height/2)
-            }
-            self.addPath(path.cgPath)
-            if bgStyle.filled {
-                self.setFillColor(bgStyle.color.cgColor)
-                self.fillPath()
-            } else {
-                self.setStrokeColor(bgStyle.color.cgColor)
-                self.setLineWidth(1)
-                self.strokePath()
-            }
+            renderBg(bgStyle: bgStyle, bgBounds: bgBounds)
         }
         attributeString.draw(at: .zero)
         NSGraphicsContext.current = prevContext
     }
     #endif
+    
+    private func renderBg(bgStyle: TextRenderStyle.BgStyle, bgBounds: CGRect) {
+        let path: AppBezierPath
+        switch bgStyle {
+        case .rect:
+            path = AppBezierPath(rect: bgBounds)
+        case .roundRect(radius: let radius, _, _):
+            var rect = bgBounds
+            if bgBounds.width < radius * 2 {
+                rect = CGRect.init(
+                    center: bgBounds.center,
+                    size: .init(
+                        width: radius * 2,
+                        height: bgBounds.height
+                    )
+                )
+            }
+            path = AppBezierPath(roundedRect: rect, cornerRadius: radius)
+        case .capsule:
+            var rect = bgBounds
+            if bgBounds.width < bgBounds.height {
+                rect = CGRect(
+                    center: bgBounds.center,
+                    size: .init(
+                        width: bgBounds.height,
+                        height: bgBounds.height
+                    )
+                )
+            }
+            path = AppBezierPath(roundedRect: rect, cornerRadius: rect.height/2)
+        }
+        self.addPath(path.cgPath)
+        if bgStyle.filled {
+            self.setFillColor(bgStyle.color.cgColor)
+            self.fillPath()
+        } else {
+            self.setStrokeColor(bgStyle.color.cgColor)
+            self.setLineWidth(1)
+            self.strokePath()
+        }
+    }
     
     public func fixCTM(scaleFactor: CGFloat, contextHeight: CGFloat) {
         // toYDownMatrix = scaleMatrix * moveMatrix
