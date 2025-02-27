@@ -29,15 +29,11 @@ public struct MarkRenderElement: ContextRenderable {
 
 public func *(lhs: MarkRenderElement, rhs: Matrix2D) -> MarkRenderElement {
     if lhs.rotatable {
-        // 完全应用变换（旋转+平移）
-        return MarkRenderElement(path: lhs.path, style: lhs.style, position: lhs.position * rhs, rotatable: lhs.rotatable)
+        // 如果是可旋转的，应该旋转路径，而位置正常变换
+        let rotatedPath = (lhs.path * rhs) ?? AppBezierPath()
+        return MarkRenderElement(path: rotatedPath, style: lhs.style, position: lhs.position * rhs, rotatable: lhs.rotatable)
     } else {
-        // 分解变换，只应用平移，忽略旋转
-        // 提取平移部分
-        let tx = rhs.tx
-        let ty = rhs.ty
-        let translationOnly = Matrix2D(translationX: tx, y: ty)
-        
-        return MarkRenderElement(path: lhs.path, style: lhs.style, position: lhs.position * translationOnly, rotatable: lhs.rotatable)
+        // 不可旋转的情况下，路径保持不变，位置正常变换
+        return MarkRenderElement(path: lhs.path, style: lhs.style, position: lhs.position * rhs, rotatable: lhs.rotatable)
     }
 }

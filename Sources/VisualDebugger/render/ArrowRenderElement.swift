@@ -16,7 +16,6 @@ public struct ArrowRenderElement: ContextRenderable {
             self.rawValue = rawValue
         }
         
-        // 箭头样式选项
         public static let head = ArrowOptions(rawValue: 1 << 0)
         public static let tail = ArrowOptions(rawValue: 1 << 1)
     }
@@ -29,14 +28,13 @@ public struct ArrowRenderElement: ContextRenderable {
     public let headSize: CGFloat
     public let bodyWidth: CGFloat
     
-    // 存储渲染元素，避免每次渲染时重新计算
     private let renderElements: [ContextRenderable]
     
     public init(
         startPoint: CGPoint,
         endPoint: CGPoint,
-        headSize: CGFloat = 10,
-        bodyWidth: CGFloat = 1,
+        headSize: CGFloat,
+        bodyWidth: CGFloat,
         lineStyle: ShapeRenderStyle,
         arrowStyle: ShapeRenderStyle,
         options: ArrowOptions = .head
@@ -49,7 +47,6 @@ public struct ArrowRenderElement: ContextRenderable {
         self.arrowStyle = arrowStyle
         self.options = options
         
-        // 在初始化时创建渲染元素
         self.renderElements = ArrowRenderElement.createRenderElements(
             startPoint: startPoint,
             endPoint: endPoint,
@@ -78,29 +75,54 @@ public struct ArrowRenderElement: ContextRenderable {
     ) -> [ContextRenderable] {
         var elements: [ContextRenderable] = []
         
-        // 计算方向向量
+        // Calculate direction vector
         let dx = endPoint.x - startPoint.x
         let dy = endPoint.y - startPoint.y
         let length = sqrt(dx * dx + dy * dy)
         
-        // 如果点太近，返回空数组
+        // If points are too close, return empty array
         if length < 0.1 {
             return elements
         }
         
-        // 计算旋转角度
+        // Calculate rotation angle
         let angle = atan2(dy, dx)
         
-        // 创建箭头连线
-        let linePath = AppBezierPath()
-        linePath.move(to: startPoint)
-        linePath.addLine(to: endPoint)
-        elements.append(ShapeRenderElement(path: linePath, style: lineStyle))
+        // 计算箭头头部和尾部的长度影响
+        let unitX = dx / length
+        let unitY = dy / length
         
-        // 处理箭头头部 - 预先旋转路径
+        // 创建箭头线段，但要避免与箭头头部和尾部重叠
+        let linePath = AppBezierPath()
+        var lineStart = startPoint
+        var lineEnd = endPoint
+        
+        // 如果有尾部箭头，调整起点
+        if options.contains(.tail) {
+            lineStart = CGPoint(
+                x: startPoint.x + unitX * headSize,
+                y: startPoint.y + unitY * headSize
+            )
+        }
+        
+        // 如果有头部箭头，调整终点
         if options.contains(.head) {
-            let arrowHeadPath = AppBezierPath.xArrow(size: headSize)
-            // 预旋转路径
+            lineEnd = CGPoint(
+                x: endPoint.x - unitX * headSize,
+                y: endPoint.y - unitY * headSize
+            )
+        }
+        
+        // 只有当线段长度为正时才添加线段
+        if sqrt(pow(lineEnd.x - lineStart.x, 2) + pow(lineEnd.y - lineStart.y, 2)) > 0.1 {
+            linePath.move(to: lineStart)
+            linePath.addLine(to: lineEnd)
+            elements.append(ShapeRenderElement(path: linePath, style: lineStyle))
+        }
+        
+        // Add head arrow - now the arrow tip will be exactly at the endpoint
+        if options.contains(.head) {
+            let arrowHeadPath = xArrowPath(size: headSize)
             let rotatedHeadPath = (arrowHeadPath * Matrix2D(rotationAngle: angle)) ?? AppBezierPath()
             let headElement = MarkRenderElement(
                 path: rotatedHeadPath,
@@ -111,11 +133,11 @@ public struct ArrowRenderElement: ContextRenderable {
             elements.append(headElement)
         }
         
-        // 处理箭头尾部 - 预先旋转路径，指向反方向
+        // Add tail arrow - now the arrow tip will be exactly at the startpoint
         if options.contains(.tail) {
-            let arrowTailPath = AppBezierPath.xArrow(size: headSize)
-            // 预旋转路径，使其指向反方向
-            let tailAngle = angle + .pi  // 添加π（180度）使其指向反方向
+            let arrowTailPath = xArrowPath(size: headSize)
+            // Rotate by 180 degrees to point in opposite direction
+            let tailAngle = angle + .pi
             let rotatedTailPath = (arrowTailPath * Matrix2D(rotationAngle: tailAngle)) ?? AppBezierPath()
             let tailElement = MarkRenderElement(
                 path: rotatedTailPath,
@@ -128,6 +150,17 @@ public struct ArrowRenderElement: ContextRenderable {
         
         return elements
     }
+    
+    private static func xArrowPath(size: Double) -> AppBezierPath {
+        let half = size / 2
+        let path = AppBezierPath()
+        path.move(to: .zero)
+        path.addLine(to: .init(x: -size, y: -half))
+        path.addLine(to: .init(x: -size, y: half))
+        path.close()
+        return path
+    }
+
 }
 
 extension ArrowRenderElement: Transformable {

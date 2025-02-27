@@ -13,13 +13,26 @@ import AppKit
 import UIKit
 #endif
 
+extension Double {
+    @usableFromInline
+    static let arrowSize: Double = 5
+    @usableFromInline
+    static let arrowLineWidth: Double = 1
+}
+
 public final class DebugArrow {
     
     public enum Style {
-        case simple(color: AppColor, headSize: Double, bodyWidth: Double)
-        case triangle(color: AppColor, headSize: Double, bodyWidth: Double)
-        case doubleEnded(color: AppColor, headSize: Double, bodyWidth: Double)
-        case custom(lineStyle: ShapeRenderStyle, arrowStyle: ShapeRenderStyle, options: ArrowRenderElement.ArrowOptions)
+        case simple(color: AppColor, headSize: Double = .arrowSize, bodyWidth: Double = .arrowLineWidth)
+        case triangle(color: AppColor, headSize: Double = .arrowSize, bodyWidth: Double = .arrowLineWidth)
+        case doubleEnded(color: AppColor, headSize: Double = .arrowSize, bodyWidth: Double = .arrowLineWidth)
+        case custom(
+            lineStyle: ShapeRenderStyle,
+            arrowStyle: ShapeRenderStyle,
+            headSize: Double = .arrowSize,
+            bodyWidth: Double = .arrowLineWidth,
+            options: ArrowRenderElement.ArrowOptions
+        )
     }
     
     public let head: CGPoint
@@ -101,10 +114,12 @@ extension DebugArrow.Style {
                 options: [.head, .tail]
             )
             
-        case .custom(let lineStyle, let arrowStyle, let options):
+        case .custom(let lineStyle, let arrowStyle, let headSize, let bodyWidth, let options):
             return ArrowRenderElement(
                 startPoint: tail,
                 endPoint: head,
+                headSize: headSize,
+                bodyWidth: bodyWidth,
                 lineStyle: lineStyle,
                 arrowStyle: arrowStyle,
                 options: options
@@ -115,27 +130,27 @@ extension DebugArrow.Style {
 
 
 // Example demonstrating different arrow styles
-#Preview(traits: .fixedLayout(width: 500, height: 400)) {
+#Preview(traits: .fixedLayout(width: 300, height: 400)) {
     DebugView(elements: [
         // Simple arrow
         DebugArrow(
             tail: .init(x: 20, y: 20),
-            head: .init(x: 100, y: 20),
-            style: .simple(color: .red, headSize: 10, bodyWidth: 2)
+            head: .init(x: 100, y: 40),
+            style: .simple(color: .red)
         ),
         
         // Triangle arrow
         DebugArrow(
             tail: .init(x: 20, y: 60),
             head: .init(x: 100, y: 60),
-            style: .triangle(color: .green, headSize: 10, bodyWidth: 2)
+            style: .triangle(color: .green)
         ),
         
         // Double-ended arrow
         DebugArrow(
             tail: .init(x: 20, y: 100),
             head: .init(x: 100, y: 100),
-            style: .doubleEnded(color: .blue, headSize: 10, bodyWidth: 2)
+            style: .doubleEnded(color: .blue)
         ),
         
         // Custom arrow with specific options
@@ -143,7 +158,7 @@ extension DebugArrow.Style {
             tail: .init(x: 20, y: 140),
             head: .init(x: 100, y: 140),
             style: .custom(
-                lineStyle: ShapeRenderStyle(stroke: .init(color: .purple, style: .init(lineWidth: 2))),
+                lineStyle: ShapeRenderStyle(stroke: .init(color: .purple, style: .init(lineWidth: 1))),
                 arrowStyle: ShapeRenderStyle(
                     stroke: .init(color: .orange, style: .init(lineWidth: 1)),
                     fill: .init(color: .orange)
@@ -163,22 +178,22 @@ extension DebugArrow.Style {
         DebugArrow(
             tail: .init(x: 50, y: 180),
             head: .init(x: 50, y: 230),
-            style: .triangle(color: .purple, headSize: 8, bodyWidth: 1.5)
+            style: .triangle(color: .purple)
         ),
         DebugArrow(
             tail: .init(x: 50, y: 230),
             head: .init(x: 100, y: 230),
-            style: .triangle(color: .purple, headSize: 8, bodyWidth: 1.5)
+            style: .triangle(color: .purple)
         ),
         DebugArrow(
             tail: .init(x: 100, y: 230),
             head: .init(x: 100, y: 180),
-            style: .triangle(color: .purple, headSize: 8, bodyWidth: 1.5)
+            style: .triangle(color: .purple)
         ),
         DebugArrow(
             tail: .init(x: 100, y: 180),
             head: .init(x: 50, y: 180),
-            style: .triangle(color: .purple, headSize: 8, bodyWidth: 1.5)
+            style: .triangle(color: .purple)
         )
     ], numSegments: 8, coordinateSystem: .yDown)
 }
