@@ -19,7 +19,6 @@ extension TextRenderStyle {
         font: AppFont.systemFont(ofSize: 10),
         insets: .zero,
         margin: .zero,
-        cornerRadius: 0,
         anchor: .topLeft,
         textColor: AppColor.white
     )
@@ -28,7 +27,6 @@ extension TextRenderStyle {
         font: AppFont(name: "HelveticaNeueInterface-Thin", size: 10) ?? AppFont.systemFont(ofSize: 10),
         insets: .zero,
         margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
-        cornerRadius: 0,
         anchor: .topCenter,
         textColor: AppColor.lightGray
     )
@@ -37,7 +35,6 @@ extension TextRenderStyle {
         font: AppFont(name: "HelveticaNeueInterface-Thin", size: 10) ?? AppFont.systemFont(ofSize: 10),
         insets: .zero,
         margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
-        cornerRadius: 0,
         anchor: .midRight,
         textColor: AppColor.lightGray
     )
@@ -46,7 +43,6 @@ extension TextRenderStyle {
         font: AppFont.italicSystemFont(ofSize: 10),
         insets: .zero,
         margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
-        cornerRadius: 0,
         anchor: .topRight,
         textColor: AppColor.lightGray
     )
@@ -55,10 +51,9 @@ extension TextRenderStyle {
         font: AppFont.italicSystemFont(ofSize: 10),
         insets: .zero,
         margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
-        cornerRadius: 4,
         anchor: .midCenter,
         textColor: AppColor.white,
-        bgColor: .blue
+        bgStyle: .capsule(color: .gray, filled: true)
     )
 }
 

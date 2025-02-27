@@ -20,10 +20,9 @@ public struct TextRenderStyle: @unchecked Sendable {
     public var insets: AppEdgeInsets
     /// outer insets, control spacing
     public var margin: AppEdgeInsets
-    public var cornerRadius: Double
     public var anchor: Anchor
     public var textColor: AppColor
-    public var bgColor: AppColor?
+    public var bgStyle: BgStyle?
     
     public var attributes: [NSAttributedString.Key: Any] {
         var attr = [NSAttributedString.Key: Any]()
@@ -36,18 +35,16 @@ public struct TextRenderStyle: @unchecked Sendable {
         font: AppFont,
         insets: AppEdgeInsets,
         margin: AppEdgeInsets,
-        cornerRadius: Double,
         anchor: Anchor,
         textColor: AppColor,
-        bgColor: AppColor? = nil
+        bgStyle: BgStyle? = nil
     ) {
         self.font = font
         self.insets = insets
         self.margin = margin
-        self.cornerRadius = cornerRadius
         self.anchor = anchor
         self.textColor = textColor
-        self.bgColor = bgColor
+        self.bgStyle = bgStyle
     }
     
     public func getTextSize(text: String) -> CGSize {
@@ -142,11 +139,45 @@ extension CGContext {
         let gContext = NSGraphicsContext(cgContext: self, flipped: true)
         NSGraphicsContext.current = gContext
         
-        if let bgColor = style.bgColor {
-            let path = AppBezierPath(roundedRect: bgBounds, cornerRadius: style.cornerRadius)
+        if let bgStyle = style.bgStyle {
+            let path: AppBezierPath
+            switch bgStyle {
+            case .rect:
+                path = AppBezierPath(rect: bgBounds)
+            case .roundRect(radius: let radius, _, _):
+                var rect = bgBounds
+                if bgBounds.width < radius * 2 {
+                    rect = CGRect.init(
+                        center: bgBounds.center,
+                        size: .init(
+                            width: radius * 2,
+                            height: bgBounds.height
+                        )
+                    )
+                }
+                path = AppBezierPath(roundedRect: rect, cornerRadius: radius)
+            case .capsule:
+                var rect = bgBounds
+                if bgBounds.width < bgBounds.height {
+                    rect = CGRect(
+                        center: bgBounds.center,
+                        size: .init(
+                            width: bgBounds.height,
+                            height: bgBounds.height
+                        )
+                    )
+                }
+                path = AppBezierPath(roundedRect: rect, cornerRadius: rect.height/2)
+            }
             self.addPath(path.cgPath)
-            self.setFillColor(bgColor.cgColor)
-            self.fillPath()
+            if bgStyle.filled {
+                self.setFillColor(bgStyle.color.cgColor)
+                self.fillPath()
+            } else {
+                self.setStrokeColor(bgStyle.color.cgColor)
+                self.setLineWidth(1)
+                self.strokePath()
+            }
         }
         attributeString.draw(at: .zero)
         NSGraphicsContext.current = prevContext
