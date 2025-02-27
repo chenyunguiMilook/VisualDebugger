@@ -16,7 +16,7 @@ import UIKit
 public final class DebugSegment {
     
     public enum Style {
-        case arrow(color: AppColor, start: SegmentRenderElement.EndpointStyle?, end: SegmentRenderElement.EndpointStyle?)
+        case arrow(color: AppColor, dash: Bool, start: SegmentRenderElement.EndpointStyle?, end: SegmentRenderElement.EndpointStyle?)
         // TODO: should support multiple style, like length, this class should rename to DebugSegment
     }
     
@@ -33,7 +33,7 @@ public final class DebugSegment {
     public init(
         start: CGPoint,
         end: CGPoint,
-        style: Style = .arrow(color: .red, start: nil, end: .arrow(style: .triangle, filled: true)),
+        style: Style = .arrow(color: .red, dash: false, start: nil, end: .arrow(style: .triangle, filled: true)),
         styles: [Style] = [])
     {
         self.start = start
@@ -71,13 +71,14 @@ extension DebugSegment: Debuggable {
 extension DebugSegment.Style {
     func getRenderElements(start: CGPoint, end: CGPoint) -> [ContextRenderable] {
         switch self {
-        case .arrow(let color, let startStyle, let endStyle):
+        case .arrow(let color, let dash, let startStyle, let endStyle):
             return [SegmentRenderElement(
                 color: color,
                 startPoint: start,
                 endPoint: end,
                 startStyle: startStyle,
-                endStyle: endStyle
+                endStyle: endStyle,
+                dash: dash
             )]
         }
     }
@@ -111,7 +112,7 @@ extension DebugSegment.Style {
             .init(x: 50, y: 230),
             .init(x: 100, y: 230),
             .init(x: 100, y: 180)
-        ], style: .circle(color: .yellow, radius: 10)),
+        ], style: .circle(color: .yellow, radius: 5)),
         
         DebugSegment(
             start: .init(x: 50, y: 180),

@@ -13,6 +13,7 @@ public struct SegmentRenderElement: ContextRenderable {
     public let endPoint: CGPoint
     
     public let color: AppColor
+    public let dash: Bool
     public let lineWidth: CGFloat
     public let endpointsSize: CGFloat
 
@@ -28,10 +29,12 @@ public struct SegmentRenderElement: ContextRenderable {
         endPoint: CGPoint,
         startStyle: EndpointStyle? = nil,
         endStyle: EndpointStyle? = nil,
+        dash: Bool = false,
         lineWidth: CGFloat = 1,
         endpointsSize: CGFloat = 5
     ) {
         self.color = color
+        self.dash = dash
         self.startPoint = startPoint
         self.endPoint = endPoint
         self.startStyle = startStyle
@@ -69,7 +72,13 @@ public struct SegmentRenderElement: ContextRenderable {
             let linePath = AppBezierPath()
             linePath.move(to: segment.start)
             linePath.addLine(to: segment.end)
-            elements.append(ShapeRenderElement(path: linePath, style: .init(stroke: .init(color: color, style: .init(lineWidth: lineWidth)))))
+            let dashArray: [CGFloat] = dash ? [5, 5] : []
+            elements.append(
+                ShapeRenderElement(
+                    path: linePath,
+                    style: .init(stroke: .init(color: color, style: .init(lineWidth: lineWidth, dash: dashArray)))
+                )
+            )
         }
         
         if let startStyle {
