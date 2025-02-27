@@ -97,36 +97,33 @@ public struct ArrowRenderElement: ContextRenderable {
         linePath.addLine(to: endPoint)
         elements.append(ShapeRenderElement(path: linePath, style: lineStyle))
         
-        // 处理箭头头部
+        // 处理箭头头部 - 预先旋转路径
         if options.contains(.head) {
             let arrowHeadPath = AppBezierPath.xArrow(size: headSize)
+            // 预旋转路径
+            let rotatedHeadPath = (arrowHeadPath * Matrix2D(rotationAngle: angle)) ?? AppBezierPath()
             let headElement = MarkRenderElement(
-                path: arrowHeadPath,
+                path: rotatedHeadPath,
                 style: arrowStyle,
-                position: endPoint
+                position: endPoint,
+                rotatable: true
             )
-            
-            // 旋转元素以匹配箭头方向
-            let rotatedHeadElement = headElement.applying(
-                transform: Matrix2D(rotate: angle, aroundCenter: endPoint)
-            )
-            elements.append(rotatedHeadElement)
+            elements.append(headElement)
         }
         
-        // 处理箭头尾部
+        // 处理箭头尾部 - 预先旋转路径，指向反方向
         if options.contains(.tail) {
             let arrowTailPath = AppBezierPath.xArrow(size: headSize)
+            // 预旋转路径，使其指向反方向
+            let tailAngle = angle + .pi  // 添加π（180度）使其指向反方向
+            let rotatedTailPath = (arrowTailPath * Matrix2D(rotationAngle: tailAngle)) ?? AppBezierPath()
             let tailElement = MarkRenderElement(
-                path: arrowTailPath,
+                path: rotatedTailPath,
                 style: arrowStyle,
-                position: startPoint
+                position: startPoint,
+                rotatable: true
             )
-            
-            // 旋转元素以匹配反向箭头方向
-            let rotatedTailElement = tailElement.applying(
-                transform: Matrix2D(rotate: angle + .pi, aroundCenter: startPoint)
-            )
-            elements.append(rotatedTailElement)
+            elements.append(tailElement)
         }
         
         return elements
