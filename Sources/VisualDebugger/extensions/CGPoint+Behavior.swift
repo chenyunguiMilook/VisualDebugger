@@ -27,6 +27,20 @@ extension Array where Element == CGPoint {
     }
 }
 
+extension CGPoint {
+    public var angle: CGFloat {
+        return CGFloat(atan2(Double(self.y), Double(self.x)))
+    }
+
+    public var length: CGFloat {
+        return sqrt(self.x * self.x + self.y * self.y)
+    }
+
+    public var squareLength: CGFloat {
+        return self.x * self.x + self.y * self.y
+    }
+}
+
 public func += (left: inout CGPoint, right: CGPoint) {
     left.x += right.x
     left.y += right.y
