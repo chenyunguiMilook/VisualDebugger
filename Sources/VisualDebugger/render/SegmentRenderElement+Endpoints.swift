@@ -26,7 +26,13 @@ extension SegmentRenderElement.EndpointStyle {
     
     var occupiedWidth: Bool {
         switch self {
-        case .arrow: true
+        case .arrow(let style, _):
+            switch style {
+            case .triangle:
+                true
+            default:
+                false
+            }
         case .rect: true
         case .circle: true
         case .range: false
