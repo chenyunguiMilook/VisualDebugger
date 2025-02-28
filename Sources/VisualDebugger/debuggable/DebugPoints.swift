@@ -15,7 +15,7 @@ import AppKit
 
 public final class DebugPoints {
     
-    public enum Style {
+    public enum PointStyle {
         case dot(color: AppColor, radius: Double)
         case circle(color: AppColor, radius: Double)
         case cross(color: AppColor, size: Double)
@@ -23,25 +23,36 @@ public final class DebugPoints {
         // TODO: support label, polygon, polyShape, highlight(index), measure(fromIndex, toIndex), transform(Matrix) etc...
     }
     
+    public enum EdgeStyle { // for each pair of vertics
+        case line(color: AppColor)
+        case dashed(color: AppColor)
+    }
+    
     public let points: [CGPoint]
     
     // additional style
-    private var _styles: [Style] = []
-    public var styles: [Style] {
+    private var _styles: [PointStyle] = []
+    public var styles: [PointStyle] {
         [baseStyle] + _styles
     }
 
-    public var baseStyle: Style
+    public var baseStyle: PointStyle
     
-    public init(points: [CGPoint], style: Style = .dot(color: .yellow, radius: 2), styles: [Style] = []) {
+    // TOOD: support init from primitives, like polygon, triangle
+    
+    public init(points: [CGPoint], style: PointStyle = .dot(color: .yellow, radius: 2), styles: [PointStyle] = []) {
         self.points = points
         self.baseStyle = style
         self._styles = styles
     }
     
-    public func addStyle(_ style: Style) -> Self {
+    public func addStyle(_ style: PointStyle) -> Self {
         _styles.append(style)
         return self
+    }
+    
+    public func overridePointStyle(at index: Int, style: PointStyle) {
+        
     }
 }
 
@@ -64,7 +75,7 @@ extension DebugPoints: Debuggable {
     }
 }
 
-extension DebugPoints.Style {
+extension DebugPoints.PointStyle {
     
     func getRenderElements(points: [CGPoint]) -> [ContextRenderable] {
         switch self {

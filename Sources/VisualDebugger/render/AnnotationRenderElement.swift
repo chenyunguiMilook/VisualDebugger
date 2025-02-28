@@ -18,14 +18,12 @@ public struct AnnotationRenderElement: ContextRenderable {
     public let annotation: String
     public let direction: Direction
     public let offset: Double
-    public let style: TextRenderStyle
     
-    public init(center: CGPoint, direction: Direction, offset: Double, annotation: String, style: TextRenderStyle) {
+    public init(center: CGPoint, direction: Direction, offset: Double, annotation: String) {
         self.center = center
         self.direction = direction
         self.offset = offset
         self.annotation = annotation
-        self.style = style
     }
     
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
