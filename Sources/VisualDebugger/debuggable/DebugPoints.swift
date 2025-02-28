@@ -20,8 +20,8 @@ public final class DebugPoints {
         case index(name: String? = nil)
     }
     public enum EdgeStyle { // for each pair of vertics
-        case line(color: AppColor)
-        case dashed(color: AppColor)
+        case line(dashed: Bool)
+        case arrow(dashed: Bool)
     }
     
     public let points: [CGPoint]
