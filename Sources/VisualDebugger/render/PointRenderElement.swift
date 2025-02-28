@@ -18,7 +18,9 @@ extension Double {
 }
 extension Bool {
     @usableFromInline
-    static let filled: Bool = false
+    static let shapeFilled = true
+    @usableFromInline
+    static let labelFilled = false
 }
 
 public struct PointRenderElement: ContextRenderable {
@@ -46,8 +48,8 @@ public enum PointStyle {
     public enum Shape {
         case rect, circle, triangle
     }
-    case shape(shape: Shape, color: AppColor, name: String? = nil, radius: Double = .pointRadius, filled: Bool = .filled)
-    case label(String, color: AppColor, name: String? = nil, filled: Bool = .filled)
+    case shape(shape: Shape, color: AppColor, name: String? = nil, radius: Double = .pointRadius, filled: Bool = .shapeFilled)
+    case label(String, color: AppColor, name: String? = nil, filled: Bool = .labelFilled)
 }
 
 extension PointStyle.Shape {

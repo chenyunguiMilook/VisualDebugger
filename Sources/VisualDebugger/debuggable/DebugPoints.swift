@@ -37,7 +37,7 @@ public final class DebugPoints {
         vertexStyle: VertexStyle = .shape(.circle),
         color: AppColor = .yellow,
         radius: Double = .pointRadius,
-        filled: Bool = .filled
+        filled: Bool = .shapeFilled
     ) {
         self.points = points
         switch vertexStyle {
@@ -45,10 +45,10 @@ public final class DebugPoints {
             self.pointStyle = .shape(shape: shape, color: color, name: nil, radius: radius, filled: filled)
         case .index:
             for i in 0 ..< points.count {
-                self.pointStyleDict[i] = .label("\(i)", color: color, filled: filled)
+                self.pointStyleDict[i] = .label("\(i)", color: color)
             }
         case .label(let string, _):
-            self.pointStyle = .label(string, color: color, filled: filled)
+            self.pointStyle = .label(string, color: color)
         }
     }
     
@@ -67,15 +67,16 @@ public final class DebugPoints {
         style: VertexStyle,
         color: AppColor? = nil,
         radius: Double = .pointRadius,
-        filled: Bool = true
+        shapeFilled: Bool = .shapeFilled,
+        labelFilled: Bool = .labelFilled
     ) -> DebugPoints {
         let pointStyle: PointStyle = switch style {
         case .shape(let shape, let name):
-            .shape(shape: shape, color: color ?? pointStyle.color, name: name, radius: radius, filled: filled)
+                .shape(shape: shape, color: color ?? pointStyle.color, name: name, radius: radius, filled: shapeFilled)
         case .label(let string, let name):
-            .label(string, color: color ?? pointStyle.color, name: name, filled: filled)
+                .label(string, color: color ?? pointStyle.color, name: name, filled: labelFilled)
         case .index(let name):
-            .label("\(index)", color: color ?? pointStyle.color, name: name, filled: filled)
+                .label("\(index)", color: color ?? pointStyle.color, name: name, filled: labelFilled)
         }
         pointStyleDict[index] = pointStyle
         return self

@@ -77,7 +77,7 @@ extension SegmentRenderElement.EndpointStyle {
                 rotatable: true
             )
         case .rect(let filled):
-            let rect = CGRect(anchor: .midRight, center: .zero, size: .init(width: size, height: size))
+            let rect = CGRect(anchor: .midCenter, center: .zero, size: .init(width: size, height: size))
             let path = AppBezierPath(rect: rect)
             return MarkRenderElement(
                 path: path,
@@ -86,7 +86,7 @@ extension SegmentRenderElement.EndpointStyle {
                 rotatable: true
             )
         case .circle(let filled):
-            let rect = CGRect(anchor: .midRight, center: .zero, size: .init(width: size, height: size))
+            let rect = CGRect(anchor: .midCenter, center: .zero, size: .init(width: size, height: size))
             let path = AppBezierPath(ovalIn: rect)
             return MarkRenderElement(
                 path: path,
