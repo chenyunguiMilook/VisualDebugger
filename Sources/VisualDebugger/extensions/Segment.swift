@@ -31,6 +31,10 @@ public struct Segment {
         vector.angle
     }
     
+    public var center: CGPoint {
+        (start + end) / 2.0
+    }
+    
     // 返回单位向量
     private func unitVector() -> CGPoint {
         let L = length
@@ -96,5 +100,23 @@ public struct Segment {
         let uv = unitVector()
         let newEnd = movePoint(end, by: length, along: uv)
         return Segment(start: start, end: newEnd)
+    }
+    
+    public func offseting(distance: Double) -> Segment {
+        // If distance is 0 or segment has no length, return original segment
+        if distance == 0 || self.length == 0 { return self }
+        
+        // Get unit vector of the segment
+        let uv = unitVector()
+        
+        // Rotate 90 degrees counterclockwise (positive direction)
+        // For a vector (x, y), 90° rotation CCW is (-y, x)
+        let perpendicular = CGPoint(x: -uv.y, y: uv.x)
+        
+        // Move both start and end points along perpendicular vector
+        let newStart = movePoint(start, by: distance, along: perpendicular)
+        let newEnd = movePoint(end, by: distance, along: perpendicular)
+        
+        return Segment(start: newStart, end: newEnd)
     }
 }

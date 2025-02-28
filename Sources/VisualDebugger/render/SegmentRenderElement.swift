@@ -19,6 +19,7 @@ public struct SegmentRenderElement: ContextRenderable {
 
     public let startStyle: EndpointStyle?
     public let endStyle: EndpointStyle?
+    public let name: String?
 
     var hasStart: Bool { startStyle != nil }
     var hasEnd: Bool { endStyle != nil }
@@ -29,6 +30,7 @@ public struct SegmentRenderElement: ContextRenderable {
         endPoint: CGPoint,
         startStyle: EndpointStyle? = nil,
         endStyle: EndpointStyle? = nil,
+        name: String? = nil,
         dash: Bool = false,
         lineWidth: CGFloat = 1,
         endpointsSize: CGFloat = 5
@@ -39,6 +41,7 @@ public struct SegmentRenderElement: ContextRenderable {
         self.endPoint = endPoint
         self.startStyle = startStyle
         self.endStyle = endStyle
+        self.name = name
         self.endpointsSize = endpointsSize
         self.lineWidth = lineWidth
     }
@@ -94,6 +97,11 @@ public struct SegmentRenderElement: ContextRenderable {
             elements.append(transformed)
         }
         
+        if let name {
+            let text = TextRenderElement(text: name, style: .edgeNameLabel, position: segment.center)
+            elements.append(text)
+        }
+        
         return elements
     }
 }
@@ -106,6 +114,7 @@ extension SegmentRenderElement: Transformable {
             endPoint: endPoint * transform,
             startStyle: startStyle,
             endStyle: endStyle,
+            name: name,
             dash: dash,
             lineWidth: lineWidth,
             endpointsSize: endpointsSize

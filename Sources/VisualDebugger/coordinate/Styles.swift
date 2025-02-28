@@ -64,6 +64,15 @@ extension TextRenderStyle {
         textColor: AppColor.white,
         textShadow: .init(color: .black, offset: .init(width: 0, height: 1), blur: 1)
     )
+    
+    public static let edgeNameLabel = TextRenderStyle(
+        font: AppFont.italicSystemFont(ofSize: 10),
+        insets: .zero,
+        margin: AppEdgeInsets(top: 2, left: 10, bottom: 2, right: 2),
+        anchor: .midCenter,
+        textColor: AppColor.white,
+        textShadow: .init(color: .black, offset: .init(width: 0, height: 1), blur: 1)
+    )
 }
 
 extension ShapeRenderStyle {

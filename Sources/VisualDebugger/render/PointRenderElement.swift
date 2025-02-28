@@ -67,6 +67,15 @@ extension PointStyle.Shape {
 }
 
 extension PointStyle {
+    var occupiedWidth: Double {
+        switch self {
+        case .shape(_, _, _, let radius, _):
+            return radius
+        case .label:
+            return 6
+        }
+    }
+        
     public var color: AppColor {
         switch self {
         case .shape(_, let color, _, _, _):

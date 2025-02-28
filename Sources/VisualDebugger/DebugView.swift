@@ -100,17 +100,3 @@ public final class DebugView: AppView {
     }
     #endif
 }
-
-#Preview(traits: .fixedLayout(width: 400, height: 420)) {
-    //DebugView(debugRect: .init(x: -10, y: -20, width: 100, height: 200))
-    DebugView(elements: [
-        DebugPoints(points: [
-            .init(x: 10, y: 10),
-            .init(x: 10, y: 23),
-            .init(x: 23, y: 67)
-        ], color: .yellow)
-        .overrideVertexStyle(at: 0, style: .shape(.rect, name: "start"))
-        .overrideVertexStyle(at: 1, style: .label("A", name: "end"))
-        
-    ], coordinateSystem: .yDown)
-}
