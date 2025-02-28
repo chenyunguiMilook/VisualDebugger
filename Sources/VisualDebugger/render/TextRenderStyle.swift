@@ -22,6 +22,7 @@ public struct TextRenderStyle: @unchecked Sendable {
     public var margin: AppEdgeInsets
     public var anchor: Anchor
     public var textColor: AppColor
+    public var textShadow: Shadow?
     public var bgStyle: BgStyle?
     
     public var attributes: [NSAttributedString.Key: Any] {
@@ -37,6 +38,7 @@ public struct TextRenderStyle: @unchecked Sendable {
         margin: AppEdgeInsets,
         anchor: Anchor,
         textColor: AppColor,
+        textShadow: Shadow? = nil,
         bgStyle: BgStyle? = nil
     ) {
         self.font = font
@@ -44,6 +46,7 @@ public struct TextRenderStyle: @unchecked Sendable {
         self.margin = margin
         self.anchor = anchor
         self.textColor = textColor
+        self.textShadow = textShadow
         self.bgStyle = bgStyle
     }
     
@@ -104,6 +107,9 @@ extension CGContext {
         if let bgStyle = style.bgStyle {
             renderBg(bgStyle: bgStyle, bgBounds: bgBounds)
         }
+        if let shadow = style.textShadow {
+            self.setShadow(offset: shadow.offset, blur: shadow.blur, color: shadow.color.cgColor)
+        }
         attributeString.draw(at: .zero)
         UIGraphicsPopContext()
     }
@@ -138,6 +144,10 @@ extension CGContext {
         
         if let bgStyle = style.bgStyle {
             renderBg(bgStyle: bgStyle, bgBounds: bgBounds)
+        }
+        
+        if let shadow = style.textShadow {
+            self.setShadow(offset: shadow.offset, blur: shadow.blur, color: shadow.color.cgColor)
         }
         attributeString.draw(at: .zero)
         NSGraphicsContext.current = prevContext

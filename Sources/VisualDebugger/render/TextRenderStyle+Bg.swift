@@ -5,12 +5,26 @@
 //  Created by chenyungui on 2025/2/27.
 //
 
+import CoreGraphics
+
 extension TextRenderStyle {
         
     public enum BgStyle {
         case rect(color: AppColor, filled: Bool)
         case roundRect(radius: Double, color: AppColor, filled: Bool)
         case capsule(color: AppColor, filled: Bool)
+    }
+    
+    public struct Shadow {
+        public var color: AppColor
+        public var offset: CGSize
+        public var blur: CGFloat
+        
+        public init(color: AppColor, offset: CGSize, blur: CGFloat) {
+            self.color = color
+            self.offset = offset
+            self.blur = blur
+        }
     }
 }
 

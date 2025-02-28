@@ -14,11 +14,11 @@ import AppKit
 
 extension Double {
     @usableFromInline
-    static let radius: Double = 2
+    static let pointRadius: Double = 2
 }
 extension Bool {
     @usableFromInline
-    static let filled: Bool = true
+    static let filled: Bool = false
 }
 
 public struct PointRenderElement: ContextRenderable {
@@ -32,8 +32,9 @@ public struct PointRenderElement: ContextRenderable {
     }
     
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
-        style.getRenderElement(center: center)
-            .render(in: context, scale: scale, contextHeight: contextHeight)
+        for element in style.getRenderElements(center: center) {
+            element.render(in: context, scale: scale, contextHeight: contextHeight)
+        }
     }
     
     public func applying(transform: Matrix2D) -> PointRenderElement {
@@ -45,8 +46,8 @@ public enum PointStyle {
     public enum Shape {
         case rect, circle, triangle
     }
-    case shape(shape: Shape, color: AppColor, radius: Double = .radius, filled: Bool = .filled)
-    case label(String, color: AppColor, filled: Bool = .filled)
+    case shape(shape: Shape, color: AppColor, name: String? = nil, radius: Double = .pointRadius, filled: Bool = .filled)
+    case label(String, color: AppColor, name: String? = nil, filled: Bool = .filled)
 }
 
 extension PointStyle.Shape {
@@ -66,13 +67,13 @@ extension PointStyle.Shape {
 extension PointStyle {
     public var color: AppColor {
         switch self {
-        case .shape(_, let color, _, _):
+        case .shape(_, let color, _, _, _):
             return color
-        case .label(_, let color, _):
+        case .label(_, let color, _, _):
             return color
         }
     }
-    public func getRenderElement(center: CGPoint) -> ContextRenderable {
+    public func getRenderElements(center: CGPoint) -> [ContextRenderable] {
         func getStyle(color: AppColor, filled: Bool) -> ShapeRenderStyle {
             if filled {
                 ShapeRenderStyle(fill: .init(color: color))
@@ -81,15 +82,24 @@ extension PointStyle {
             }
         }
         switch self {
-        case .shape(let shape, let color, let radius, let filled):
+        case .shape(let shape, let color, let name, let radius, let filled):
             let path = shape.getPath(radius: radius)
             let style = getStyle(color: color, filled: filled)
-            return MarkRenderElement(path: path, style: style, position: center, rotatable: false)
-        case .label(let string, let color, let filled):
+            let shape = MarkRenderElement(path: path, style: style, position: center, rotatable: false)
+            var elements: [ContextRenderable] = [shape]
+            if let name {
+                elements.append(TextRenderElement(text: name, style: .nameLabel, position: center))
+            }
+            return elements
+        case .label(let string, let color, let name, let filled):
             var style = TextRenderStyle.indexLabel
             style.textColor = filled ? .white : color
             style.bgStyle = .capsule(color: color, filled: filled)
-            return TextRenderElement(text: string, style: style, position: center)
+            var elements = [TextRenderElement(text: string, style: style, position: center)]
+            if let name {
+                elements.append(TextRenderElement(text: name, style: .nameLabel, position: center))
+            }
+            return elements
         }
     }
 }
