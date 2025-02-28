@@ -114,7 +114,7 @@ extension DebugSegment.Style {
             .init(x: 50, y: 230),
             .init(x: 100, y: 230),
             .init(x: 100, y: 180)
-        ], style: .circle(color: .yellow, radius: 5)),
+        ]),
         
         DebugSegment(
             start: .init(x: 50, y: 180),
