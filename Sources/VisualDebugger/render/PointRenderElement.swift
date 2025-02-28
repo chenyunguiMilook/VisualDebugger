@@ -50,7 +50,7 @@ public enum PointStyle {
 }
 
 extension PointStyle.Shape {
-    func getPath(radius: Double) -> AppBezierPath {
+    public func getPath(radius: Double) -> AppBezierPath {
         let rect = CGRect(center: .zero, size: .init(width: radius * 2, height: radius * 2))
         switch self {
         case .rect:
@@ -64,8 +64,15 @@ extension PointStyle.Shape {
 }
 
 extension PointStyle {
-    
-    func getRenderElement(center: CGPoint) -> ContextRenderable {
+    public var color: AppColor {
+        switch self {
+        case .shape(_, let color, _, _):
+            return color
+        case .label(_, let color, _):
+            return color
+        }
+    }
+    public func getRenderElement(center: CGPoint) -> ContextRenderable {
         func getStyle(color: AppColor, filled: Bool) -> ShapeRenderStyle {
             if filled {
                 ShapeRenderStyle(fill: .init(color: color))
@@ -80,6 +87,7 @@ extension PointStyle {
             return MarkRenderElement(path: path, style: style, position: center, rotatable: false)
         case .label(let string, let color, let filled):
             var style = TextRenderStyle.indexLabel
+            style.textColor = filled ? .white : color
             style.bgStyle = .capsule(color: color, filled: filled)
             return TextRenderElement(text: string, style: style, position: center)
         }

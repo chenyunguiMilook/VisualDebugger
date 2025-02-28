@@ -109,7 +109,7 @@ public final class DebugView: AppView {
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)
         ])
-        .overridePointStyle(at: 0, style: .label("1", color: .red))
+        .overrideVertexStyle(at: 0, style: .index, color: .red, filled: true)
         
     ], coordinateSystem: .yDown)
 }
