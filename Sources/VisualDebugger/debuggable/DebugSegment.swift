@@ -7,10 +7,10 @@
 
 import Foundation
 import CoreGraphics
-#if canImport(AppKit)
-import AppKit
-#elseif canImport(UIKit)
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
 #endif
 
 public final class DebugSegment {
@@ -33,7 +33,7 @@ public final class DebugSegment {
     public init(
         start: CGPoint,
         end: CGPoint,
-        style: Style = .arrow(color: .red, dash: false, start: nil, end: .arrow(style: .triangle, filled: true)),
+        style: Style = .arrow(color: AppColor.red, dash: false, start: nil, end: .arrow(style: .triangle, filled: true)),
         styles: [Style] = [])
     {
         self.start = start
@@ -58,11 +58,11 @@ extension DebugSegment: Debuggable {
         return DebugSegment(start: start * transform, end: end * transform, style: baseStyle, styles: _styles)
     }
     
-    public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
+    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         for style in styles {
             let elements = style.getRenderElements(start: start, end: end)
             for element in elements {
-                element.render(in: context, contentScaleFactor: contentScaleFactor, contextHeight: contextHeight)
+                element.render(in: context, scale: scale, contextHeight: contextHeight)
             }
         }
     }

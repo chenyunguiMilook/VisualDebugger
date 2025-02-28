@@ -43,10 +43,10 @@ public struct SegmentRenderElement: ContextRenderable {
         self.lineWidth = lineWidth
     }
     
-    public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
+    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         let elements = self.createRenderElements()
         for element in elements {
-            element.render(in: context, contentScaleFactor: contentScaleFactor, contextHeight: contextHeight)
+            element.render(in: context, scale: scale, contextHeight: contextHeight)
         }
     }
     

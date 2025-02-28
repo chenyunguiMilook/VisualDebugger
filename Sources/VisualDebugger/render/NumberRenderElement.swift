@@ -45,18 +45,18 @@ public struct NumberRenderElement: ContextRenderable {
     public func render(in context: CGContext) {
         self.render(
             in: context,
-            contentScaleFactor: 1,
+            scale: 1,
             contextHeight: nil
         )
     }
     
-    public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
+    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         guard let text else { return }
         context.render(
             text: text,
             transform: Matrix2D(translation: position),
             style: style,
-            contentScaleFactor: contentScaleFactor,
+            scale: scale,
             contextHeight: contextHeight
         )
     }

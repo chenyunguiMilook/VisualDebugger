@@ -102,7 +102,7 @@ public final class DebugContext {
             for element in coordElements {
                 element.applying(transform: transform).render(
                     in: context,
-                    contentScaleFactor: scale,
+                    scale: scale,
                     contextHeight: contextHeight
                 )
             }
@@ -110,7 +110,7 @@ public final class DebugContext {
         for element in elements {
             element.applying(transform: transform).render(
                 in: context,
-                contentScaleFactor: scale,
+                scale: scale,
                 contextHeight: contextHeight
             )
         }

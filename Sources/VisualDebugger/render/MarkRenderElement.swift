@@ -21,7 +21,7 @@ public struct MarkRenderElement: ContextRenderable {
         self.rotatable = rotatable
     }
     
-    public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
+    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         guard let path = path * Matrix2D(translation: position) else { return }
         context.render(path: path.cgPath, style: style)
     }

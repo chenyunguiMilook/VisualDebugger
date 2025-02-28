@@ -12,7 +12,7 @@ public protocol Transformable {
 }
 
 public protocol ContextRenderable: Transformable {
-    func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?)
+    func render(in context: CGContext, scale: CGFloat, contextHeight: Int?)
 }
 
 public protocol Debuggable: ContextRenderable {
@@ -25,9 +25,9 @@ extension Array where Element == any Debuggable {
         self.compactMap { $0.debugBounds }.bounds
     }
     
-    public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
+    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         for element in self {
-            element.render(in: context, contentScaleFactor: contentScaleFactor, contextHeight: contextHeight)
+            element.render(in: context, scale: scale, contextHeight: contextHeight)
         }
     }
 }

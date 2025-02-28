@@ -15,9 +15,9 @@ extension Array: Transformable where Element: Transformable {
 }
 
 extension Array: ContextRenderable where Element: ContextRenderable {
-    public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
+    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         for element in self {
-            element.render(in: context, contentScaleFactor: contentScaleFactor, contextHeight: contextHeight)
+            element.render(in: context, scale: scale, contextHeight: contextHeight)
         }
     }
 }

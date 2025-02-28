@@ -23,17 +23,17 @@ public struct TextRenderElement: ContextRenderable {
     public func render(in context: CGContext) {
         self.render(
             in: context,
-            contentScaleFactor: 1,
+            scale: 1,
             contextHeight: nil
         )
     }
     
-    public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
+    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         context.render(
             text: self.text,
             transform: Matrix2D(translation: position),
             style: style,
-            contentScaleFactor: contentScaleFactor,
+            scale: scale,
             contextHeight: contextHeight
         )
     }

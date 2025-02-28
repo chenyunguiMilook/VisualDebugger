@@ -54,11 +54,11 @@ extension DebugPoints: Debuggable {
         DebugPoints(points: points * transform, style: baseStyle, styles: _styles)
     }
     
-    public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
+    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         for style in styles {
             let elements = style.getRenderElements(points: points)
             for element in elements {
-                element.render(in: context, contentScaleFactor: contentScaleFactor, contextHeight: contextHeight)
+                element.render(in: context, scale: scale, contextHeight: contextHeight)
             }
         }
     }

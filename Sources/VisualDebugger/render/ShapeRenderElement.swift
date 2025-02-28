@@ -18,7 +18,7 @@ public struct ShapeRenderElement: ContextRenderable {
         self.style = style
     }
     
-    public func render(in context: CGContext, contentScaleFactor: CGFloat, contextHeight: Int?) {
+    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         context.render(path: path.cgPath, style: style)
     }
 }

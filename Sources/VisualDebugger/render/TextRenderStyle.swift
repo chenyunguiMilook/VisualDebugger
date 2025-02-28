@@ -78,7 +78,7 @@ extension CGContext {
         transform: CGAffineTransform,
         style: TextRenderStyle,
         alpha: Double = 1,
-        contentScaleFactor: CGFloat = 1,
+        scale: CGFloat = 1,
         contextHeight: Int? = nil,
         flipText: Bool = false
     ) {
@@ -96,7 +96,7 @@ extension CGContext {
         let anchorToZeroM = Matrix2D(translation: -bounds.getAnchor(style.anchor))
         let flipVertically = flipText ? Matrix2D(scaleX: 1, scaleY: -1, aroundCenter: bounds.center) : .identity
         let _contextHeight = CGFloat(contextHeight ?? self.height)
-        self.fixCTM(scaleFactor: contentScaleFactor, contextHeight: _contextHeight)
+        self.fixCTM(scaleFactor: scale, contextHeight: _contextHeight)
         self.concatenate((flipVertically * anchorToZeroM * transform))
         self.setAlpha(alpha)
         
@@ -114,7 +114,7 @@ extension CGContext {
         transform: CGAffineTransform,
         style: TextRenderStyle,
         alpha: Double = 1,
-        contentScaleFactor: CGFloat = 1,
+        scale: CGFloat = 1,
         contextHeight: Int? = nil
     ) {
         guard !text.isEmpty else { return }
