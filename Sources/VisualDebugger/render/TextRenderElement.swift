@@ -20,14 +20,6 @@ public struct TextRenderElement: ContextRenderable {
         self.position = position
     }
     
-    public func render(in context: CGContext) {
-        self.render(
-            in: context,
-            scale: 1,
-            contextHeight: nil
-        )
-    }
-    
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         context.render(
             text: self.text,

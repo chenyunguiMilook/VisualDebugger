@@ -41,15 +41,7 @@ public struct NumberRenderElement: ContextRenderable {
         self.style = style
         self.position = position
     }
-    
-    public func render(in context: CGContext) {
-        self.render(
-            in: context,
-            scale: 1,
-            contextHeight: nil
-        )
-    }
-    
+        
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         guard let text else { return }
         context.render(
