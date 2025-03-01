@@ -82,7 +82,7 @@ public final class DebugMesh {
     ) -> DebugMesh {
         let pointStyle: PointStyle = switch style {
         case .shape(let shape, let name):
-                .shape(shape: shape, color: color ?? pointStyle.color, name: name, radius: radius, filled: shapeFilled)
+                .shape(shape: shape, color: color ?? pointStyle.color, name: name, radius: radius)
         case .label(_, let name):
                 .label("\(index)", color: color ?? pointStyle.color, name: name, filled: labelFilled)
         case .index(let name):

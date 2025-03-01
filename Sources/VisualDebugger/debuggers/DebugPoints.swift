@@ -33,15 +33,14 @@ public final class DebugPoints {
         vertexStyle: VertexStyle = VertexStyle.shape(.circle),
         edgeStyle: EdgeStyle = .arrow(dashed: false),
         color: AppColor = .yellow,
-        radius: Double = .pointRadius,
-        filled: Bool = .shapeFilled
+        radius: Double = .pointRadius
     ) {
         self.points = points
         self.isClosed = isClosed
         self.pointStyle = .shape(shape: .circle, color: color)
         switch vertexStyle {
         case .shape(let shape, _):
-            self.pointStyle = .shape(shape: shape, color: color, name: nil, radius: radius, filled: filled)
+            self.pointStyle = .shape(shape: shape, color: color, name: nil, radius: radius)
         case .index:
             for i in 0 ..< points.count {
                 self.pointStyleDict[i] = .label("\(i)", color: color)
@@ -78,7 +77,7 @@ public final class DebugPoints {
     ) -> DebugPoints {
         let pointStyle: PointStyle = switch style {
         case .shape(let shape, let name):
-                .shape(shape: shape, color: color ?? pointStyle.color, name: name, radius: radius, filled: shapeFilled)
+                .shape(shape: shape, color: color ?? pointStyle.color, name: name, radius: radius)
         case .label(let string, let name):
                 .label(string, color: color ?? pointStyle.color, name: name, filled: labelFilled)
         case .index(let name):
@@ -155,7 +154,7 @@ extension DebugPoints: Debuggable {
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)
         ], color: .yellow)
-        .overrideVertexStyle(at: 0, style: .shape(.rect, name: "start"))
+        .overrideVertexStyle(at: 0, style: .shape(.rect.fill, name: "start"))
         .overrideVertexStyle(at: 1, style: .shape(.circle, name: "middle@topLeft"))
         .overrideVertexStyle(at: 2, style: .label("A", name: "end"), color: .red)
         .overrideEdgeStyle(at: 2, style: .arrow(name: "edge", color: .green, dashed: true))

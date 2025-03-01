@@ -46,9 +46,27 @@ public struct PointRenderElement: ContextRenderable {
 
 public enum PointStyle {
     public enum Shape {
-        case rect, circle, triangle
+        case rect, filledRect
+        case circle, filledCircle
+        case triangle, filledTriangle
+        
+        var fill: Shape {
+            switch self {
+            case .rect: .filledRect
+            case .circle: .filledCircle
+            case .triangle: .filledTriangle
+            default: self
+            }
+        }
+        
+        var isFilled: Bool {
+            switch self {
+            case .filledRect, .filledCircle, .filledTriangle: true
+            default: false
+            }
+        }
     }
-    case shape(shape: Shape, color: AppColor, name: NameStyle? = nil, radius: Double = .pointRadius, filled: Bool = .shapeFilled)
+    case shape(shape: Shape, color: AppColor, name: NameStyle? = nil, radius: Double = .pointRadius)
     case label(String, color: AppColor, name: NameStyle? = nil, filled: Bool = .labelFilled)
 }
 
@@ -56,11 +74,11 @@ extension PointStyle.Shape {
     public func getPath(radius: Double) -> AppBezierPath {
         let rect = CGRect(center: .zero, size: .init(width: radius * 2, height: radius * 2))
         switch self {
-        case .rect:
+        case .rect, .filledRect:
             return AppBezierPath(rect: rect)
-        case .circle:
+        case .circle, .filledCircle:
             return AppBezierPath(ovalIn: rect)
-        case .triangle:
+        case .triangle, .filledTriangle:
             return Polygon(center: .zero, radius: radius, edgeCount: 3).getBezierPath()
         }
     }
@@ -69,7 +87,7 @@ extension PointStyle.Shape {
 extension PointStyle {
     var occupiedWidth: Double {
         switch self {
-        case .shape(_, _, _, let radius, _):
+        case .shape(_, _, _, let radius):
             return radius
         case .label:
             return 6
@@ -78,7 +96,7 @@ extension PointStyle {
         
     public var color: AppColor {
         switch self {
-        case .shape(_, let color, _, _, _):
+        case .shape(_, let color, _, _):
             return color
         case .label(_, let color, _, _):
             return color
@@ -93,9 +111,9 @@ extension PointStyle {
             }
         }
         switch self {
-        case .shape(let shape, let color, let name, let radius, let filled):
+        case .shape(let shape, let color, let name, let radius):
             let path = shape.getPath(radius: radius)
-            let style = getStyle(color: color, filled: filled)
+            let style = getStyle(color: color, filled: shape.isFilled)
             let shape = MarkRenderElement(path: path, style: style, position: center, rotatable: false)
             var elements: [ContextRenderable] = [shape]
             if let name {
