@@ -39,7 +39,7 @@ public final class DebugMesh {
     
     public private(set) var pointStyle: PointStyle = .shape(shape: .circle, color: .yellow)
     public private(set) var pointStyleDict: [Int: PointStyle] = [:]
-        
+    
     public init(
         vertices: [CGPoint],
         faces: [Face],
@@ -55,7 +55,7 @@ public final class DebugMesh {
             self.pointStyle = .shape(shape: shape, color: color, name: nil)
         default: //
             for i in 0 ..< vertices.count {
-                self.pointStyleDict[i] = .label("\(i)", color: color)
+                self.pointStyleDict[i] = .label(LabelStyle("\(i)"), color: color)
             }
         }
     }
@@ -76,17 +76,15 @@ public final class DebugMesh {
         at index: Int,
         style: VertexStyle,
         color: AppColor? = nil,
-        radius: Double = .pointRadius,
-        shapeFilled: Bool = .shapeFilled,
-        labelFilled: Bool = .labelFilled
+        radius: Double = .pointRadius
     ) -> DebugMesh {
         let pointStyle: PointStyle = switch style {
         case .shape(let shape, let name):
                 .shape(shape: shape, color: color ?? pointStyle.color, name: name, radius: radius)
         case .label(_, let name):
-                .label("\(index)", color: color ?? pointStyle.color, name: name, filled: labelFilled)
+                .label(LabelStyle("\(index)"), color: color ?? pointStyle.color, name: name)
         case .index(let name):
-                .label("\(index)", color: color ?? pointStyle.color, name: name, filled: labelFilled)
+                .label(LabelStyle("\(index)"), color: color ?? pointStyle.color, name: name)
         }
         pointStyleDict[index] = pointStyle
         return self

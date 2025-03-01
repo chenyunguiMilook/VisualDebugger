@@ -16,12 +16,6 @@ extension Double {
     @usableFromInline
     static let pointRadius: Double = 2
 }
-extension Bool {
-    @usableFromInline
-    static let shapeFilled = true
-    @usableFromInline
-    static let labelFilled = false
-}
 
 public struct PointRenderElement: ContextRenderable {
     
@@ -67,7 +61,7 @@ public enum PointStyle {
         }
     }
     case shape(shape: Shape, color: AppColor, name: NameStyle? = nil, radius: Double = .pointRadius)
-    case label(String, color: AppColor, name: NameStyle? = nil, filled: Bool = .labelFilled)
+    case label(LabelStyle, color: AppColor, name: NameStyle? = nil)
 }
 
 extension PointStyle.Shape {
@@ -98,7 +92,7 @@ extension PointStyle {
         switch self {
         case .shape(_, let color, _, _):
             return color
-        case .label(_, let color, _, _):
+        case .label(_, let color, _):
             return color
         }
     }
@@ -120,11 +114,11 @@ extension PointStyle {
                 elements.append(NameRenderElement(name: name, style: .nameLabel, position: center))
             }
             return elements
-        case .label(let string, let color, let name, let filled):
+        case .label(let label, let color, let name):
             var style = TextRenderStyle.indexLabel
-            style.textColor = filled ? .white : color
-            style.bgStyle = .capsule(color: color, filled: filled)
-            var elements: [ContextRenderable] = [TextRenderElement(text: string, style: style, position: center)]
+            style.textColor = label.filled ? .white : color
+            style.bgStyle = .capsule(color: color, filled: label.filled)
+            var elements: [ContextRenderable] = [LabelRenderElement(label: label, style: style, position: center)]
             if let name {
                 elements.append(NameRenderElement(name: name, style: .nameLabel, position: center))
             }

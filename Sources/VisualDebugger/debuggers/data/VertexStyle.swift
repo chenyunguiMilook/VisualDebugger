@@ -8,6 +8,6 @@
 
 public enum VertexStyle {
     case shape(PointStyle.Shape, name: NameStyle? = nil)
-    case label(String, name: NameStyle? = nil)
+    case label(LabelStyle, name: NameStyle? = nil)
     case index(name: NameStyle? = nil)
 }

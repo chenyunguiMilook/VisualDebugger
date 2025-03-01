@@ -43,7 +43,7 @@ public final class DebugPoints {
             self.pointStyle = .shape(shape: shape, color: color, name: nil, radius: radius)
         case .index:
             for i in 0 ..< points.count {
-                self.pointStyleDict[i] = .label("\(i)", color: color)
+                self.pointStyleDict[i] = .label(LabelStyle("\(i)"), color: color)
             }
         case .label(let string, _):
             self.pointStyle = .label(string, color: color)
@@ -71,17 +71,15 @@ public final class DebugPoints {
         at index: Int,
         style: VertexStyle,
         color: AppColor? = nil,
-        radius: Double = .pointRadius,
-        shapeFilled: Bool = .shapeFilled,
-        labelFilled: Bool = .labelFilled
+        radius: Double = .pointRadius
     ) -> DebugPoints {
         let pointStyle: PointStyle = switch style {
         case .shape(let shape, let name):
                 .shape(shape: shape, color: color ?? pointStyle.color, name: name, radius: radius)
         case .label(let string, let name):
-                .label(string, color: color ?? pointStyle.color, name: name, filled: labelFilled)
+                .label(string, color: color ?? pointStyle.color, name: name)
         case .index(let name):
-                .label("\(index)", color: color ?? pointStyle.color, name: name, filled: labelFilled)
+                .label(LabelStyle("\(index)"), color: color ?? pointStyle.color, name: name)
         }
         pointStyleDict[index] = pointStyle
         return self
@@ -155,8 +153,8 @@ extension DebugPoints: Debuggable {
             .init(x: 23, y: 67)
         ], color: .yellow)
         .overrideVertexStyle(at: 0, style: .shape(.rect.fill, name: "start"))
-        .overrideVertexStyle(at: 1, style: .shape(.circle, name: "middle@topLeft"))
-        .overrideVertexStyle(at: 2, style: .label("A", name: "end"), color: .red)
+        .overrideVertexStyle(at: 1, style: .label("M", name: "middle@bottomLeft"))
+        .overrideVertexStyle(at: 2, style: .label("E@fill", name: "end"), color: .red)
         .overrideEdgeStyle(at: 2, style: .arrow(name: "edge", color: .green, dashed: true))
         
     ], coordinateSystem: .yDown)
