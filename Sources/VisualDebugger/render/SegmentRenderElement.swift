@@ -24,6 +24,7 @@ public struct SegmentRenderElement: ContextRenderable {
     var hasStart: Bool { startStyle != nil }
     var hasEnd: Bool { endStyle != nil }
     
+    // TODO: add line style
     public init(
         color: AppColor,
         startPoint: CGPoint,
