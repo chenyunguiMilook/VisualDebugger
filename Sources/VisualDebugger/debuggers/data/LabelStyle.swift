@@ -5,7 +5,7 @@
 //  Created by chenyungui on 2025/3/1.
 //
 
-public struct LabelStyle {
+public struct LabelStyle: Sendable {
     public var string: String
     public var filled: Bool
     

@@ -43,20 +43,22 @@ public final class DebugMesh {
     public init(
         vertices: [CGPoint],
         faces: [Face],
-        vertexStyle: VertexStyle = .shape(.circle),
+        vertexStyle: VertexStyle = .default,
         edgeStyle: EdgeStyle = .arrow(dashed: false),
         color: AppColor = .yellow
     ) {
         self.vertices = vertices
         self.faces = faces
         self.pointStyle = .shape(shape: .circle, color: color)
-        switch vertexStyle {
-        case .shape(let shape, _):
-            self.pointStyle = .shape(shape: shape, color: color, name: nil)
-        default: //
+        switch vertexStyle.style {
+        case .index:
             for i in 0 ..< vertices.count {
                 self.pointStyleDict[i] = .label(LabelStyle("\(i)"), color: color)
             }
+        case .shape(let shape):
+            self.pointStyle = .shape(shape: shape, color: color, name: nil)
+        default:
+            break
         }
     }
     
@@ -78,13 +80,13 @@ public final class DebugMesh {
         color: AppColor? = nil,
         radius: Double = .pointRadius
     ) -> DebugMesh {
-        let pointStyle: PointStyle = switch style {
-        case .shape(let shape, let name):
-                .shape(shape: shape, color: color ?? pointStyle.color, name: name, radius: radius)
-        case .label(_, let name):
-                .label(LabelStyle("\(index)"), color: color ?? pointStyle.color, name: name)
-        case .index(let name):
-                .label(LabelStyle("\(index)"), color: color ?? pointStyle.color, name: name)
+        let pointStyle: PointStyle = switch style.style {
+        case .shape(let shape):
+                .shape(shape: shape, color: color ?? pointStyle.color, name: style.name, radius: radius)
+        case .label(let label):
+                .label(label, color: color ?? pointStyle.color, name: style.name)
+        case .index:
+                .label(LabelStyle("\(index)"), color: color ?? pointStyle.color, name: style.name)
         }
         pointStyleDict[index] = pointStyle
         return self

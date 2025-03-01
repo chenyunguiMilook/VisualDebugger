@@ -39,43 +39,8 @@ public struct PointRenderElement: ContextRenderable {
 }
 
 public enum PointStyle {
-    public enum Shape {
-        case rect, filledRect
-        case circle, filledCircle
-        case triangle, filledTriangle
-        
-        var fill: Shape {
-            switch self {
-            case .rect: .filledRect
-            case .circle: .filledCircle
-            case .triangle: .filledTriangle
-            default: self
-            }
-        }
-        
-        var isFilled: Bool {
-            switch self {
-            case .filledRect, .filledCircle, .filledTriangle: true
-            default: false
-            }
-        }
-    }
-    case shape(shape: Shape, color: AppColor, name: NameStyle? = nil, radius: Double = .pointRadius)
+    case shape(shape: VertexShape, color: AppColor, name: NameStyle? = nil, radius: Double = .pointRadius)
     case label(LabelStyle, color: AppColor, name: NameStyle? = nil)
-}
-
-extension PointStyle.Shape {
-    public func getPath(radius: Double) -> AppBezierPath {
-        let rect = CGRect(center: .zero, size: .init(width: radius * 2, height: radius * 2))
-        switch self {
-        case .rect, .filledRect:
-            return AppBezierPath(rect: rect)
-        case .circle, .filledCircle:
-            return AppBezierPath(ovalIn: rect)
-        case .triangle, .filledTriangle:
-            return Polygon(center: .zero, radius: radius, edgeCount: 3).getBezierPath()
-        }
-    }
 }
 
 extension PointStyle {
@@ -87,7 +52,7 @@ extension PointStyle {
             return 6
         }
     }
-        
+    
     public var color: AppColor {
         switch self {
         case .shape(_, let color, _, _):

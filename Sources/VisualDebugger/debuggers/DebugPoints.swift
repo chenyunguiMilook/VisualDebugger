@@ -30,7 +30,7 @@ public final class DebugPoints {
     public init(
         points: [CGPoint],
         isClosed: Bool = true,
-        vertexStyle: VertexStyle = VertexStyle.shape(.circle),
+        vertexStyle: VertexStyle = .default,
         edgeStyle: EdgeStyle = .arrow(dashed: false),
         color: AppColor = .yellow,
         radius: Double = .pointRadius
@@ -38,15 +38,15 @@ public final class DebugPoints {
         self.points = points
         self.isClosed = isClosed
         self.pointStyle = .shape(shape: .circle, color: color)
-        switch vertexStyle {
-        case .shape(let shape, _):
+        switch vertexStyle.style {
+        case .shape(let shape):
             self.pointStyle = .shape(shape: shape, color: color, name: nil, radius: radius)
         case .index:
             for i in 0 ..< points.count {
                 self.pointStyleDict[i] = .label(LabelStyle("\(i)"), color: color)
             }
-        case .label(let string, _):
-            self.pointStyle = .label(string, color: color)
+        case .label(let label):
+            self.pointStyle = .label(label, color: color)
         }
         self.edgeStyle = edgeStyle
     }
@@ -73,13 +73,13 @@ public final class DebugPoints {
         color: AppColor? = nil,
         radius: Double = .pointRadius
     ) -> DebugPoints {
-        let pointStyle: PointStyle = switch style {
-        case .shape(let shape, let name):
-                .shape(shape: shape, color: color ?? pointStyle.color, name: name, radius: radius)
-        case .label(let string, let name):
-                .label(string, color: color ?? pointStyle.color, name: name)
-        case .index(let name):
-                .label(LabelStyle("\(index)"), color: color ?? pointStyle.color, name: name)
+        let pointStyle: PointStyle = switch style.style {
+        case .shape(let shape):
+                .shape(shape: shape, color: color ?? pointStyle.color, name: style.name, radius: radius)
+        case .label(let string):
+                .label(string, color: color ?? pointStyle.color, name: style.name)
+        case .index:
+                .label(LabelStyle("\(index)"), color: color ?? pointStyle.color, name: style.name)
         }
         pointStyleDict[index] = pointStyle
         return self

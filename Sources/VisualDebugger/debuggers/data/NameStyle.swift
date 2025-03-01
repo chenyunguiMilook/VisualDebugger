@@ -6,8 +6,8 @@
 //
 
 
-public struct NameStyle {
-    public enum Location: String {
+public struct NameStyle: Sendable {
+    public enum Location: String, Sendable {
         case center
         case left, right, top, bottom
         case topLeft, topRight, bottomLeft, bottomRight
