@@ -51,9 +51,9 @@ extension NameStyle.Location {
         case .right:
             return .midLeft
         case .top:
-            return .topCenter
-        case .bottom:
             return .btmCenter
+        case .bottom:
+            return .topCenter
         case .topLeft:
             return .btmRight
         case .topRight:

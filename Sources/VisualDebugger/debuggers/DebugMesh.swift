@@ -27,7 +27,7 @@ public final class DebugMesh {
     public struct Edge {
         public var org: Int
         public var dst: Int
-
+        
         public init(org: Int, dst: Int) {
             self.org = org
             self.dst = dst
@@ -126,7 +126,50 @@ public final class DebugMesh {
         }
         
         return edges
-    }}
+    }
+}
+
+extension DebugMesh {
+    public convenience init(
+        vertices: [CGPoint],
+        indices: [Int], // triangle face indices
+        vertexStyle: VertexStyle = .default,
+        edgeStyle: EdgeStyle = .arrow(dashed: false),
+        color: AppColor = .yellow
+    ) {
+        // Verify we have valid input (indices should be in groups of 3 for triangles)
+        precondition(indices.count % 3 == 0, "Indices count must be a multiple of 3 for triangle faces")
+        precondition(!vertices.isEmpty, "Vertices array cannot be empty")
+        
+        // Convert flat indices array into array of Face structures
+        var faces: [Face] = []
+        for i in stride(from: 0, to: indices.count, by: 3) {
+            let face = Face(
+                indices[i],
+                indices[i + 1],
+                indices[i + 2]
+            )
+            faces.append(face)
+        }
+        
+        // Validate all indices are within bounds
+        let vertexCount = vertices.count
+        for face in faces {
+            precondition(face.v0 >= 0 && face.v0 < vertexCount, "Vertex index \(face.v0) out of bounds")
+            precondition(face.v1 >= 0 && face.v1 < vertexCount, "Vertex index \(face.v1) out of bounds")
+            precondition(face.v2 >= 0 && face.v2 < vertexCount, "Vertex index \(face.v2) out of bounds")
+        }
+        
+        // Call the primary initializer
+        self.init(
+            vertices: vertices,
+            faces: faces,
+            vertexStyle: vertexStyle,
+            edgeStyle: edgeStyle,
+            color: color
+        )
+    }
+}
 
 extension DebugMesh: Debuggable {
     public var debugBounds: CGRect? {
