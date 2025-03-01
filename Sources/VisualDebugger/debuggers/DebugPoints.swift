@@ -18,10 +18,10 @@ public final class DebugPoints {
     public let points: [CGPoint]
     public let isClosed: Bool
     
-    public private(set) var pointStyle: PointStyle!
+    public private(set) var pointStyle: PointStyle
     public private(set) var pointStyleDict: [Int: PointStyle] = [:]
     
-    public private(set) var edgeStyle: EdgeStyle!
+    public private(set) var edgeStyle: EdgeStyle
     public private(set) var edgeStyleDict: [Int: EdgeStyle] = [:]
     
     // TOOD: add fill style
@@ -38,6 +38,7 @@ public final class DebugPoints {
     ) {
         self.points = points
         self.isClosed = isClosed
+        self.pointStyle = .shape(shape: .circle, color: color)
         switch vertexStyle {
         case .shape(let shape, _):
             self.pointStyle = .shape(shape: shape, color: color, name: nil, radius: radius, filled: filled)
@@ -56,7 +57,7 @@ public final class DebugPoints {
         isClosed: Bool,
         pointStyle: PointStyle,
         pointStyleDict: [Int: PointStyle],
-        edgeStyle: EdgeStyle?,
+        edgeStyle: EdgeStyle,
         edgeStyleDict: [Int: EdgeStyle]
     ) {
         self.points = points
@@ -115,12 +116,12 @@ extension DebugPoints: Debuggable {
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         // render edge
         for (i, seg) in points.segments(isClosed: isClosed).enumerated() {
-            guard let style = edgeStyleDict[i] ?? edgeStyle else { continue }
+            let style = edgeStyleDict[i] ?? edgeStyle
             switch style {
             case .arrow(let name, let color, let options, let dashed):
                 var segment = Segment(start: seg.start, end: seg.end)
-                let pointStartStyle = pointStyleDict[i] ?? pointStyle!
-                let pointEndStyle = pointStyleDict[(i+1+points.count)%points.count] ?? pointStyle!
+                let pointStartStyle = pointStyleDict[i] ?? pointStyle
+                let pointEndStyle = pointStyleDict[(i+1+points.count)%points.count] ?? pointStyle
                 segment = segment.shrinkingStart(length: pointStartStyle.occupiedWidth)
                 segment = segment.shrinkingEnd(length: pointEndStyle.occupiedWidth)
                 let element = SegmentRenderElement(
@@ -138,7 +139,7 @@ extension DebugPoints: Debuggable {
         
         // render point
         for (i, point) in points.enumerated() {
-            let style = pointStyleDict[i] ?? pointStyle!
+            let style = pointStyleDict[i] ?? pointStyle
             for element in style.getRenderElements(center: point) {
                 element.render(in: context, scale: scale, contextHeight: contextHeight)
             }
@@ -155,9 +156,9 @@ extension DebugPoints: Debuggable {
             .init(x: 23, y: 67)
         ], color: .yellow)
         .overrideVertexStyle(at: 0, style: .shape(.rect, name: "start"))
-        .overrideVertexStyle(at: 1, style: .label("A", name: "end"), color: .red)
-        .overrideVertexStyle(at: 2, style: .shape(.circle, name: "middle"))
-        .overrideEdgeStyle(at: 0, style: .arrow(color: .green, dashed: true))
+        .overrideVertexStyle(at: 1, style: .shape(.circle, name: "middle"))
+        .overrideVertexStyle(at: 2, style: .label("A", name: "end"), color: .red)
+        .overrideEdgeStyle(at: 2, style: .arrow(color: .green, dashed: true))
         
     ], coordinateSystem: .yDown)
 }
