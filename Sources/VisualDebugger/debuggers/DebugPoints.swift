@@ -30,7 +30,7 @@ public final class DebugPoints {
     public init(
         points: [CGPoint],
         isClosed: Bool = true,
-        vertexStyle: VertexStyle = .shape(.circle),
+        vertexStyle: VertexStyle = VertexStyle.shape(.circle),
         edgeStyle: EdgeStyle = .arrow(dashed: false),
         color: AppColor = .yellow,
         radius: Double = .pointRadius,
@@ -156,9 +156,9 @@ extension DebugPoints: Debuggable {
             .init(x: 23, y: 67)
         ], color: .yellow)
         .overrideVertexStyle(at: 0, style: .shape(.rect, name: "start"))
-        .overrideVertexStyle(at: 1, style: .shape(.circle, name: "middle"))
+        .overrideVertexStyle(at: 1, style: .shape(.circle, name: "middle@topLeft"))
         .overrideVertexStyle(at: 2, style: .label("A", name: "end"), color: .red)
-        .overrideEdgeStyle(at: 2, style: .arrow(color: .green, dashed: true))
+        .overrideEdgeStyle(at: 2, style: .arrow(name: "edge", color: .green, dashed: true))
         
     ], coordinateSystem: .yDown)
 }

@@ -48,8 +48,8 @@ public enum PointStyle {
     public enum Shape {
         case rect, circle, triangle
     }
-    case shape(shape: Shape, color: AppColor, name: String? = nil, radius: Double = .pointRadius, filled: Bool = .shapeFilled)
-    case label(String, color: AppColor, name: String? = nil, filled: Bool = .labelFilled)
+    case shape(shape: Shape, color: AppColor, name: NameStyle? = nil, radius: Double = .pointRadius, filled: Bool = .shapeFilled)
+    case label(String, color: AppColor, name: NameStyle? = nil, filled: Bool = .labelFilled)
 }
 
 extension PointStyle.Shape {
@@ -99,16 +99,16 @@ extension PointStyle {
             let shape = MarkRenderElement(path: path, style: style, position: center, rotatable: false)
             var elements: [ContextRenderable] = [shape]
             if let name {
-                elements.append(TextRenderElement(text: name, style: .nameLabel, position: center))
+                elements.append(NameRenderElement(name: name, style: .nameLabel, position: center))
             }
             return elements
         case .label(let string, let color, let name, let filled):
             var style = TextRenderStyle.indexLabel
             style.textColor = filled ? .white : color
             style.bgStyle = .capsule(color: color, filled: filled)
-            var elements = [TextRenderElement(text: string, style: style, position: center)]
+            var elements: [ContextRenderable] = [TextRenderElement(text: string, style: style, position: center)]
             if let name {
-                elements.append(TextRenderElement(text: name, style: .nameLabel, position: center))
+                elements.append(NameRenderElement(name: name, style: .nameLabel, position: center))
             }
             return elements
         }
