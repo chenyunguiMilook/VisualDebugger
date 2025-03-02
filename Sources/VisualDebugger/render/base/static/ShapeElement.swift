@@ -8,10 +8,10 @@
 import Foundation
 import CoreGraphics
 
-public struct ShapeElement: StaticRendable {
+public class ShapeElement: StaticRendable {
     
-    public let path: AppBezierPath
-    public let style: ShapeRenderStyle
+    public var path: AppBezierPath
+    public var style: ShapeRenderStyle
     
     public init(path: AppBezierPath, style: ShapeRenderStyle) {
         self.path = path

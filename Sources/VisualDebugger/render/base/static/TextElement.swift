@@ -7,10 +7,10 @@
 
 import CoreGraphics
 
-public struct TextElement: StaticRendable {
+public class TextElement: StaticRendable {
     
-    public let text: String
-    public let style: TextRenderStyle
+    public var text: String
+    public var style: TextRenderStyle
     
     public init(text: String, style: TextRenderStyle) {
         self.text = text
