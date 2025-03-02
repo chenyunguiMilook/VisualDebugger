@@ -67,6 +67,7 @@ public final class DebugPoints {
         self.edgeStyleDict = edgeStyleDict
     }
     
+    // TODO: return a dynamicCallable Vertex Style Evironment for easy update common attributes
     public func overrideVertexStyle(
         at index: Int,
         style: VertexStyle,
