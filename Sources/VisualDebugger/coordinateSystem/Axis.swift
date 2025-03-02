@@ -79,7 +79,7 @@ extension Axis {
     
     public func estimateMaxLabelWidth(with style: TextRenderStyle) -> CGFloat? {
         self.marks.compactMap {
-            $0.label(precision: Self.precision).bounds?.width
+            $0.label(precision: Self.precision).content.contentBounds.width
         }.max()
     }
     
@@ -120,12 +120,13 @@ extension Axis.Mark {
         }
     }
     
-    public func label(precision: Int) -> NumberRenderElement {
+    public func label(precision: Int) -> StaticTextElement {
+        let source: TextSource = .number(value: value, precision: precision)
         switch type {
         case .x:
-            NumberRenderElement(value: value, precision: precision, style: .xAxisLabel, position: position)
+            return StaticTextElement(source: source, style: .xAxisLabel, position: position)
         case .y:
-            NumberRenderElement(value: value, precision: precision, style: .yAxisLabel, position: position)
+            return StaticTextElement(source: source, style: .yAxisLabel, position: position)
         }
     }
 }

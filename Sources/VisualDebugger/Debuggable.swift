@@ -31,13 +31,3 @@ extension Array where Element == any Debuggable {
         }
     }
 }
-
-extension NumberRenderElement: Debuggable {
-    public var debugBounds: CGRect? {
-        self.bounds
-    }
-    
-    public func applying(transform: Matrix2D) -> NumberRenderElement {
-        self * transform
-    }
-}

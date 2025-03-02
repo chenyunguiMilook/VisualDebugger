@@ -23,6 +23,16 @@ public enum TextSource {
     }
 }
 
+extension TextSource {
+    public static func number(value: Double, precision: Int) -> TextSource {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = precision
+        formatter.roundingMode = .halfUp
+        return .number(value, formatter: formatter)
+    }
+}
+
 extension TextSource: ExpressibleByStringLiteral {
     public typealias StringLiteralType = String
     
