@@ -52,8 +52,8 @@ extension StaticRenderElement where Content == ShapeElement {
 }
 
 extension StaticRenderElement where Content == TextElement {
-    public init(text: String, style: TextRenderStyle, position: CGPoint, angle: Double = 0, rotatable: Bool = false) {
-        self.content = TextElement(text: text, style: style)
+    public init(source: TextSource, style: TextRenderStyle, position: CGPoint, angle: Double = 0, rotatable: Bool = false) {
+        self.content = TextElement(source: source, style: style)
         self.position = position
         self.angle = angle
         self.rotatable = rotatable

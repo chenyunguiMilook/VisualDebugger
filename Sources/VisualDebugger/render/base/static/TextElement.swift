@@ -9,16 +9,16 @@ import CoreGraphics
 
 public class TextElement: StaticRendable {
     
-    public var text: String
+    public var source: TextSource
     public var style: TextRenderStyle
     
-    public init(text: String, style: TextRenderStyle) {
-        self.text = text
+    public init(source: TextSource, style: TextRenderStyle) {
+        self.source = source
         self.style = style
     }
     
     public var contentBounds: CGRect {
-        let size = self.style.getTextSize(text: self.text)
+        let size = self.style.getTextSize(text: source.string)
         return CGRect(anchor: style.anchor, center: .zero, size: size)
     }
     
@@ -32,7 +32,7 @@ public class TextElement: StaticRendable {
         let r = Matrix2D(rotationAngle: angle)
         let t = Matrix2D(translation: location)
         context.render(
-            text: self.text,
+            text: source.string,
             transform: r * t,
             style: style,
             scale: scale,

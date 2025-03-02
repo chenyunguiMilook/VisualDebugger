@@ -42,6 +42,6 @@ public struct Coordinate {
     }
     
     func originElement() -> StaticTextElement {
-        StaticTextElement(text: "O", style: .originLabel, position: origin)
+        StaticTextElement(source: "O", style: .originLabel, position: origin)
     }
 }
