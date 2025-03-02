@@ -70,7 +70,7 @@ extension SegmentRenderElement.EndpointStyle {
             path.addLine(to: p1)
             path.addLine(to: p2)
             path.close()
-            return MarkRenderElement(
+            return StaticRenderElement(
                 path: path,
                 style: getStyle(filled: filled),
                 position: .zero,
@@ -79,7 +79,7 @@ extension SegmentRenderElement.EndpointStyle {
         case .rect(let filled):
             let rect = CGRect(anchor: .midCenter, center: .zero, size: .init(width: size, height: size))
             let path = AppBezierPath(rect: rect)
-            return MarkRenderElement(
+            return StaticRenderElement(
                 path: path,
                 style: getStyle(filled: filled),
                 position: .zero,
@@ -88,7 +88,7 @@ extension SegmentRenderElement.EndpointStyle {
         case .circle(let filled):
             let rect = CGRect(anchor: .midCenter, center: .zero, size: .init(width: size, height: size))
             let path = AppBezierPath(ovalIn: rect)
-            return MarkRenderElement(
+            return StaticRenderElement(
                 path: path,
                 style: getStyle(filled: filled),
                 position: .zero,
@@ -102,7 +102,7 @@ extension SegmentRenderElement.EndpointStyle {
             path.move(to: .init(x: -size, y: -half))
             path.addLine(to: .zero)
             path.addLine(to: .init(x: -size, y: half))
-            return MarkRenderElement(
+            return StaticRenderElement(
                 path: path,
                 style: getStyle(filled: false),
                 position: .zero,

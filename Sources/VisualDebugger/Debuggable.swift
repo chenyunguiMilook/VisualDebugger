@@ -64,12 +64,12 @@ extension NumberRenderElement: Debuggable {
     }
 }
 
-extension MarkRenderElement: Debuggable {
+extension StaticRenderElement: Debuggable {
     public var debugBounds: CGRect? {
         CGRect(center: position, size: CGSize(width: 4, height: 4))
     }
     
-    public func applying(transform: Matrix2D) -> MarkRenderElement {
+    public func applying(transform: Matrix2D) -> StaticRenderElement {
         self * transform
     }
 }

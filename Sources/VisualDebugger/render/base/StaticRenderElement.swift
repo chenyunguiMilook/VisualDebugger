@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-public struct MarkRenderElement<Content: StaticRendable>: ContextRenderable {
+public struct StaticRenderElement<Content: StaticRendable>: ContextRenderable {
     
     public let content: Content
     public let position: CGPoint
@@ -32,7 +32,7 @@ public struct MarkRenderElement<Content: StaticRendable>: ContextRenderable {
     }
 }
 
-extension MarkRenderElement where Content == ShapeElement {
+extension StaticRenderElement where Content == ShapeElement {
     public init(path: AppBezierPath, style: ShapeRenderStyle, position: CGPoint, angle: Double = 0, rotatable: Bool = false) {
         self.content = ShapeElement(path: path, style: style)
         self.position = position
@@ -41,12 +41,12 @@ extension MarkRenderElement where Content == ShapeElement {
     }
 }
 
-public func *<T>(lhs: MarkRenderElement<T>, rhs: Matrix2D) -> MarkRenderElement<T> {
+public func *<T>(lhs: StaticRenderElement<T>, rhs: Matrix2D) -> StaticRenderElement<T> {
     var rotation = lhs.angle
     if lhs.rotatable {
         rotation += rhs.decomposed().rotation
     }
-    return MarkRenderElement(
+    return StaticRenderElement(
         content: lhs.content,
         position: lhs.position * rhs,
         angle: rotation,

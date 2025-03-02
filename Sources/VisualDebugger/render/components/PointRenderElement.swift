@@ -73,7 +73,7 @@ extension PointStyle {
         case .shape(let shape, let color, let name, let radius):
             let path = shape.getPath(radius: radius)
             let style = getStyle(color: color, filled: shape.isFilled)
-            let shape = MarkRenderElement<ShapeElement>(path: path, style: style, position: center, rotatable: false)
+            let shape = StaticRenderElement<ShapeElement>(path: path, style: style, position: center, rotatable: false)
             var elements: [ContextRenderable] = [shape]
             if let name {
                 elements.append(NameRenderElement(name: name, style: .nameLabel, position: center))

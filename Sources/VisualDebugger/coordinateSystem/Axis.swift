@@ -90,33 +90,33 @@ extension Axis {
         return ShapeRenderElement(path: path, style: .axis)
     }
     
-    public func arrow(size: Double, coordinateSystem: CoordinateSystem2D) -> MarkRenderElement<ShapeElement> {
+    public func arrow(size: Double, coordinateSystem: CoordinateSystem2D) -> StaticRenderElement<ShapeElement> {
         switch self.type {
         case .x:
             let e = ShapeElement(path: AppBezierPath.xArrow(size: size), style: .arrow)
-            return MarkRenderElement(content: e, position: end.position)
+            return StaticRenderElement(content: e, position: end.position)
         case .y:
             switch coordinateSystem {
             case .yUp:
                 let e = ShapeElement(path: AppBezierPath.yUpArrow(size: size), style: .arrow)
-                return MarkRenderElement(content: e, position: end.position)
+                return StaticRenderElement(content: e, position: end.position)
             case .yDown:
                 let e = ShapeElement(path: AppBezierPath.yDownArrow(size: size), style: .arrow)
-                return MarkRenderElement(content: e, position: end.position)
+                return StaticRenderElement(content: e, position: end.position)
             }
         }
     }
 }
 
 extension Axis.Mark {
-    public func mark(size: Double) -> MarkRenderElement<ShapeElement> {
+    public func mark(size: Double) -> StaticRenderElement<ShapeElement> {
         switch type {
         case .x:
             let e = ShapeElement(path: AppBezierPath.xMark(size: size), style: .axis)
-            return MarkRenderElement(content: e, position: position)
+            return StaticRenderElement(content: e, position: position)
         case .y:
             let e = ShapeElement(path: AppBezierPath.yMark(size: size), style: .axis)
-            return MarkRenderElement(content: e, position: position)
+            return StaticRenderElement(content: e, position: position)
         }
     }
     
