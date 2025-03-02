@@ -7,35 +7,49 @@
 
 import CoreGraphics
 
-public struct MarkRenderElement: ContextRenderable {
+public struct MarkRenderElement<Content: StaticRendable>: ContextRenderable {
     
-    // TODO: 也可是文字
-    public let path: AppBezierPath
-    public let style: ShapeRenderStyle
+    public let content: Content
     public let position: CGPoint
+    public let angle: Double
     public let rotatable: Bool  // 决定是否受旋转变换影响
     
-    public init(path: AppBezierPath, style: ShapeRenderStyle, position: CGPoint, rotatable: Bool = false) {
-        self.path = path
-        self.style = style
+    public init(content: Content, position: CGPoint, angle: Double = 0, rotatable: Bool = false) {
+        self.content = content
         self.position = position
+        self.angle = angle
         self.rotatable = rotatable
     }
     
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
-        guard let path = path * Matrix2D(translation: position) else { return }
-        context.render(path: path.cgPath, style: style)
+        self.content.render(
+            to: position,
+            angle: angle,
+            in: context,
+            scale: scale,
+            contextHeight: contextHeight
+        )
     }
 }
 
-public func *(lhs: MarkRenderElement, rhs: Matrix2D) -> MarkRenderElement {
-    if lhs.rotatable {
-        // 如果是可旋转的，应该旋转路径，而位置正常变换
-        let rotation = Matrix2D(rotationAngle: rhs.decomposed().rotation)
-        let rotatedPath = (lhs.path * rotation) ?? AppBezierPath()
-        return MarkRenderElement(path: rotatedPath, style: lhs.style, position: lhs.position * rhs, rotatable: lhs.rotatable)
-    } else {
-        // 不可旋转的情况下，路径保持不变，位置正常变换
-        return MarkRenderElement(path: lhs.path, style: lhs.style, position: lhs.position * rhs, rotatable: lhs.rotatable)
+extension MarkRenderElement where Content == ShapeElement {
+    public init(path: AppBezierPath, style: ShapeRenderStyle, position: CGPoint, angle: Double = 0, rotatable: Bool = false) {
+        self.content = ShapeElement(path: path, style: style)
+        self.position = position
+        self.angle = angle
+        self.rotatable = rotatable
     }
+}
+
+public func *<T>(lhs: MarkRenderElement<T>, rhs: Matrix2D) -> MarkRenderElement<T> {
+    var rotation = lhs.angle
+    if lhs.rotatable {
+        rotation += rhs.decomposed().rotation
+    }
+    return MarkRenderElement(
+        content: lhs.content,
+        position: lhs.position * rhs,
+        angle: rotation,
+        rotatable: lhs.rotatable
+    )
 }

@@ -40,7 +40,7 @@ extension CGContext {
     ) {
         guard !cgPath.isEmpty, !style.isEmpty else { return }
         var t = transform
-        guard let p = path?.copy(using: &t) else { return }
+        guard let p = cgPath.copy(using: &t) else { return }
         
         self.saveGState()
         defer { self.restoreGState() }
