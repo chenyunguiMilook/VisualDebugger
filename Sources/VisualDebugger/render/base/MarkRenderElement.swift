@@ -9,6 +9,7 @@ import CoreGraphics
 
 public struct MarkRenderElement: ContextRenderable {
     
+    // TODO: 也可是文字
     public let path: AppBezierPath
     public let style: ShapeRenderStyle
     public let position: CGPoint
