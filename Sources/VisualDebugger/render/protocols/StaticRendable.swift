@@ -8,6 +8,8 @@
 import CoreGraphics
 
 public protocol StaticRendable {
+    var contentBounds: CGRect { get }
+    
     func render(
         to location: CGPoint,
         angle: Double,

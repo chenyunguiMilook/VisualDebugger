@@ -18,6 +18,10 @@ public struct ShapeElement: StaticRendable {
         self.style = style
     }
     
+    public var contentBounds: CGRect {
+        path.bounds
+    }
+    
     public func render(
         to location: CGPoint,
         angle: Double,

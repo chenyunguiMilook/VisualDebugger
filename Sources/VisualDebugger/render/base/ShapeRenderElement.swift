@@ -8,7 +8,7 @@
 import Foundation
 import CoreGraphics
 
-public struct ShapeRenderElement: ContextRenderable {
+public struct ShapeRenderElement: Debuggable {
     
     public let path: AppBezierPath
     public let style: ShapeRenderStyle
@@ -18,6 +18,15 @@ public struct ShapeRenderElement: ContextRenderable {
         self.style = style
     }
     
+    public var debugBounds: CGRect? {
+        self.path.bounds
+    }
+    
+    public func applying(transform: Matrix2D) -> ShapeRenderElement {
+        let p: AppBezierPath = (self.path * transform) ?? AppBezierPath()
+        return ShapeRenderElement(path: p, style: self.style)
+    }
+
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         context.render(path: path.cgPath, style: style)
     }

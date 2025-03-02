@@ -41,7 +41,7 @@ public struct Coordinate {
         yAxis.renderElements(coordinateSystem: coordinateSystem)
     }
     
-    func originElement() -> TextRenderElement {
-        TextRenderElement(text: "O", style: .originLabel, position: origin)
+    func originElement() -> StaticTextElement {
+        StaticTextElement(text: "O", style: .originLabel, position: origin)
     }
 }

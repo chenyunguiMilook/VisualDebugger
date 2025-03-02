@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-public struct StaticRenderElement<Content: StaticRendable>: ContextRenderable {
+public struct StaticRenderElement<Content: StaticRendable>: Debuggable {
     
     public let content: Content
     public let position: CGPoint
@@ -19,6 +19,16 @@ public struct StaticRenderElement<Content: StaticRendable>: ContextRenderable {
         self.position = position
         self.angle = angle
         self.rotatable = rotatable
+    }
+    
+    public var debugBounds: CGRect? {
+        let o = CGRect(center: position, size: .unit)
+        let b = self.content.contentBounds
+        return [o, b].bounds
+    }
+    
+    public func applying(transform: Matrix2D) -> StaticRenderElement<Content> {
+        self * transform
     }
     
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
@@ -41,6 +51,15 @@ extension StaticRenderElement where Content == ShapeElement {
     }
 }
 
+extension StaticRenderElement where Content == TextElement {
+    public init(text: String, style: TextRenderStyle, position: CGPoint, angle: Double = 0, rotatable: Bool = false) {
+        self.content = TextElement(text: text, style: style)
+        self.position = position
+        self.angle = angle
+        self.rotatable = rotatable
+    }
+}
+
 public func *<T>(lhs: StaticRenderElement<T>, rhs: Matrix2D) -> StaticRenderElement<T> {
     var rotation = lhs.angle
     if lhs.rotatable {
@@ -53,3 +72,6 @@ public func *<T>(lhs: StaticRenderElement<T>, rhs: Matrix2D) -> StaticRenderElem
         rotatable: lhs.rotatable
     )
 }
+
+public typealias StaticShapeElement = StaticRenderElement<ShapeElement>
+public typealias StaticTextElement = StaticRenderElement<TextElement>

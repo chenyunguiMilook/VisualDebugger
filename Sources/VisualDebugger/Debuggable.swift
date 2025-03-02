@@ -32,44 +32,12 @@ extension Array where Element == any Debuggable {
     }
 }
 
-extension ShapeRenderElement: Debuggable {
-    public var debugBounds: CGRect? {
-        self.path.bounds
-    }
-    
-    public func applying(transform: Matrix2D) -> ShapeRenderElement {
-        let p: AppBezierPath = (self.path * transform) ?? AppBezierPath()
-        return ShapeRenderElement(path: p, style: self.style)
-    }
-}
-
-extension TextRenderElement: Debuggable {
-    public var debugBounds: CGRect? {
-        let size = self.style.getTextSize(text: self.text)
-        return CGRect(anchor: style.anchor, center: position, size: size)
-    }
-    
-    public func applying(transform: Matrix2D) -> TextRenderElement {
-        self * transform
-    }
-}
-
 extension NumberRenderElement: Debuggable {
     public var debugBounds: CGRect? {
         self.bounds
     }
     
     public func applying(transform: Matrix2D) -> NumberRenderElement {
-        self * transform
-    }
-}
-
-extension StaticRenderElement: Debuggable {
-    public var debugBounds: CGRect? {
-        CGRect(center: position, size: CGSize(width: 4, height: 4))
-    }
-    
-    public func applying(transform: Matrix2D) -> StaticRenderElement {
         self * transform
     }
 }

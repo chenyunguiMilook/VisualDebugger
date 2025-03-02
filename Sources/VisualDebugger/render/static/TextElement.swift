@@ -17,6 +17,11 @@ public struct TextElement: StaticRendable {
         self.style = style
     }
     
+    public var contentBounds: CGRect {
+        let size = self.style.getTextSize(text: self.text)
+        return CGRect(anchor: style.anchor, center: .zero, size: size)
+    }
+    
     public func render(
         to location: CGPoint,
         angle: Double,
