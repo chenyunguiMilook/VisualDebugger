@@ -50,6 +50,18 @@ public struct TextRenderStyle: @unchecked Sendable {
         self.bgStyle = bgStyle
     }
     
+    public func setTextLocation(_ location: TextLocation) -> TextRenderStyle {
+        return TextRenderStyle(
+            font: self.font,
+            insets: self.insets,
+            margin: self.margin,
+            anchor: location.anchor,
+            textColor: self.textColor,
+            textShadow: self.textShadow,
+            bgStyle: self.bgStyle
+        )
+    }
+    
     public func getTextSize(text: String) -> CGSize {
         let size = CGSize(width: Double.infinity, height: Double.infinity)
         let bounds = text.boundingRect(
