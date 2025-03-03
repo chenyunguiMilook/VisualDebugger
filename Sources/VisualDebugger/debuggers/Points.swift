@@ -20,7 +20,7 @@ public final class Points {
         case shape(ShapeType)
         case index
     }
-    public enum VertexDescription {
+    public enum Description {
         case string(String)
         case coordinate
     }
@@ -31,7 +31,13 @@ public final class Points {
     public struct VertexStyle {
         let shape: VertexShape?
         let color: AppColor?
-        let name: VertexDescription?
+        let name: Description?
+        let nameLocation: TextLocation
+    }
+    public struct EdgeStyle {
+        let shape: EdgeShape?
+        let color: AppColor?
+        let name: Description?
         let nameLocation: TextLocation
     }
 
@@ -43,6 +49,7 @@ public final class Points {
     public let color: AppColor
     public let vertexSize: CGSize
     public var vertexStyleDict: [Int: VertexStyle]
+    public var edgeStyleDict: [Int: EdgeStyle] = [:]
     
     public lazy var vertices: [Vertex] = {
         points.enumerated().map { (i, point) in
@@ -80,16 +87,23 @@ public final class Points {
     
     public lazy var edges: [Edge] = {
         points.segments(isClosed: isClosed).enumerated().map { (i, seg) in
+            // 获取样式，优先使用自定义样式，否则使用默认样式
+            let customStyle = edgeStyleDict[i]
+            let edgeShape = customStyle?.shape ?? self.edgeShape
+            let edgeColor = customStyle?.color ?? self.color
+            
+            // 根据边形状创建对应的SegmentShapeSource
             let source: SegmentShapeSource = switch edgeShape {
             case .line: .line
             case .arrow(let style, let direction): .arrow(style: style, direction: direction)
             }
+            
             return Edge(
                 start: seg.start,
                 end: seg.end,
                 transform: transform,
                 source: source,
-                style: edgeStyle(color: color),
+                style: edgeStyle(color: edgeColor),
                 startOffset: getRadius(index: i),
                 endOffset: getRadius(index: (i+1+points.count)%points.count)
             )
@@ -128,7 +142,8 @@ public final class Points {
         edgeShape: EdgeShape = .arrow(style: .triangle, direction: .normal),
         color: AppColor = .yellow,
         vertexSize: CGSize = CGSize(width: 4, height: 4),
-        vertexStyleDict: [Int: VertexStyle] = [:]
+        vertexStyleDict: [Int: VertexStyle] = [:],
+        edgeStyleDict: [Int: EdgeStyle] = [:]
     ) {
         self.points = points
         self.isClosed = isClosed
@@ -138,6 +153,7 @@ public final class Points {
         self.color = color
         self.vertexSize = vertexSize
         self.vertexStyleDict = vertexStyleDict
+        self.edgeStyleDict = edgeStyleDict
     }
     
     func getRadius(index: Int) -> Double {
@@ -177,12 +193,30 @@ public final class Points {
         at index: Int,
         shape: VertexShape? = nil,
         color: AppColor? = nil,
-        name: VertexDescription? = nil,
+        name: Description? = nil,
         nameLocation: TextLocation = .right
     ) -> Points {
         guard index < points.count else { return self }
         let style = VertexStyle(shape: shape, color: color, name: name, nameLocation: nameLocation)
         self.vertexStyleDict[index] = style
+        return self
+    }
+    
+    public func overrideEdgeStyle(
+        at index: Int,
+        shape: EdgeShape? = nil,
+        color: AppColor? = nil,
+        name: Description? = nil,
+        nameLocation: TextLocation = .right
+    ) -> Points {
+        guard index < points.count - 1 || (index == points.count - 1 && isClosed) else { return self }
+        let edgeStyle = EdgeStyle(
+            shape: shape,
+            color: color,
+            name: name,
+            nameLocation: nameLocation
+        )
+        edgeStyleDict[index] = edgeStyle
         return self
     }
 }
@@ -201,7 +235,8 @@ extension Points: Debuggable {
             edgeShape: edgeShape,
             color: color,
             vertexSize: vertexSize,
-            vertexStyleDict: vertexStyleDict
+            vertexStyleDict: vertexStyleDict,
+            edgeStyleDict: edgeStyleDict
         )
     }
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
@@ -223,6 +258,7 @@ extension Points: Debuggable {
         ], vertexShape: .index)
         .overrideVertexStyle(at: 0, shape: .shape(.rect), name: .string("Corner"))
         .overrideVertexStyle(at: 1, color: .red, name: .coordinate)
+        .overrideEdgeStyle(at: 0, shape: .arrow(style: .triangle, direction: .normal), color: .red)
         
     ], coordinateSystem: .yDown)
 }
