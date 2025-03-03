@@ -8,18 +8,18 @@
 import Foundation
 import CoreGraphics
 
-public class ShapeElement: StaticRendable {
+public final class ShapeElement: StaticRendable {
     
-    public var path: AppBezierPath
+    public var source: ShapeSource
     public var style: ShapeRenderStyle
     
-    public init(path: AppBezierPath, style: ShapeRenderStyle) {
-        self.path = path
+    public init(source: ShapeSource, style: ShapeRenderStyle) {
+        self.source = source
         self.style = style
     }
     
     public var contentBounds: CGRect {
-        path.bounds
+        source.bounds
     }
     
     public func render(
@@ -31,7 +31,17 @@ public class ShapeElement: StaticRendable {
     ) {
         let r = Matrix2D(rotationAngle: angle)
         let t = Matrix2D(translation: location)
-        context.render(path: path.cgPath, style: style, transform: r * t)
+        context.render(path: source.path.cgPath, style: style, transform: r * t)
+    }
+    
+    public func clone() -> ShapeElement {
+        ShapeElement(source: source, style: style)
+    }
+}
+
+extension ShapeElement {
+    public convenience init(path: AppBezierPath, style: ShapeRenderStyle) {
+        self.init(source: .path(path), style: style)
     }
 }
 

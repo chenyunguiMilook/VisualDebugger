@@ -9,6 +9,8 @@ import CoreGraphics
 
 public struct StaticRenderElement<Content: StaticRendable>: Debuggable {
     
+    // TODO: 给它加一个transform属性， 这样原始位置仍然可以被保存
+    
     public let content: Content
     public let position: CGPoint
     public let angle: Double
@@ -43,8 +45,8 @@ public struct StaticRenderElement<Content: StaticRendable>: Debuggable {
 }
 
 extension StaticRenderElement where Content == ShapeElement {
-    public init(path: AppBezierPath, style: ShapeRenderStyle, position: CGPoint, angle: Double = 0, rotatable: Bool = false) {
-        self.content = ShapeElement(path: path, style: style)
+    public init(source: ShapeSource, style: ShapeRenderStyle, position: CGPoint, angle: Double = 0, rotatable: Bool = false) {
+        self.content = ShapeElement(source: source, style: style)
         self.position = position
         self.angle = angle
         self.rotatable = rotatable

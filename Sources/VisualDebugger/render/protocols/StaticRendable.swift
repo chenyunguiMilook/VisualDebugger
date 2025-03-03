@@ -7,7 +7,11 @@
 
 import CoreGraphics
 
-public protocol StaticRendable {
+public protocol Cloneable {
+    func clone() -> Self
+}
+
+public protocol StaticRendable: Cloneable {
     var contentBounds: CGRect { get }
     
     func render(
@@ -18,3 +22,15 @@ public protocol StaticRendable {
         contextHeight: Int?
     )
 }
+
+//extension Array: StaticRendable where Element: StaticRendable {
+//    public var contentBounds: CGRect {
+//        return self.map{ $0.contentBounds }.bounds!
+//    }
+//    
+//    public func render(to location: CGPoint, angle: Double, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
+//        for element in self {
+//            element.render(to: location, angle: angle, in: context, scale: scale, contextHeight: contextHeight)
+//        }
+//    }
+//}

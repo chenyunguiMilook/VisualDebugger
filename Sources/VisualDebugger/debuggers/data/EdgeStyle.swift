@@ -16,5 +16,4 @@ public enum EdgeStyle { // for each pair of vertics
         public static let end = Self(rawValue: 1 << 1)
         public static let all: Self = [.start, .end]
     }
-    case arrow(name: NameStyle? = nil, color: AppColor? = nil, options: ArrowOptions = .end, dashed: Bool = false)
 }

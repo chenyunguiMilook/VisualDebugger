@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-public class TextElement: StaticRendable {
+public final class TextElement: StaticRendable {
     
     public var source: TextSource
     public var style: TextRenderStyle
@@ -38,5 +38,9 @@ public class TextElement: StaticRendable {
             scale: scale,
             contextHeight: contextHeight
         )
+    }
+    
+    public func clone() -> TextElement {
+        TextElement(source: source, style: style)
     }
 }

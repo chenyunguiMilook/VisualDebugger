@@ -11,6 +11,8 @@ public enum TextSource {
     
     case string(String)
     case number(Double, formatter: NumberFormatter)
+    case index(Int)
+    
     // TODO: add date etc...
     
     public var string: String {
@@ -19,6 +21,8 @@ public enum TextSource {
             return string
         case .number(let value, formatter: let formatter):
             return formatter.string(from: NSNumber(value: value)) ?? "0"
+        case .index(let value):
+            return "\(value)"
         }
     }
 }

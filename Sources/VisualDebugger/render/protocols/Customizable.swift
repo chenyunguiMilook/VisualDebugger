@@ -6,9 +6,9 @@
 //
 
 
-public protocol PointShapeCustomizable {
-    func setPointShape(_ shape: VertexShape) -> Self
-}
+//public protocol PointShapeCustomizable {
+//    func setPointShape(_ shape: VertexShape) -> Self
+//}
 
 public protocol EndpointShapeCustomizable {
     //func setEndpointShape(_ shape: )
@@ -30,6 +30,6 @@ public protocol FillCustomizable {
     func setFill(_ fill: Bool) -> Self
 }
 
-public protocol LocationCustomizable {
-    func setLocation(_ location: NameStyle.Location) -> Self
-}
+//public protocol LocationCustomizable {
+//    func setLocation(_ location: NameStyle.Location) -> Self
+//}

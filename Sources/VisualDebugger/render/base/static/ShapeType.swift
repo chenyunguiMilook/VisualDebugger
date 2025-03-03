@@ -21,7 +21,6 @@ public enum ShapeType {
     case rect
     case range
     case arrow(ArrowStyle)
-    case custom(ShapeBuilder)
 }
 
 extension ShapeType {
@@ -64,8 +63,6 @@ extension ShapeType {
             path.addLine(to: p2)
             path.close()
             return path
-        case .custom(let builder):
-            return builder(bounds)
         }
     }
 }

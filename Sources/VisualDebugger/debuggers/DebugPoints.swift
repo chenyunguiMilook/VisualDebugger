@@ -5,7 +5,7 @@
 //  Created by chenyungui on 2025/2/26.
 //
 
-
+/*
 import Foundation
 #if canImport(UIKit)
 import UIKit
@@ -13,12 +13,20 @@ import UIKit
 import AppKit
 #endif
 
+extension Double {
+    @usableFromInline
+    static let pointRadius: Double = 2
+}
+
+
 public final class DebugPoints {
     
-    public let points: [CGPoint]
+    // TODO: pre-define all points and edges
+    public let points: [PointRenderElement]
+    public let edges: [EdgeRenderElement]
     public let isClosed: Bool
     
-    public private(set) var pointStyle: PointStyle
+    public private(set) var pointStyle: PointElement
     public private(set) var pointStyleDict: [Int: PointStyle] = [:]
     
     public private(set) var edgeStyle: EdgeStyle
@@ -144,19 +152,20 @@ extension DebugPoints: Debuggable {
         }
     }
 }
+*/
 
-#Preview(traits: .fixedLayout(width: 400, height: 420)) {
-    //DebugView(debugRect: .init(x: -10, y: -20, width: 100, height: 200))
-    DebugView(elements: [
-        DebugPoints(points: [
-            .init(x: 40, y: 10),
-            .init(x: 10, y: 23),
-            .init(x: 23, y: 67)
-        ], color: .yellow)
-        .overrideVertexStyle(at: 0, style: .shape(.rect.fill, name: "start"))
-        .overrideVertexStyle(at: 1, style: .label("M", name: "middle@bottomLeft"))
-        .overrideVertexStyle(at: 2, style: .label("E@fill", name: "end"), color: .red)
-        .overrideEdgeStyle(at: 2, style: .arrow(name: "edge", color: .green, dashed: true))
-        
-    ], coordinateSystem: .yDown)
-}
+//#Preview(traits: .fixedLayout(width: 400, height: 420)) {
+//    //DebugView(debugRect: .init(x: -10, y: -20, width: 100, height: 200))
+//    DebugView(elements: [
+//        DebugPoints(points: [
+//            .init(x: 40, y: 10),
+//            .init(x: 10, y: 23),
+//            .init(x: 23, y: 67)
+//        ], color: .yellow)
+//        .overrideVertexStyle(at: 0, style: .shape(.rect.fill, name: "start"))
+//        .overrideVertexStyle(at: 1, style: .label("M", name: "middle@bottomLeft"))
+//        .overrideVertexStyle(at: 2, style: .label("E@fill", name: "end"), color: .red)
+//        .overrideEdgeStyle(at: 2, style: .arrow(name: "edge", color: .green, dashed: true))
+//        
+//    ], coordinateSystem: .yDown)
+//}
