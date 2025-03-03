@@ -24,49 +24,35 @@ public final class Points {
         case line
         case arrow
     }
-    
+    public struct VertexStyle {
+        let shape: VertexShape?
+        let color: AppColor?
+        let name: String?
+        let nameLocation: TextLocation
+    }
+
     public let points: [CGPoint]
     public let isClosed: Bool
     public let vertexShape: VertexShape
     public let edgeShape: EdgeShape
     public let color: AppColor
     public let vertexSize: CGSize
-    
-    public lazy var pointStyle: ShapeRenderStyle = {
-        var s = ShapeRenderStyle.arrow
-        s.stroke?.color = color
-        s.fill?.color = color
-        return s
-    }()
-    
-    public lazy var pointTextStyle: TextRenderStyle = {
-        TextRenderStyle(
-            font: AppFont.italicSystemFont(ofSize: 10),
-            insets: .zero,
-            margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
-            anchor: .midCenter,
-            textColor: AppColor.white,
-            bgStyle: .capsule(color: color, filled: false)
-        )
-    }()
-    
-    public lazy var edgeStyle: ShapeRenderStyle = {
-        ShapeRenderStyle(
-            stroke: .init(color: color, style: .init(lineWidth: 1)),
-            fill: nil
-        )
-    }()
+    public var vertexStyleDict: [Int: VertexStyle]
     
     public lazy var vertices: [Vertex] = {
         points.enumerated().map { (i, point) in
-            let centerShape: StaticRendable = switch vertexShape {
-            case .shape(let shape):
-                ShapeElement(source: .shape(shape, size: vertexSize, anchor: .midCenter), style: pointStyle)
-            case .index:
-                TextElement(source: .index(i), style: pointTextStyle)
+            if let style = vertexStyleDict[i] {
+                createVertex(
+                    index: i,
+                    position: point,
+                    shape: style.shape,
+                    color: style.color,
+                    name: style.name,
+                    nameLocation: style.nameLocation
+                )
+            } else {
+                createVertex(index: i, position: point, shape: nil, color: nil, name: nil)
             }
-            let element = PointElement(shape: centerShape)
-            return PointRenderElement(content: element, position: point)
         }
     }()
     
@@ -77,9 +63,33 @@ public final class Points {
             case .arrow: .arrow
             }
             // TODO: need set start and end offset
-            return Edge(start: seg.start, end: seg.end, source: source, style: edgeStyle)
+            return Edge(start: seg.start, end: seg.end, source: source, style: edgeStyle(color: color))
         }
     }()
+    
+    func vertexStyle(color: AppColor) -> ShapeRenderStyle {
+        ShapeRenderStyle(
+            fill: .init(color: color, style: .init())
+        )
+    }
+
+    func edgeStyle(color: AppColor) -> ShapeRenderStyle {
+        ShapeRenderStyle(
+            stroke: .init(color: color, style: .init(lineWidth: 1)),
+            fill: nil
+        )
+    }
+    
+    func labelStyle(color: AppColor) -> TextRenderStyle {
+        TextRenderStyle(
+            font: AppFont.italicSystemFont(ofSize: 10),
+            insets: .zero,
+            margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
+            anchor: .midCenter,
+            textColor: AppColor.white,
+            bgStyle: .capsule(color: color, filled: false)
+        )
+    }
     
     public init(
         _ points: [CGPoint],
@@ -87,7 +97,8 @@ public final class Points {
         vertexShape: VertexShape = .shape(.circle),
         edgeShape: EdgeShape = .line,
         color: AppColor = .yellow,
-        vertexSize: CGSize = CGSize(width: 4, height: 4)
+        vertexSize: CGSize = CGSize(width: 4, height: 4),
+        vertexStyleDict: [Int: VertexStyle] = [:]
     ) {
         self.points = points
         self.isClosed = isClosed
@@ -95,6 +106,44 @@ public final class Points {
         self.edgeShape = edgeShape
         self.color = color
         self.vertexSize = vertexSize
+        self.vertexStyleDict = vertexStyleDict
+    }
+    
+    func createVertex(
+        index: Int,
+        position: CGPoint,
+        shape: VertexShape?,
+        color: AppColor?,
+        name: String?,
+        nameLocation: TextLocation = .right
+    ) -> Vertex {
+        let shape = shape ?? self.vertexShape
+        let color = color ??  self.color
+        let centerShape: StaticRendable = switch shape {
+        case .shape(let shape):
+            ShapeElement(source: .shape(shape, size: vertexSize, anchor: .midCenter), style: vertexStyle(color: color))
+        case .index:
+            TextElement(source: .index(index), style: labelStyle(color: color))
+        }
+        var label: TextElement?
+        if let name {
+            label = TextElement(source: .string(name), style: .nameLabel)
+        }
+        let element = PointElement(shape: centerShape, label: label)
+        return PointRenderElement(content: element, position: position)
+    }
+    
+    public func overrideVertexStyle(
+        at index: Int,
+        shape: VertexShape? = nil,
+        color: AppColor? = nil,
+        name: String? = nil,
+        nameLocation: TextLocation = .right
+    ) -> Points {
+        guard index < points.count else { return self }
+        let style = VertexStyle(shape: shape, color: color, name: name, nameLocation: nameLocation)
+        self.vertexStyleDict[index] = style
+        return self
     }
 }
 
@@ -109,7 +158,8 @@ extension Points: Debuggable {
             vertexShape: vertexShape,
             edgeShape: edgeShape,
             color: color,
-            vertexSize: vertexSize
+            vertexSize: vertexSize,
+            vertexStyleDict: vertexStyleDict
         )
     }
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
@@ -129,5 +179,8 @@ extension Points: Debuggable {
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)
         ], vertexShape: .index)
+        .overrideVertexStyle(at: 0, shape: .shape(.rect), name: "Corner")
+        .overrideVertexStyle(at: 1, color: .red, name: "B")
+        
     ], coordinateSystem: .yDown)
 }
