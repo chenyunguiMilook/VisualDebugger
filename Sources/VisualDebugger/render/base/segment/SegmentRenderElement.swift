@@ -60,9 +60,15 @@ public final class SegmentRenderElement<T: SegmentRenderer>: ContextRenderable {
 
 extension SegmentRenderElement where T == SegmentShape {
     
-    public convenience init(start: CGPoint, end: CGPoint, source: SegmentShapeSource, style: ShapeRenderStyle) {
+    public convenience init(
+        start: CGPoint,
+        end: CGPoint,
+        transform: Matrix2D,
+        source: SegmentShapeSource,
+        style: ShapeRenderStyle
+    ) {
         let renderer = SegmentShape(source: source, style: style)
-        self.init(start: start, end: end, renderer: renderer)
+        self.init(start: start, end: end, transform: transform, renderer: renderer)
     }
 }
 

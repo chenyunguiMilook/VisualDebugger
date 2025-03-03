@@ -20,6 +20,10 @@ public final class Points {
         case shape(ShapeType)
         case index
     }
+    public enum VertexDescription {
+        case string(String)
+        case coordinate
+    }
     public enum EdgeShape {
         case line
         case arrow
@@ -27,12 +31,13 @@ public final class Points {
     public struct VertexStyle {
         let shape: VertexShape?
         let color: AppColor?
-        let name: String?
+        let name: VertexDescription?
         let nameLocation: TextLocation
     }
 
     public let points: [CGPoint]
     public let isClosed: Bool
+    public let transform: Matrix2D
     public let vertexShape: VertexShape
     public let edgeShape: EdgeShape
     public let color: AppColor
@@ -42,16 +47,33 @@ public final class Points {
     public lazy var vertices: [Vertex] = {
         points.enumerated().map { (i, point) in
             if let style = vertexStyleDict[i] {
-                createVertex(
+                var nameString: String?
+                if let name = style.name {
+                    switch name {
+                    case .string(let string):
+                        nameString = string
+                    case .coordinate:
+                        nameString = "(\(point.x), \(point.y))"
+                    }
+                }
+                return createVertex(
                     index: i,
                     position: point,
                     shape: style.shape,
                     color: style.color,
-                    name: style.name,
-                    nameLocation: style.nameLocation
+                    name: nameString,
+                    nameLocation: style.nameLocation,
+                    transform: transform
                 )
             } else {
-                createVertex(index: i, position: point, shape: nil, color: nil, name: nil)
+                return createVertex(
+                    index: i,
+                    position: point,
+                    shape: nil,
+                    color: nil,
+                    name: nil,
+                    transform: transform
+                )
             }
         }
     }()
@@ -63,7 +85,13 @@ public final class Points {
             case .arrow: .arrow
             }
             // TODO: need set start and end offset
-            return Edge(start: seg.start, end: seg.end, source: source, style: edgeStyle(color: color))
+            return Edge(
+                start: seg.start,
+                end: seg.end,
+                transform: transform,
+                source: source,
+                style: edgeStyle(color: color)
+            )
         }
     }()
     
@@ -93,6 +121,7 @@ public final class Points {
     
     public init(
         _ points: [CGPoint],
+        transform: Matrix2D = .identity,
         isClosed: Bool = true,
         vertexShape: VertexShape = .shape(.circle),
         edgeShape: EdgeShape = .line,
@@ -102,6 +131,7 @@ public final class Points {
     ) {
         self.points = points
         self.isClosed = isClosed
+        self.transform = transform
         self.vertexShape = vertexShape
         self.edgeShape = edgeShape
         self.color = color
@@ -115,7 +145,8 @@ public final class Points {
         shape: VertexShape?,
         color: AppColor?,
         name: String?,
-        nameLocation: TextLocation = .right
+        nameLocation: TextLocation = .right,
+        transform: Matrix2D
     ) -> Vertex {
         let shape = shape ?? self.vertexShape
         let color = color ??  self.color
@@ -130,14 +161,14 @@ public final class Points {
             label = TextElement(source: .string(name), style: .nameLabel)
         }
         let element = PointElement(shape: centerShape, label: label)
-        return PointRenderElement(content: element, position: position)
+        return PointRenderElement(content: element, position: position, transform: transform)
     }
     
     public func overrideVertexStyle(
         at index: Int,
         shape: VertexShape? = nil,
         color: AppColor? = nil,
-        name: String? = nil,
+        name: VertexDescription? = nil,
         nameLocation: TextLocation = .right
     ) -> Points {
         guard index < points.count else { return self }
@@ -153,7 +184,8 @@ extension Points: Debuggable {
     }
     public func applying(transform: Matrix2D) -> Points {
         Points(
-            points * transform,
+            points,
+            transform: self.transform * transform,
             isClosed: isClosed,
             vertexShape: vertexShape,
             edgeShape: edgeShape,
@@ -179,8 +211,8 @@ extension Points: Debuggable {
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)
         ], vertexShape: .index)
-        .overrideVertexStyle(at: 0, shape: .shape(.rect), name: "Corner")
-        .overrideVertexStyle(at: 1, color: .red, name: "")
+        .overrideVertexStyle(at: 0, shape: .shape(.rect), name: .string("Corner"))
+        .overrideVertexStyle(at: 1, color: .red, name: .coordinate)
         
     ], coordinateSystem: .yDown)
 }
