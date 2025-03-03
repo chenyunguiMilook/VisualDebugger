@@ -249,6 +249,8 @@ extension Points: Debuggable {
     }
 }
 
+// TODO: suppor dash arrow
+
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
     DebugView(elements: [
         Points([
