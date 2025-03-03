@@ -14,13 +14,24 @@ public final class SegmentRenderElement<T: SegmentRenderer>: ContextRenderable {
     public let transform: Matrix2D
     public var startElement: StaticRendable?
     public var endElement: StaticRendable?
+    public var startOffset: Double = 0
+    public var endOffset: Double = 0
     public var renderer: T
     
-    public init(start: CGPoint, end: CGPoint, transform: Matrix2D = .identity, renderer: T) {
+    public init(
+        start: CGPoint,
+        end: CGPoint,
+        transform: Matrix2D = .identity,
+        renderer: T,
+        startOffset: Double = 0,
+        endOffset: Double = 0
+    ) {
         self.start = start
         self.end = end
         self.transform = transform
         self.renderer = renderer
+        self.startOffset = startOffset
+        self.endOffset = endOffset
     }
     
     public func applying(transform: Matrix2D) -> SegmentRenderElement<T> {
@@ -28,9 +39,15 @@ public final class SegmentRenderElement<T: SegmentRenderer>: ContextRenderable {
     }
     
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
+        let s = start * transform
+        let e = end * transform
+        var seg = Segment(start: s, end: e)
+        seg = seg.shrinkingStart(length: startOffset)
+        seg = seg.shrinkingEnd(length: endOffset)
+        
         self.renderer.renderSegment(
-            start: start * transform,
-            end: end * transform,
+            start: seg.start,
+            end: seg.end,
             in: context,
             scale: scale,
             contextHeight: contextHeight
@@ -65,10 +82,12 @@ extension SegmentRenderElement where T == SegmentShape {
         end: CGPoint,
         transform: Matrix2D,
         source: SegmentShapeSource,
-        style: ShapeRenderStyle
+        style: ShapeRenderStyle,
+        startOffset: Double = 0,
+        endOffset: Double = 0
     ) {
         let renderer = SegmentShape(source: source, style: style)
-        self.init(start: start, end: end, transform: transform, renderer: renderer)
+        self.init(start: start, end: end, transform: transform, renderer: renderer, startOffset: startOffset, endOffset: endOffset)
     }
 }
 
@@ -77,6 +96,8 @@ public func *<T>(lhs: SegmentRenderElement<T>, rhs: Matrix2D) -> SegmentRenderEl
         start: lhs.start,
         end: lhs.end,
         transform: lhs.transform * rhs,
-        renderer: lhs.renderer
+        renderer: lhs.renderer,
+        startOffset: lhs.startOffset,
+        endOffset: lhs.endOffset
     )
 }

@@ -84,13 +84,14 @@ public final class Points {
             case .line: .line
             case .arrow: .arrow
             }
-            // TODO: need set start and end offset
             return Edge(
                 start: seg.start,
                 end: seg.end,
                 transform: transform,
                 source: source,
-                style: edgeStyle(color: color)
+                style: edgeStyle(color: color),
+                startOffset: getRadius(index: i),
+                endOffset: getRadius(index: (i+1+points.count)%points.count)
             )
         }
     }()
@@ -114,7 +115,7 @@ public final class Points {
             insets: .zero,
             margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
             anchor: .midCenter,
-            textColor: AppColor.white,
+            textColor: color,
             bgStyle: .capsule(color: color, filled: false)
         )
     }
@@ -137,6 +138,14 @@ public final class Points {
         self.color = color
         self.vertexSize = vertexSize
         self.vertexStyleDict = vertexStyleDict
+    }
+    
+    func getRadius(index: Int) -> Double {
+        let shape = self.vertexStyleDict[index]?.shape ?? vertexShape
+        switch shape {
+        case .shape: return vertexSize.width / 2.0
+        case .index: return 6
+        }
     }
     
     func createVertex(
@@ -180,7 +189,8 @@ public final class Points {
 
 extension Points: Debuggable {
     public var debugBounds: CGRect? {
-        points.bounds
+        guard let bounds = points.bounds else { return nil }
+        return bounds * transform
     }
     public func applying(transform: Matrix2D) -> Points {
         Points(
