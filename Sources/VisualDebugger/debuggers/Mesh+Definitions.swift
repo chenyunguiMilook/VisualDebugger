@@ -68,3 +68,19 @@ extension Mesh {
     }
 
 }
+
+extension Mesh.Face: Equatable {
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
+        // 只要是使用的相同的三个顶点，就代表相等，不考虑顶点顺序
+        let lhsVertices = Set([lhs.v0, lhs.v1, lhs.v2])
+        let rhsVertices = Set([rhs.v0, rhs.v1, rhs.v2])
+        return lhsVertices == rhsVertices
+    }
+}
+
+extension Mesh.Edge: Equatable {
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
+        // 只要是使用的相同的两个顶点，就代表相等，不考虑顶点顺序
+        return (lhs.org == rhs.org && lhs.dst == rhs.dst) || (lhs.org == rhs.dst && lhs.dst == rhs.org)
+    }
+}

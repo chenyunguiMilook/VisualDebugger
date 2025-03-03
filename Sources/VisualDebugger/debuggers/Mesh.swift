@@ -21,6 +21,7 @@ public final class Mesh {
     // 基本属性
     public let vertices: [CGPoint]
     public let faces: [Face]
+    public let edges: [Edge]
     public let transform: Matrix2D
     
     // 样式属性
@@ -82,6 +83,7 @@ public final class Mesh {
     ) {
         self.vertices = vertices
         self.faces = faces
+        self.edges = Self.getEdges(faces: faces)
         self.transform = transform
         self.vertexShape = vertexShape
         self.edgeShape = edgeShape
@@ -91,8 +93,6 @@ public final class Mesh {
         self.edgeStyleDict = edgeStyleDict
         self.faceStyleDict = faceStyleDict
     }
-    
-    
     
     // 获取指定索引顶点的半径
     func getRadius(index: Int) -> Double {
@@ -153,20 +153,55 @@ public final class Mesh {
         name: Description? = nil,
         nameLocation: TextLocation = .right
     ) -> Mesh {
-        if let edgeIndex = edgeElements.firstIndex(where: { $0.start == vertices[edge.org] && $0.end == vertices[edge.dst] }) {
-            let edgeStyle = EdgeStyle(
+        if let edgeIndex = edges.firstIndex(of: edge) {
+            return self.overrideEdgeStyle(
+                at: edgeIndex,
                 shape: shape,
                 color: color,
                 name: name,
                 nameLocation: nameLocation
             )
-            edgeStyleDict[edgeIndex] = edgeStyle
+        } else {
+            return self
         }
+    }
+    
+    public func overrideEdgeStyle(
+        at index: Int,
+        shape: EdgeShape? = nil,
+        color: AppColor? = nil,
+        name: Description? = nil,
+        nameLocation: TextLocation = .right
+    ) -> Mesh {
+        let edgeStyle = EdgeStyle(
+            shape: shape,
+            color: color,
+            name: name,
+            nameLocation: nameLocation
+        )
+        edgeStyleDict[index] = edgeStyle
         return self
     }
     
     // TODO: - need to implement
     // 自定义方法：设置面样式
+    public func overrideFaceStyle(
+        for face: Face,
+        color: AppColor? = nil,
+        alpha: CGFloat = 0.3,
+        name: Description? = nil,
+        nameLocation: TextLocation = .center
+    ) -> Mesh {
+        guard let faceIndex = faces.firstIndex(of: face) else { return self }
+        return self.overrideFaceStyle(
+            at: faceIndex,
+            color: color,
+            alpha: alpha,
+            name: name,
+            nameLocation: nameLocation
+        )
+    }
+    
     public func overrideFaceStyle(
         at index: Int,
         color: AppColor? = nil,
@@ -257,7 +292,8 @@ extension Mesh {
         Mesh(vertices, faces: faces)
             .overrideVertexStyle(at: 0, shape: .index, name: .coordinate, nameLocation: .top)
             .overrideVertexStyle(at: 1, color: .red, name: .string("顶点1"))
-            .overrideEdgeStyle(for: .init(org: 1, dst: 2), color: .red)
+            .overrideEdgeStyle(for: .init(org: 2, dst: 1), color: .green)
+            //.overrideEdgeStyle(at: 1, color: .red)
             .overrideFaceStyle(at: 0, color: .blue, alpha: 0.2)
             .setDisplay(vertices: true, edges: true, faces: true)
     ], showOrigin: true, coordinateSystem: .yDown)

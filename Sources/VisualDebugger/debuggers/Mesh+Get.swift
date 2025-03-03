@@ -44,7 +44,6 @@ extension Mesh {
     }
 
     func getMeshEdges() -> [MeshEdge] {
-        let edges = getEdges()
         return edges.enumerated().map { (i, edge) in
             // 获取样式，优先使用自定义样式，否则使用默认样式
             let customStyle = edgeStyleDict[i]
@@ -90,7 +89,7 @@ extension Mesh {
     }
     
     // 从Face数据生成唯一的边
-    func getEdges() -> [Edge] {
+    static func getEdges(faces: [Face]) -> [Edge] {
         // 使用Set来跟踪唯一的边
         var edgeSet: Set<String> = Set()
         var edges: [Edge] = []
