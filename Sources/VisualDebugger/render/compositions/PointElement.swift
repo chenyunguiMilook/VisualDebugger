@@ -29,8 +29,7 @@ extension PointElement: StaticRendable {
     }
     
     public func render(
-        to location: CGPoint,
-        angle: Double,
+        with transform: Matrix2D,
         in context: CGContext,
         scale: CGFloat,
         contextHeight: Int?
@@ -39,8 +38,7 @@ extension PointElement: StaticRendable {
         if let label { array.append(label) }
         for element in array {
             element.render(
-                to: location,
-                angle: angle,
+                with: transform,
                 in: context,
                 scale: scale,
                 contextHeight: contextHeight

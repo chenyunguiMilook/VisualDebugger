@@ -11,13 +11,15 @@ public final class SegmentRenderElement<T: SegmentRenderer>: ContextRenderable {
     
     public let start: CGPoint
     public let end: CGPoint
+    public let transform: Matrix2D
     public var startElement: StaticRendable?
     public var endElement: StaticRendable?
     public var renderer: T
     
-    public init(start: CGPoint, end: CGPoint, renderer: T) {
+    public init(start: CGPoint, end: CGPoint, transform: Matrix2D = .identity, renderer: T) {
         self.start = start
         self.end = end
+        self.transform = transform
         self.renderer = renderer
     }
     
@@ -27,14 +29,28 @@ public final class SegmentRenderElement<T: SegmentRenderer>: ContextRenderable {
     
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         self.renderer.renderSegment(
-            start: start,
-            end: end,
+            start: start * transform,
+            end: end * transform,
             in: context,
             scale: scale,
             contextHeight: contextHeight
         )
-        self.startElement?.render(to: start, angle: 0, in: context, scale: scale, contextHeight: contextHeight)
-        self.endElement?.render(to: end, angle: 0, in: context, scale: scale, contextHeight: contextHeight)
+        if let startElement {
+            startElement.render(
+                with: Matrix2D(translation: start) * transform,
+                in: context,
+                scale: scale,
+                contextHeight: contextHeight
+            )
+        }
+        if let endElement {
+            endElement.render(
+                with: Matrix2D(translation: end) * transform,
+                in: context,
+                scale: scale,
+                contextHeight: contextHeight
+            )
+        }
     }
     
     public func clone() -> SegmentRenderElement<T> {
@@ -52,8 +68,9 @@ extension SegmentRenderElement where T == SegmentShape {
 
 public func *<T>(lhs: SegmentRenderElement<T>, rhs: Matrix2D) -> SegmentRenderElement<T> {
     return SegmentRenderElement<T>(
-        start: lhs.start * rhs,
-        end: lhs.end * rhs,
+        start: lhs.start,
+        end: lhs.end,
+        transform: lhs.transform * rhs,
         renderer: lhs.renderer
     )
 }

@@ -9,24 +9,21 @@ import CoreGraphics
 
 public struct StaticRenderElement<Content: StaticRendable>: Debuggable {
     
-    // TODO: 给它加一个transform属性， 这样原始位置仍然可以被保存
-    
     public let content: Content
-    public let position: CGPoint
-    public let angle: Double
+    public let position: CGPoint // this is raw position, transform will no affect this
+    public let transform: Matrix2D
     public let rotatable: Bool  // 决定是否受旋转变换影响
     
-    public init(content: Content, position: CGPoint, angle: Double = 0, rotatable: Bool = false) {
+    public init(content: Content, position: CGPoint, transform: Matrix2D = .identity, rotatable: Bool = false) {
         self.content = content
         self.position = position
-        self.angle = angle
+        self.transform = transform
         self.rotatable = rotatable
     }
     
     public var debugBounds: CGRect? {
-        let o = CGRect(center: position, size: .unit)
-        let b = self.content.contentBounds
-        return [o, b].bounds
+        let pos = position * transform
+        return self.content.contentBounds.offseted(pos)
     }
     
     public func applying(transform: Matrix2D) -> StaticRenderElement<Content> {
@@ -35,8 +32,7 @@ public struct StaticRenderElement<Content: StaticRendable>: Debuggable {
     
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         self.content.render(
-            to: position,
-            angle: angle,
+            with: Matrix2D(translation: position) * transform,
             in: context,
             scale: scale,
             contextHeight: contextHeight
@@ -45,32 +41,28 @@ public struct StaticRenderElement<Content: StaticRendable>: Debuggable {
 }
 
 extension StaticRenderElement where Content == ShapeElement {
-    public init(source: ShapeSource, style: ShapeRenderStyle, position: CGPoint, angle: Double = 0, rotatable: Bool = false) {
+    public init(source: ShapeSource, style: ShapeRenderStyle, position: CGPoint, transform: Matrix2D = .identity, rotatable: Bool = false) {
         self.content = ShapeElement(source: source, style: style)
         self.position = position
-        self.angle = angle
+        self.transform = transform
         self.rotatable = rotatable
     }
 }
 
 extension StaticRenderElement where Content == TextElement {
-    public init(source: TextSource, style: TextRenderStyle, position: CGPoint, angle: Double = 0, rotatable: Bool = false) {
+    public init(source: TextSource, style: TextRenderStyle, position: CGPoint, transform: Matrix2D = .identity, rotatable: Bool = false) {
         self.content = TextElement(source: source, style: style)
         self.position = position
-        self.angle = angle
+        self.transform = transform
         self.rotatable = rotatable
     }
 }
 
 public func *<T>(lhs: StaticRenderElement<T>, rhs: Matrix2D) -> StaticRenderElement<T> {
-    var rotation = lhs.angle
-    if lhs.rotatable {
-        rotation += rhs.decomposed().rotation
-    }
     return StaticRenderElement(
         content: lhs.content,
-        position: lhs.position * rhs,
-        angle: rotation,
+        position: lhs.position,
+        transform: lhs.transform * rhs,
         rotatable: lhs.rotatable
     )
 }

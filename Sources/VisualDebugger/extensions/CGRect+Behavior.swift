@@ -86,6 +86,21 @@ extension CGRect {
 }
 
 extension CGRect {
+    public func offseted(_ offset: CGPoint) -> CGRect {
+        return CGRect(origin: self.origin + offset, size: self.size)
+    }
+
+    public func offseted(x: CGFloat, y: CGFloat) -> CGRect {
+        return CGRect(
+            x: self.origin.x + x,
+            y: self.origin.y + y,
+            width: self.size.width,
+            height: self.size.height
+        )
+    }
+}
+
+extension CGRect {
     public var topLeft: CGPoint {
         return CGPoint(x: self.minX, y: self.minY)
     }

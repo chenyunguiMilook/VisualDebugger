@@ -23,17 +23,15 @@ public final class TextElement: StaticRendable {
     }
     
     public func render(
-        to location: CGPoint,
-        angle: Double,
+        with transform: Matrix2D,
         in context: CGContext,
         scale: CGFloat,
         contextHeight: Int?
     ) {
-        let r = Matrix2D(rotationAngle: angle)
-        let t = Matrix2D(translation: location)
+        let t = Matrix2D(translationX: transform.tx, y: transform.ty)
         context.render(
             text: source.string,
-            transform: r * t,
+            transform: t,
             style: style,
             scale: scale,
             contextHeight: contextHeight

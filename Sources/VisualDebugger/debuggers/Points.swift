@@ -180,7 +180,7 @@ extension Points: Debuggable {
             .init(x: 23, y: 67)
         ], vertexShape: .index)
         .overrideVertexStyle(at: 0, shape: .shape(.rect), name: "Corner")
-        .overrideVertexStyle(at: 1, color: .red, name: "B")
+        .overrideVertexStyle(at: 1, color: .red, name: "")
         
     ], coordinateSystem: .yDown)
 }

@@ -12,11 +12,11 @@ public protocol Cloneable {
 }
 
 public protocol StaticRendable: Cloneable {
+    // raw bounds
     var contentBounds: CGRect { get }
     
     func render(
-        to location: CGPoint,
-        angle: Double,
+        with transform: Matrix2D,
         in context: CGContext,
         scale: CGFloat,
         contextHeight: Int?
