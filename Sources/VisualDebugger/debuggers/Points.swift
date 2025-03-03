@@ -26,7 +26,7 @@ public final class Points {
     }
     public enum EdgeShape {
         case line
-        case arrow
+        case arrow(style: ArrowStyle, direction: ArrowDirection)
     }
     public struct VertexStyle {
         let shape: VertexShape?
@@ -82,7 +82,7 @@ public final class Points {
         points.segments(isClosed: isClosed).enumerated().map { (i, seg) in
             let source: SegmentShapeSource = switch edgeShape {
             case .line: .line
-            case .arrow: .arrow
+            case .arrow(let style, let direction): .arrow(style: style, direction: direction)
             }
             return Edge(
                 start: seg.start,
@@ -125,7 +125,7 @@ public final class Points {
         transform: Matrix2D = .identity,
         isClosed: Bool = true,
         vertexShape: VertexShape = .shape(.circle),
-        edgeShape: EdgeShape = .line,
+        edgeShape: EdgeShape = .arrow(style: .triangle, direction: .normal),
         color: AppColor = .yellow,
         vertexSize: CGSize = CGSize(width: 4, height: 4),
         vertexStyleDict: [Int: VertexStyle] = [:]
