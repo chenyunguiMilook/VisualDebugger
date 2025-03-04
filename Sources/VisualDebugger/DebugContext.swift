@@ -7,6 +7,7 @@
 import Foundation
 import CoreGraphics
 
+// TODO: support zoom to specified area
 public final class DebugContext {
     
     private var margin: CGFloat = 40

@@ -119,7 +119,7 @@ extension Axis.Mark {
 
 extension Axis {
     func getElement(style: ShapeRenderStyle) -> SegmentRenderElement<SegmentShape> {
-        let source: SegmentShapeSource = .arrow(style: .triangle, direction: .normal)
+        let source: SegmentShapeSource = .arrow(Arrow())
         let shape = SegmentShape(source: source, style: style)
         return SegmentRenderElement<SegmentShape>.init(start: start.position, end: end.position, renderer: shape)
     }

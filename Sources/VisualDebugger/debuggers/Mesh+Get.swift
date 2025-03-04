@@ -53,7 +53,7 @@ extension Mesh {
             // 根据边形状创建对应的SegmentShapeSource
             let source: SegmentShapeSource = switch edgeShape {
             case .line: .line
-            case .arrow(let style, let direction): .arrow(style: style, direction: direction)
+            case .arrow(let arrow): .arrow(arrow)
             }
             
             let startIndex = edge.org

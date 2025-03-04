@@ -28,7 +28,7 @@ public final class Points {
     }
     public enum EdgeShape {
         case line
-        case arrow(style: ArrowStyle, direction: ArrowDirection)
+        case arrow(Arrow)
     }
     public struct VertexStyle {
         let shape: VertexShape?
@@ -97,7 +97,7 @@ public final class Points {
             // 根据边形状创建对应的SegmentShapeSource
             let source: SegmentShapeSource = switch edgeShape {
             case .line: .line
-            case .arrow(let style, let direction): .arrow(style: style, direction: direction)
+            case .arrow(let arrow): .arrow(arrow)
             }
             
             return Edge(
@@ -141,7 +141,7 @@ public final class Points {
         transform: Matrix2D = .identity,
         isClosed: Bool = true,
         vertexShape: VertexShape = .shape(.circle),
-        edgeShape: EdgeShape = .arrow(style: .triangle, direction: .normal),
+        edgeShape: EdgeShape = .arrow(Arrow()),
         color: AppColor = .yellow,
         vertexSize: CGSize = CGSize(width: 4, height: 4),
         vertexStyleDict: [Int: VertexStyle] = [:],
@@ -265,7 +265,7 @@ extension Points: Debuggable {
         ], vertexShape: .index)
         .overrideVertexStyle(at: 0, shape: .shape(.rect), name: .string("Corner"))
         .overrideVertexStyle(at: 1, color: .red, name: .coordinate)
-        .overrideEdgeStyle(at: 0, shape: .arrow(style: .triangle, direction: .normal), color: .red)
+        .overrideEdgeStyle(at: 0, shape: .arrow(Arrow()), color: .red)
         
     ], coordinateSystem: .yDown)
 }

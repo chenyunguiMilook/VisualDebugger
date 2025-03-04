@@ -43,7 +43,7 @@ extension Mesh {
     
     public enum EdgeShape {
         case line
-        case arrow(style: ArrowStyle, direction: ArrowDirection)
+        case arrow(Arrow)
     }
     
     public struct VertexStyle {
