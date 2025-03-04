@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-public final class SegmentRenderElement<T: SegmentRenderer>: Transformable, ContextRenderable {
+public final class SegmentRenderElement: Transformable, ContextRenderable {
     
     public let start: CGPoint
     public let end: CGPoint
@@ -16,25 +16,28 @@ public final class SegmentRenderElement<T: SegmentRenderer>: Transformable, Cont
     public var endElement: StaticRendable?
     public var startOffset: Double = 0
     public var endOffset: Double = 0
-    public var renderer: T
+    public var segmentShape: SegmentRenderer? // rename to segmentShape
+    public var segmentStyle: ShapeRenderStyle
     
     public init(
         start: CGPoint,
         end: CGPoint,
         transform: Matrix2D = .identity,
-        renderer: T,
+        segmentShape: SegmentRenderer?,
+        segmentStyle: ShapeRenderStyle,
         startOffset: Double = 0,
         endOffset: Double = 0
     ) {
         self.start = start
         self.end = end
         self.transform = transform
-        self.renderer = renderer
+        self.segmentShape = segmentShape
+        self.segmentStyle = segmentStyle
         self.startOffset = startOffset
         self.endOffset = endOffset
     }
     
-    public func applying(transform: Matrix2D) -> SegmentRenderElement<T> {
+    public func applying(transform: Matrix2D) -> SegmentRenderElement {
         self * transform
     }
     
@@ -46,13 +49,16 @@ public final class SegmentRenderElement<T: SegmentRenderer>: Transformable, Cont
         seg = seg.shrinkingStart(length: startOffset)
         seg = seg.shrinkingEnd(length: endOffset)
         
-        self.renderer.renderSegment(
-            start: seg.start,
-            end: seg.end,
-            in: context,
-            scale: scale,
-            contextHeight: contextHeight
-        )
+        let path: AppBezierPath
+        if let segmentShape {
+            path = segmentShape.getBezierPath(start: seg.start, end: seg.end)
+        } else {
+            path = AppBezierPath()
+            path.move(to: seg.start)
+            path.addLine(to: seg.end)
+        }
+        context.render(path: path.cgPath, style: segmentStyle)
+        
         if let startElement {
             startElement.render(
                 with: Matrix2D(translation: start) * transform,
@@ -70,34 +76,15 @@ public final class SegmentRenderElement<T: SegmentRenderer>: Transformable, Cont
             )
         }
     }
-    
-    public func clone() -> SegmentRenderElement<T> {
-        SegmentRenderElement<T>(start: start, end: end, renderer: renderer.clone())
-    }
 }
 
-extension SegmentRenderElement where T == SegmentShape {
-    
-    public convenience init(
-        start: CGPoint,
-        end: CGPoint,
-        transform: Matrix2D,
-        source: SegmentShapeSource,
-        style: ShapeRenderStyle,
-        startOffset: Double = 0,
-        endOffset: Double = 0
-    ) {
-        let renderer = SegmentShape(source: source, style: style)
-        self.init(start: start, end: end, transform: transform, renderer: renderer, startOffset: startOffset, endOffset: endOffset)
-    }
-}
-
-public func *<T>(lhs: SegmentRenderElement<T>, rhs: Matrix2D) -> SegmentRenderElement<T> {
-    return SegmentRenderElement<T>(
+public func *(lhs: SegmentRenderElement, rhs: Matrix2D) -> SegmentRenderElement {
+    return SegmentRenderElement(
         start: lhs.start,
         end: lhs.end,
         transform: lhs.transform * rhs,
-        renderer: lhs.renderer,
+        segmentShape: lhs.segmentShape,
+        segmentStyle: lhs.segmentStyle,
         startOffset: lhs.startOffset,
         endOffset: lhs.endOffset
     )

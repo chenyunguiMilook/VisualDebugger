@@ -38,7 +38,7 @@ public struct Arrow {
     }
 }
 
-extension Arrow {
+extension Arrow: SegmentRenderer {
     
     public func getBezierPath(start: CGPoint, end: CGPoint) -> AppBezierPath {
         let angle = (end - start).angle

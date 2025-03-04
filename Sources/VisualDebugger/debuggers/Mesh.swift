@@ -17,7 +17,7 @@ public typealias VMesh = Mesh
 public final class Mesh {
     
     public typealias Vertex = PointRenderElement
-    public typealias MeshEdge = SegmentRenderElement<SegmentShape>
+    public typealias MeshEdge = SegmentRenderElement
     public typealias MeshFace = ShapeRenderElement
 
     // 基本属性

@@ -16,7 +16,7 @@ public typealias VPoints = Points
 
 public final class Points {
     public typealias Vertex = PointRenderElement
-    public typealias Edge = SegmentRenderElement<SegmentShape>
+    public typealias Edge = SegmentRenderElement
     
     public enum VertexShape {
         case shape(ShapeType)
@@ -95,17 +95,17 @@ public final class Points {
             let edgeColor = customStyle?.color ?? self.color
             
             // 根据边形状创建对应的SegmentShapeSource
-            let source: SegmentShapeSource = switch edgeShape {
-            case .line: .line
-            case .arrow(let arrow): .arrow(arrow)
+            let source: SegmentRenderer? = switch edgeShape {
+            case .line: nil
+            case .arrow(let arrow): arrow
             }
             
             return Edge(
                 start: seg.start,
                 end: seg.end,
                 transform: transform,
-                source: source,
-                style: edgeStyle(color: edgeColor),
+                segmentShape: source,
+                segmentStyle: edgeStyle(color: edgeColor),
                 startOffset: getRadius(index: i),
                 endOffset: getRadius(index: (i+1+points.count)%points.count)
             )

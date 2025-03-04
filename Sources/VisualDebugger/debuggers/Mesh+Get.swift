@@ -51,9 +51,9 @@ extension Mesh {
             let edgeColor = customStyle?.color ?? self.color
             
             // 根据边形状创建对应的SegmentShapeSource
-            let source: SegmentShapeSource = switch edgeShape {
-            case .line: .line
-            case .arrow(let arrow): .arrow(arrow)
+            let source: SegmentRenderer? = switch edgeShape {
+            case .line: nil
+            case .arrow(let arrow): arrow
             }
             
             let startIndex = edge.org
@@ -63,8 +63,8 @@ extension Mesh {
                 start: vertices[startIndex],
                 end: vertices[endIndex],
                 transform: transform,
-                source: source,
-                style: edgeStyle(color: edgeColor),
+                segmentShape: source,
+                segmentStyle: edgeStyle(color: edgeColor),
                 startOffset: getRadius(index: startIndex),
                 endOffset: getRadius(index: endIndex)
             )

@@ -7,13 +7,6 @@
 
 import CoreGraphics
 
-public protocol SegmentRenderer: Cloneable {
-    
-    func renderSegment(
-        start: CGPoint,
-        end: CGPoint,
-        in context: CGContext,
-        scale: Double,
-        contextHeight: Int?
-    )
+public protocol SegmentRenderer {
+    func getBezierPath(start: CGPoint, end: CGPoint) -> AppBezierPath
 }
