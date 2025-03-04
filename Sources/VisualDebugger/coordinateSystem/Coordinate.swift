@@ -34,14 +34,4 @@ public struct Coordinate {
         self.yAxis = yAxisData.getAxis(type: .y(origin: origin))
         self.origin = origin
     }
-    
-    public func renderElements(_ coordinateSystem: CoordinateSystem2D) -> [any Debuggable] {
-        [originElement()] +
-        xAxis.renderElements(coordinateSystem: coordinateSystem) +
-        yAxis.renderElements(coordinateSystem: coordinateSystem)
-    }
-    
-    func originElement() -> StaticTextElement {
-        StaticTextElement(source: "O", style: .originLabel, position: origin)
-    }
 }

@@ -44,7 +44,8 @@ public final class DebugView: AppView {
         numSegments: Int = 5,
         showOrigin: Bool = false,
         showCoordinate: Bool = true,
-        coordinateSystem: CoordinateSystem2D = .yDown
+        coordinateSystem: CoordinateSystem2D = .yDown,
+        coordinateStyle: CoordinateStyle = .default
     ) {
         let context = DebugContext(
             elements: elements,
@@ -52,7 +53,8 @@ public final class DebugView: AppView {
             numSegments: numSegments,
             showOrigin: showOrigin,
             showCoordinate: showCoordinate,
-            coordinateSystem: coordinateSystem
+            coordinateSystem: coordinateSystem,
+            coordinateStyle: coordinateStyle
         )
         self.context = context
         super.init(frame: context.frame)

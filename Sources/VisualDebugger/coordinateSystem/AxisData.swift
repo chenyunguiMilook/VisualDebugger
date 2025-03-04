@@ -9,7 +9,7 @@ import CoreGraphics
 import Foundation
 
 package struct AxisData {
-    public static let sideRatio = 0.3
+    public static let sideRatio = 0.6
     public static let maxSideLength: Double = 20
 
     // start value of the axis

@@ -11,11 +11,11 @@ public final class DebugContext {
     
     private var margin: CGFloat = 40
     private var colorIndex: Int = 0
-    private var coordElements: [any Debuggable]
     
     private var _valueToRender: Matrix2D
     private var _flip: Matrix2D
     private var _coordinate: Coordinate
+    lazy var coordinate = CoordinateRenderElement(coordinate: _coordinate, coordSystem: coordinateSystem, style: coordinateStyle)
     
     public var valueToRender: Matrix2D {
         switch coordinateSystem {
@@ -24,11 +24,8 @@ public final class DebugContext {
         }
     }
     public var showCoordinate: Bool
-    public var coordinateSystem: CoordinateSystem2D {
-        didSet {
-            self.coordElements = _coordinate.renderElements(coordinateSystem)
-        }
-    }
+    public var coordinateSystem: CoordinateSystem2D
+    public var coordinateStyle: CoordinateStyle
     public var elements: [any Debuggable] = []
     public private(set) var frame: CGRect
     
@@ -38,7 +35,8 @@ public final class DebugContext {
         numSegments: Int = 5,
         showOrigin: Bool = false,
         showCoordinate: Bool = true,
-        coordinateSystem: CoordinateSystem2D = .yDown
+        coordinateSystem: CoordinateSystem2D = .yDown,
+        coordinateStyle: CoordinateStyle = .default
     ) {
         let debugRect = elements.debugBounds ?? CGRect(origin: .zero, size: .unit)
         self.init(
@@ -47,7 +45,8 @@ public final class DebugContext {
             numSegments: numSegments,
             showOrigin: showOrigin,
             showCoordinate: showCoordinate,
-            coordinateSystem: coordinateSystem
+            coordinateSystem: coordinateSystem,
+            coordinateStyle: coordinateStyle
         )
         self.elements = elements
     }
@@ -58,7 +57,8 @@ public final class DebugContext {
         numSegments: Int = 5,
         showOrigin: Bool = false,
         showCoordinate: Bool = true,
-        coordinateSystem: CoordinateSystem2D = .yDown
+        coordinateSystem: CoordinateSystem2D = .yDown,
+        coordinateStyle: CoordinateStyle = .default
     ) {
         var area = debugRect
         if area.width == 0 { area.size.width = 1 }
@@ -70,7 +70,7 @@ public final class DebugContext {
         // calculate the proper segment length
         let minSegmentLength = minWidth / CGFloat(numSegments)
         var segmentLength = minSegmentLength
-        if let maxLabelWidth = coordinate.xAxis.estimateMaxLabelWidth(with: .xAxisLabel) {
+        if let maxLabelWidth = coordinate.xAxis.estimateMaxLabelWidth {
             segmentLength = max(maxLabelWidth, segmentLength)
         }
         segmentLength += 4
@@ -87,7 +87,7 @@ public final class DebugContext {
         self._coordinate = coordinate
         self.showCoordinate = showCoordinate
         self.coordinateSystem = coordinateSystem
-        self.coordElements = coordinate.renderElements(coordinateSystem)
+        self.coordinateStyle = coordinateStyle
         self.frame = frame
     }
     
@@ -98,14 +98,11 @@ public final class DebugContext {
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int) {
         let transform = self.valueToRender
         if showCoordinate {
-            for element in coordElements {
-                element.render(
-                    with: transform,
-                    in: context,
-                    scale: scale,
-                    contextHeight: contextHeight
-                )
-            }
+            coordinate.render(
+                with: transform,
+                in: context,
+                scale: scale,
+                contextHeight: contextHeight)
         }
         for element in elements {
             element.render(
