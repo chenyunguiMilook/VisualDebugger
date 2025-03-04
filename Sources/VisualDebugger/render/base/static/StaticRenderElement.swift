@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-public struct StaticRenderElement<Content: StaticRendable>: Debuggable {
+public struct StaticRenderElement<Content: StaticRendable>: Transformable, Debuggable {
     
     public let content: Content
     public let position: CGPoint // this is raw position, transform will no affect this
@@ -30,9 +30,9 @@ public struct StaticRenderElement<Content: StaticRendable>: Debuggable {
         self * transform
     }
     
-    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
+    public func render(with matrix: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         self.content.render(
-            with: Matrix2D(translation: position) * transform,
+            with: Matrix2D(translation: position) * transform * matrix,
             in: context,
             scale: scale,
             contextHeight: contextHeight

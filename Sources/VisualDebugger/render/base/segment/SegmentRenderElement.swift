@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-public final class SegmentRenderElement<T: SegmentRenderer>: ContextRenderable {
+public final class SegmentRenderElement<T: SegmentRenderer>: Transformable, ContextRenderable {
     
     public let start: CGPoint
     public let end: CGPoint
@@ -38,7 +38,8 @@ public final class SegmentRenderElement<T: SegmentRenderer>: ContextRenderable {
         self * transform
     }
     
-    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
+    public func render(with matrix: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
+        let transform = self.transform * matrix
         let s = start * transform
         let e = end * transform
         var seg = Segment(start: s, end: e)

@@ -12,6 +12,8 @@ import UIKit
 import AppKit
 #endif
 
+public typealias VMesh = Mesh
+
 public final class Mesh {
     
     public typealias Vertex = PointRenderElement

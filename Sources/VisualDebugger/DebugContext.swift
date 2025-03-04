@@ -99,7 +99,8 @@ public final class DebugContext {
         let transform = self.valueToRender
         if showCoordinate {
             for element in coordElements {
-                element.applying(transform: transform).render(
+                element.render(
+                    with: transform,
                     in: context,
                     scale: scale,
                     contextHeight: contextHeight
@@ -107,7 +108,8 @@ public final class DebugContext {
             }
         }
         for element in elements {
-            element.applying(transform: transform).render(
+            element.render(
+                with: transform,
                 in: context,
                 scale: scale,
                 contextHeight: contextHeight

@@ -8,19 +8,6 @@
 import Foundation
 import CoreGraphics
 
-extension Array: Transformable where Element: Transformable {
-    public func applying(transform: Matrix2D) -> [Element] {
-        self.map { $0.applying(transform: transform) }
-    }
-}
-
-extension Array: ContextRenderable where Element: ContextRenderable {
-    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
-        for element in self {
-            element.render(in: context, scale: scale, contextHeight: contextHeight)
-        }
-    }
-}
 
 public protocol ContextRenderElementOwner {
     var renderElement: ContextRenderable { get }

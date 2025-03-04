@@ -12,6 +12,8 @@ import UIKit
 import AppKit
 #endif
 
+public typealias VPoints = Points
+
 public final class Points {
     public typealias Vertex = PointRenderElement
     public typealias Edge = SegmentRenderElement<SegmentShape>
@@ -221,11 +223,7 @@ public final class Points {
     }
 }
 
-extension Points: Debuggable {
-    public var debugBounds: CGRect? {
-        guard let bounds = points.bounds else { return nil }
-        return bounds * transform
-    }
+extension Points: Transformable {
     public func applying(transform: Matrix2D) -> Points {
         Points(
             points,
@@ -239,12 +237,19 @@ extension Points: Debuggable {
             edgeStyleDict: edgeStyleDict
         )
     }
-    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
+}
+
+extension Points: Debuggable {
+    public var debugBounds: CGRect? {
+        guard let bounds = points.bounds else { return nil }
+        return bounds * transform
+    }
+    public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         for edge in edges {
-            edge.render(in: context, scale: scale, contextHeight: contextHeight)
+            edge.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
         }
         for vtx in vertices {
-            vtx.render(in: context, scale: scale, contextHeight: contextHeight)
+            vtx.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
         }
     }
 }

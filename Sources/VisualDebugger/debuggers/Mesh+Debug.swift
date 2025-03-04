@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-extension Mesh: Debuggable {
+extension Mesh: Transformable, Debuggable {
     public var debugBounds: CGRect? {
         guard let bounds = vertices.bounds else { return nil }
         return bounds * transform
@@ -28,25 +28,26 @@ extension Mesh: Debuggable {
         )
     }
     
-    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int?) {
+    public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         // 首先渲染面
+        // TODO: need to fix
         if showFaces {
             for face in faceElements {
-                face.render(in: context, scale: scale, contextHeight: contextHeight)
+                face.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
             }
         }
         
         // 然后渲染边
         if showEdges {
             for edge in edgeElements {
-                edge.render(in: context, scale: scale, contextHeight: contextHeight)
+                edge.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
             }
         }
         
         // 最后渲染顶点
         if showVertices {
             for vertex in vertexElements {
-                vertex.render(in: context, scale: scale, contextHeight: contextHeight)
+                vertex.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
             }
         }
     }
