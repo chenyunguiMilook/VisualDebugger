@@ -10,7 +10,6 @@ import CoreGraphics
 public final class DebugContext {
     
     private var margin: CGFloat = 40
-    private var minWidth: CGFloat = 250
     private var colorIndex: Int = 0
     private var coordElements: [any Debuggable]
     
@@ -69,7 +68,7 @@ public final class DebugContext {
         let coordinate = Coordinate(rect: area, numSegments: numSegments)
         
         // calculate the proper segment length
-        let minSegmentLength = self.minWidth / CGFloat(numSegments)
+        let minSegmentLength = minWidth / CGFloat(numSegments)
         var segmentLength = minSegmentLength
         if let maxLabelWidth = coordinate.xAxis.estimateMaxLabelWidth(with: .xAxisLabel) {
             segmentLength = max(maxLabelWidth, segmentLength)
