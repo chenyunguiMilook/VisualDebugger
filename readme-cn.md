@@ -1,7 +1,3 @@
----
-typora-root-url: ./Images
----
-
 # VisualDebugger
 
 最优雅、最简单的方式在源文件中可视化您的数据
@@ -67,7 +63,7 @@ let package = Package(
 
 
 
-![](/debug_points.png)
+![](./Images/debug_points.png)
 
 
 
@@ -99,7 +95,7 @@ let package = Package(
 }
 ```
 
-### ![](/debug_mesh.png)
+### ![](./Images/debug_mesh.png)
 
 ## 许可证
 

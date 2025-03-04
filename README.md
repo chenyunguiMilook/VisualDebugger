@@ -1,7 +1,3 @@
----
-typora-root-url: ./Images
----
-
 # VisualDebugger
 
 [中文文档](./readme-cn.md)
@@ -66,7 +62,7 @@ let package = Package(
 }
 ```
 
-![img](/debug_points.png)
+<img src="./Images/debug_points.png" title="Debug Points" />
 
 ### Debugging Mesh Structures
 
@@ -96,7 +92,7 @@ let package = Package(
 }
 ```
 
-![img](/debug_mesh.png)
+<img src="./Images/debug_mesh.png" title="Debug Mesh" />
 
 ## License
 
