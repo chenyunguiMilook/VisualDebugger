@@ -7,6 +7,7 @@
 
 import CoreGraphics
 
+// TODO: remove ShapeSource, make protocol is easier to use
 public enum ShapeSource {
     case path(AppBezierPath)
     case shape(ShapeType, size: CGSize, anchor: Anchor)

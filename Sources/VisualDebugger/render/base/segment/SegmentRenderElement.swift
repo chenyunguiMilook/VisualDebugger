@@ -14,6 +14,8 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
     public let transform: Matrix2D
     public var startElement: StaticRendable?
     public var endElement: StaticRendable?
+    public var topElement: StaticRendable? // edge center 90 degree direction
+    public var bottomElement: StaticRendable? // edge center -90 degree direction
     public var startOffset: Double = 0
     public var endOffset: Double = 0
     public var segmentShape: SegmentRenderer? // rename to segmentShape
@@ -75,11 +77,27 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
                 contextHeight: contextHeight
             )
         }
+        if let topElement {
+            topElement.render(
+                with: Matrix2D(translation: (start + end)/2.0) * transform,
+                in: context,
+                scale: scale,
+                contextHeight: contextHeight
+            )
+        }
+        if let bottomElement {
+            bottomElement.render(
+                with: Matrix2D(translation: (start + end)/2.0) * transform,
+                in: context,
+                scale: scale,
+                contextHeight: contextHeight
+            )
+        }
     }
 }
 
 public func *(lhs: SegmentRenderElement, rhs: Matrix2D) -> SegmentRenderElement {
-    return SegmentRenderElement(
+    let seg = SegmentRenderElement(
         start: lhs.start,
         end: lhs.end,
         transform: lhs.transform * rhs,
@@ -88,4 +106,9 @@ public func *(lhs: SegmentRenderElement, rhs: Matrix2D) -> SegmentRenderElement 
         startOffset: lhs.startOffset,
         endOffset: lhs.endOffset
     )
+    seg.startElement = lhs.startElement
+    seg.endElement = lhs.endElement
+    seg.topElement = lhs.topElement
+    seg.bottomElement = lhs.bottomElement
+    return seg
 }
