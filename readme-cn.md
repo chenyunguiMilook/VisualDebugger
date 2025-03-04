@@ -4,31 +4,29 @@ typora-root-url: ./Images
 
 # VisualDebugger
 
-[中文文档](./readme-cn.md)
+最优雅、最简单的方式在源文件中可视化您的数据
 
-The most elegant and easiest way to visualize your data in source files
+## 功能特点
 
-## Features
+- [x] 支持多种坐标系统（yUp, yDown）
+- [x] 支持可视化调试Mesh网格结构
+- [x] 支持可视化调试点集（Points）及样式定制
+- [x] 支持可视化调试贝塞尔路径
+- [x] 支持iOS和macOS平台
+- [x] 灵活的样式定制系统
+- [x] 详细的坐标轴显示和标注
 
-- [x] Support for multiple coordinate systems (yUp, yDown)
-- [x] Visual debugging of Mesh structures
-- [x] Visual debugging of Points collections with customizable styles
-- [x] Visual debugging of Bezier paths
-- [x] Support for iOS and macOS platforms
-- [x] Flexible style customization system
-- [x] Detailed coordinate axis display and labeling
-
-## Requirements
+## 系统要求
 
 - iOS 17.0+ | macOS 15+
 - Swift 6.0+
 - Xcode 16+
 
-## Installation
+## 安装方法
 
 #### Swift Package Manager
 
-You can use [Swift Package Manager](https://swift.org/package-manager) to install `VisualDebugger` by adding it to your `Package.swift` file:
+您可以使用[Swift Package Manager](https://swift.org/package-manager)安装`VisualDebugger`，只需将其添加到您的`Package.swift`文件中：
 
 ```swift
 import PackageDescription
@@ -46,9 +44,9 @@ let package = Package(
 )
 ```
 
-## Usage Examples
+## 使用示例
 
-### Debugging Points
+### 调试点集
 
 ```swift
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
@@ -64,15 +62,20 @@ let package = Package(
         
     ], coordinateSystem: .yDown)
 }
+
 ```
 
-![img](/debug_points.png)
 
-### Debugging Mesh Structures
+
+![](/debug_points.png)
+
+
+
+### 调试网格结构
 
 ```swift
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
-    // Example: Create a simple triangular mesh
+    // 示例：创建一个简单的三角形网格
     let vertices = [
         CGPoint(x: 50, y: 50),
         CGPoint(x: 150, y: 50),
@@ -88,7 +91,7 @@ let package = Package(
     return DebugView(elements: [
         Mesh(vertices, faces: faces)
             .overrideVertexStyle(at: 0, shape: .index, name: .coordinate, nameLocation: .top)
-            .overrideVertexStyle(at: 1, color: .red, name: .string("Vertex 1"))
+            .overrideVertexStyle(at: 1, color: .red, name: .string("顶点1"))
             .overrideEdgeStyle(for: .init(org: 2, dst: 1), color: .green)
             .overrideFaceStyle(at: 0, color: .blue, alpha: 0.2)
             .setDisplay(vertices: true, edges: true, faces: true)
@@ -96,8 +99,8 @@ let package = Package(
 }
 ```
 
-![img](/debug_mesh.png)
+### ![](/debug_mesh.png)
 
-## License
+## 许可证
 
-VisualDebugger is available under the MIT license. See the LICENSE file for more info.
+VisualDebugger 使用 MIT 许可证。详情请参阅 LICENSE 文件。
