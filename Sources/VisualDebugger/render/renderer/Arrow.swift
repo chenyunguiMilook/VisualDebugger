@@ -8,7 +8,7 @@
 import CoreGraphics
 
 extension Arrow {
-    public enum Style {
+    public enum Shape {
         case line // current implementation
         case triangle // draw a triangle and an line
         case topTriangle // top part of the triangle
@@ -20,20 +20,33 @@ extension Arrow {
         case reverse
         case double // double headed
     }
+    
+    // TODO: to enable style 
+    public struct Style: OptionSet, Sendable {
+        public var rawValue: Int
+        public init(rawValue: Int) {
+            self.rawValue = rawValue
+        }
+        public static let dashed = Self.init(rawValue: 1 << 0)
+        public static let filled = Self.init(rawValue: 1 << 1)
+    }
 }
 
 public struct Arrow {
-    public let style: Style
+    public let shape: Shape
     public let direction: Direction
+    public let style: Style
     public let tip: Tip
 
     public init(
-        style: Style = .triangle,
+        shape: Shape = .triangle,
         direction: Direction = .normal,
+        style: Style = [],
         tip: Tip = Tip()
     ) {
-        self.style = style
+        self.shape = shape
         self.direction = direction
+        self.style = style
         self.tip = tip
     }
 }
@@ -50,7 +63,7 @@ extension Arrow: SegmentRenderer {
         let path = AppBezierPath()
         if direction == .normal || direction == .double { // has end
             let tip = endTip
-            switch style {
+            switch shape {
             case .line:
                 path.move(to: tip.topLeft)
                 path.addLine(to: tip.tip)
@@ -82,7 +95,7 @@ extension Arrow: SegmentRenderer {
         
         if direction == .reverse || direction == .double { // has start
             let tip = startTip
-            switch style {
+            switch shape {
             case .line:
                 path.addLine(to: tip.tip)
 
