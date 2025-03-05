@@ -61,6 +61,46 @@ public class VertexDebugger {
     func createVertex(
         index: Int,
         position: CGPoint,
+        vertexStyle: VertexStyle?
+    ) -> Vertex {
+        
+        if let style = vertexStyle {
+            var nameString: String?
+            if let name = style.label {
+                switch name {
+                case .string(let string, _):
+                    nameString = string
+                case .coordinate:
+                    nameString = "(\(position.x), \(position.y))"
+                case .index:
+                    nameString = "\(index)"
+                }
+            }
+            return createVertex(
+                index: index,
+                position: position,
+                shape: style.shape,
+                style: style.style,
+                name: nameString,
+                nameLocation: style.label?.location,
+                transform: transform
+            )
+        } else {
+            return createVertex(
+                index: index,
+                position: position,
+                shape: nil,
+                style: nil,
+                name: nil,
+                nameLocation: nil,
+                transform: transform
+            )
+        }
+    }
+    
+    func createVertex(
+        index: Int,
+        position: CGPoint,
         shape: VertexShape?,
         style: Style?,
         name: String?,

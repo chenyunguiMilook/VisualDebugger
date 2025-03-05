@@ -10,7 +10,7 @@ import CoreGraphics
 public class SegmentDebugger: VertexDebugger {
     public let edgeShape: EdgeShape
     public var vertexStyleDict: [Int: VertexStyle]
-
+    
     public init(
         name: String? = nil,
         transform: Matrix2D,
@@ -59,6 +59,12 @@ public class SegmentDebugger: VertexDebugger {
                 stroke: .init(color: color, style: .init(lineWidth: 1)),
                 fill: .init(color: color, style: .init())
             )
+        }
+    }
+    
+    func getVertices(from points: [CGPoint]) -> [Vertex] {
+        points.enumerated().map { (i, point) in
+            createVertex(index: i, position: point, vertexStyle: vertexStyleDict[i])
         }
     }
 }

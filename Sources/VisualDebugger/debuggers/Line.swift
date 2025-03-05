@@ -28,6 +28,24 @@ public final class Line: SegmentDebugger {
     
     var edgeStyle: EdgeStyle?
     
+    public lazy var vertices: [Vertex] = getVertices(from: [start, end])
+    public lazy var edge: Edge = {
+        let edgeShape = edgeStyle?.shape ?? self.edgeShape
+        let source: SegmentRenderer? = switch edgeShape {
+        case .line: nil
+        case .arrow(let arrow): arrow
+        }
+        return SegmentRenderElement(
+            start: start,
+            end: end,
+            transform: self.transform,
+            segmentShape: source,
+            segmentStyle: edgeStyle(style: edgeStyle?.style),
+            startOffset: getRadius(index: 0),
+            endOffset: getRadius(index: 1)
+        )
+    }()
+    
     public init(
         start: CGPoint,
         end: CGPoint,
@@ -69,52 +87,13 @@ extension Line: DebugRenderable {
     }
     
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
-        // 创建并渲染起点
-        if displayOptions.contains(.vertex) {
-            let startVertex = createVertex(
-                index: 0,
-                position: start,
-                shape: nil,
-                style: nil,
-                name: nil,
-                nameLocation: nil,
-                transform: self.transform
-            )
-            startVertex.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
-            
-            let endVertex = createVertex(
-                index: 1,
-                position: end,
-                shape: nil,
-                style: nil,
-                name: nil,
-                nameLocation: nil,
-                transform: self.transform
-            )
-            endVertex.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
-        }
-        
-        // 创建并渲染线段
         if displayOptions.contains(.edge) {
-            let edgeShape = edgeStyle?.shape ?? self.edgeShape
-            
-            // 根据边形状创建对应的SegmentRenderer
-            let source: SegmentRenderer? = switch edgeShape {
-            case .line: nil
-            case .arrow(let arrow): arrow
+            edge.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+        }
+        if displayOptions.contains(.vertex) {
+            for vertex in self.vertices {
+                vertex.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
             }
-            
-            let edgeElement = SegmentRenderElement(
-                start: start,
-                end: end,
-                transform: self.transform,
-                segmentShape: source,
-                segmentStyle: edgeStyle(style: edgeStyle?.style),
-                startOffset: getRadius(index: 0),
-                endOffset: getRadius(index: 1)
-            )
-            
-            edgeElement.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
         }
     }
 }
@@ -178,11 +157,11 @@ extension Line {
         
         Line(
             start: .init(x: 50, y: 200),
-            end: .init(x: 250, y: 150),
+            end: .init(x: 250, y: 180),
             color: .green,
             edgeShape: .arrow(Arrow(direction: .double))
         )
-        .setEdgeStyle(style: .init(color: .blue, mode: .fill))
+        .setEdgeStyle(style: .init(color: .red, mode: .fill))
     }
     .coordinateVisible(true)
     .coordinateStyle(.default)

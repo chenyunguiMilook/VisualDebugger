@@ -24,6 +24,11 @@ public typealias VDot = Dot
 public final class Dot: VertexDebugger {
     
     public var position: CGPoint
+    private var customVertexStyle: VertexStyle?
+    
+    public lazy var vertex: Vertex = {
+        createVertex(index: 0, position: position, vertexStyle: customVertexStyle)
+    }()
     
     public init(
         _ position: CGPoint,
@@ -34,6 +39,15 @@ public final class Dot: VertexDebugger {
     ) {
         self.position = position
         super.init(name: name, transform: transform, color: color, vertexShape: vertexShape)
+    }
+    
+    public func setStyle(
+        shape: VertexShape? = nil,
+        style: Style? = nil,
+        label: Description? = nil
+    ) -> Dot {
+        self.customVertexStyle = VertexStyle(shape: shape, style: style, label: label)
+        return self
     }
 }
 
@@ -55,16 +69,6 @@ extension Dot: DebugRenderable {
     }
     
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
-        let vertex = createVertex(
-            index: 0,
-            position: position,
-            shape: nil,
-            style: nil,
-            name: nil,
-            nameLocation: nil,
-            transform: self.transform
-        )
-        
         vertex.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
     }
 }
@@ -72,6 +76,7 @@ extension Dot: DebugRenderable {
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
     DebugView {
         Dot(.init(x: 150, y: 150), vertexShape: .shape(Circle(radius: 2)))
+            .setStyle(label: "Hello")
         Dot(.init(x: 200, y: 100), color: .red, vertexShape: .index)
     }
     .coordinateVisible(true)

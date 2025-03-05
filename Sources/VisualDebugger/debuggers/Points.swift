@@ -19,42 +19,7 @@ public final class Points: GeometryDebugger {
     public let points: [CGPoint]
     public let isClosed: Bool
     
-    public lazy var vertices: [Vertex] = {
-        points.enumerated().map { (i, point) in
-            if let style = vertexStyleDict[i] {
-                var nameString: String?
-                if let name = style.label {
-                    switch name {
-                    case .string(let string, _):
-                        nameString = string
-                    case .coordinate:
-                        nameString = "(\(point.x), \(point.y))"
-                    case .index:
-                        nameString = "\(i)"
-                    }
-                }
-                return createVertex(
-                    index: i,
-                    position: point,
-                    shape: style.shape,
-                    style: style.style,
-                    name: nameString,
-                    nameLocation: style.label?.location,
-                    transform: transform
-                )
-            } else {
-                return createVertex(
-                    index: i,
-                    position: point,
-                    shape: nil,
-                    style: nil,
-                    name: nil,
-                    nameLocation: nil,
-                    transform: transform
-                )
-            }
-        }
-    }()
+    public lazy var vertices: [Vertex] = getVertices(from: points)
     
     public lazy var edges: [Edge] = {
         points.segments(isClosed: isClosed).enumerated().map { (i, seg) in
