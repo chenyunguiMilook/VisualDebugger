@@ -28,6 +28,13 @@ public protocol Debuggable {
     var debugElements: [any DebugRenderable] { get }
 }
 
+extension Debuggable {
+    @MainActor
+    public var debugView: DebugView {
+        DebugView(elements: debugElements)
+    }
+}
+
 extension Array: Transformable where Element == any Transformable {
     public func applying(transform: Matrix2D) -> [Element] {
         self.map { $0.applying(transform: transform) }

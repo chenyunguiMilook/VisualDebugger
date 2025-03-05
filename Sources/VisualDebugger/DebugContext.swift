@@ -7,7 +7,6 @@
 import Foundation
 import CoreGraphics
 
-// TODO: support zoom to specified area
 public final class DebugContext {
     
     private var margin: CGFloat = 40
@@ -32,9 +31,8 @@ public final class DebugContext {
         showCoordinate: Bool = true,
         coordinateSystem: CoordinateSystem2D = .yDown,
         coordinateStyle: CoordinateStyle = .default,
-        @DebugBuilder builder: () -> [any DebugRenderable]
+        elements: [any DebugRenderable]
     ) {
-        let elements = builder()
         let debugRect = elements.debugBounds ?? CGRect(origin: .zero, size: .unit)
         self.init(
             debugRect: debugRect,

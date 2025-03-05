@@ -31,7 +31,7 @@ public final class DebugView: AppView {
         showCoordinate: Bool = true,
         coordinateSystem: CoordinateSystem2D = .yDown,
         coordinateStyle: CoordinateStyle = .default,
-        @DebugBuilder builder: () -> [any DebugRenderable]
+        elements: [any DebugRenderable]
     ) {
         let context = DebugContext(
             minWidth: minWidth,
@@ -40,7 +40,33 @@ public final class DebugView: AppView {
             showCoordinate: showCoordinate,
             coordinateSystem: coordinateSystem,
             coordinateStyle: coordinateStyle,
-            builder: builder
+            elements: elements
+        )
+        self.context = context
+        super.init(frame: context.frame)
+        self.translatesAutoresizingMaskIntoConstraints = false
+        #if os(macOS)
+        self.wantsLayer = true
+        #endif
+    }
+    
+    public init(
+        minWidth: Double = 250,
+        numSegments: Int = 5,
+        showOrigin: Bool = false,
+        showCoordinate: Bool = true,
+        coordinateSystem: CoordinateSystem2D = .yDown,
+        coordinateStyle: CoordinateStyle = .default,
+        @DebugRenderBuilder builder: () -> [any DebugRenderable]
+    ) {
+        let context = DebugContext(
+            minWidth: minWidth,
+            numSegments: numSegments,
+            showOrigin: showOrigin,
+            showCoordinate: showCoordinate,
+            coordinateSystem: coordinateSystem,
+            coordinateStyle: coordinateStyle,
+            elements: builder()
         )
         self.context = context
         super.init(frame: context.frame)
@@ -140,4 +166,14 @@ public final class DebugView: AppView {
         return true // 使坐标系从左上角开始（可选）
     }
     #endif
+}
+
+
+extension DebugView {
+    public static func build(
+        @DebugBuilder builder: () -> [any Debuggable]
+    ) -> DebugView {
+        let elements = builder().flatMap { $0.debugElements }
+        return DebugView(elements: elements)
+    }
 }

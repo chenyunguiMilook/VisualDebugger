@@ -5,9 +5,12 @@
 //  Created by chenyungui on 2025/2/28.
 //
 
+@resultBuilder
+public final class DebugBuilder: OperationBuilder<any Debuggable> {
+}
 
 @resultBuilder
-public final class DebugBuilder: OperationBuilder<any DebugRenderable> {
+public final class DebugRenderBuilder: OperationBuilder<any DebugRenderable> {
 }
 
 @resultBuilder
