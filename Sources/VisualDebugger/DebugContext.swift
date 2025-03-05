@@ -22,7 +22,7 @@ public final class DebugContext {
     public var showCoordinate: Bool
     public var coordinateSystem: CoordinateSystem2D
     public var coordinateStyle: CoordinateStyle
-    public var elements: [any Debuggable] = []
+    public var elements: [any ContextRenderable] = []
     public private(set) var frame: CGRect
     
     public convenience init(
@@ -37,6 +37,7 @@ public final class DebugContext {
         let debugRect = elements.debugBounds ?? CGRect(origin: .zero, size: .unit)
         self.init(
             debugRect: debugRect,
+            elements: elements,
             minWidth: minWidth,
             numSegments: numSegments,
             showOrigin: showOrigin,
@@ -44,11 +45,11 @@ public final class DebugContext {
             coordinateSystem: coordinateSystem,
             coordinateStyle: coordinateStyle
         )
-        self.elements = elements
     }
     
     public init(
         debugRect: CGRect,
+        elements: [any ContextRenderable],
         minWidth: Double = 250,
         numSegments: Int = 5,
         showOrigin: Bool = false,
@@ -85,6 +86,7 @@ public final class DebugContext {
         self.coordinateSystem = coordinateSystem
         self.coordinateStyle = coordinateStyle
         self.frame = frame
+        self.elements = elements
     }
     
     public func append(_ element: Debuggable) {

@@ -30,7 +30,7 @@ public final class DebugView: AppView {
             self.refresh()
         }
     }
-    public var elements: [any Debuggable] {
+    public var elements: [any ContextRenderable] {
         get { context.elements }
         set {
             context.elements = newValue
@@ -64,11 +64,39 @@ public final class DebugView: AppView {
         #endif
     }
     
+    public init(
+        debugRect: CGRect,
+        elements: [any ContextRenderable],
+        minWidth: Double = 250,
+        numSegments: Int = 5,
+        showOrigin: Bool = false,
+        showCoordinate: Bool = true,
+        coordinateSystem: CoordinateSystem2D = .yDown,
+        coordinateStyle: CoordinateStyle = .default
+    ) {
+        let context = DebugContext(
+            debugRect: debugRect,
+            elements: elements,
+            minWidth: minWidth,
+            numSegments: numSegments,
+            showOrigin: showOrigin,
+            showCoordinate: showCoordinate,
+            coordinateSystem: coordinateSystem,
+            coordinateStyle: coordinateStyle
+        )
+        self.context = context
+        super.init(frame: context.frame)
+        self.translatesAutoresizingMaskIntoConstraints = false
+        #if os(macOS)
+        self.wantsLayer = true
+        #endif
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func append(_ element: Debuggable) {
+    public func append(_ element: ContextRenderable) {
         self.elements.append(element)
     }
     

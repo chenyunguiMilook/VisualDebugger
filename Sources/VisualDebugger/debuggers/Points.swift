@@ -171,6 +171,7 @@ extension Points: Debuggable {
     }
 }
 
+// TODO: add result builder support
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
     DebugView(elements: [
         Points([
