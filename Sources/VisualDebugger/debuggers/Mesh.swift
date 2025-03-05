@@ -14,7 +14,7 @@ import AppKit
 
 public typealias VMesh = Mesh
 
-public final class Mesh: BaseDebugger {
+public final class Mesh: GeometryDebugger {
     
     public typealias MeshEdge = SegmentRenderElement
     public typealias MeshFace = ShapeRenderElement

@@ -10,58 +10,8 @@ import UIKit
 import AppKit
 #endif
 
-extension TextLocation {
-    @usableFromInline
-    static let `default` = TextLocation.right
-}
+public class GeometryDebugger: SegmentDebugger {
 
-public class BaseDebugger {
-    public typealias Vertex = PointRenderElement
-    public typealias Edge = SegmentRenderElement
-
-    public enum VertexShape {
-        case shape(ShapeRenderer)
-        case index
-    }
-    public enum Description {
-        case string(String, at: TextLocation = .default)
-        case coordinate(at: TextLocation = .default)
-        case index(at: TextLocation = .default)
-        
-        public var location: TextLocation {
-            switch self {
-            case .string(_, let location): location
-            case .coordinate(let location): location
-            case .index(let location): location
-            }
-        }
-    }
-    public enum EdgeShape {
-        case line
-        case arrow(Arrow)
-    }
-    public struct Style {
-        public enum Mode {
-            case stroke(dashed: Bool)
-            case fill
-        }
-        let color: AppColor?
-        let mode: Mode?
-        public init(color: AppColor?, mode: Mode? = nil) {
-            self.color = color
-            self.mode = mode
-        }
-    }
-    public struct VertexStyle {
-        let shape: VertexShape?
-        let style: Style?
-        let label: Description?
-    }
-    public struct EdgeStyle {
-        let shape: EdgeShape?
-        let style: Style?
-        let label: Description?
-    }
     public struct DisplayOptions: OptionSet, Sendable {
         public var rawValue: Int
         public init(rawValue: Int) {
@@ -73,10 +23,6 @@ public class BaseDebugger {
         public static let all: Self = [.vertex, .edge, .face]
     }
     
-    public let transform: Matrix2D
-    public let vertexShape: VertexShape
-    public let edgeShape: EdgeShape
-    public let color: AppColor
     public var vertexStyleDict: [Int: VertexStyle]
     public var edgeStyleDict: [Int: EdgeStyle] = [:]
     public var displayOptions: DisplayOptions
@@ -90,13 +36,15 @@ public class BaseDebugger {
         edgeStyleDict: [Int: EdgeStyle] = [:],
         displayOptions: DisplayOptions = .all
     ) {
-        self.transform = transform
-        self.vertexShape = vertexShape
-        self.edgeShape = edgeShape
-        self.color = color
         self.vertexStyleDict = vertexStyleDict
         self.edgeStyleDict = edgeStyleDict
         self.displayOptions = displayOptions
+        super.init(
+            transform: transform,
+            color: color,
+            vertexShape: vertexShape,
+            edgeShape: edgeShape
+        )
     }
     
     func getRadius(index: Int) -> Double {
@@ -183,10 +131,3 @@ public class BaseDebugger {
     }
 }
 
-extension BaseDebugger.Description: ExpressibleByStringLiteral {
-    public typealias StringLiteralType = String
-    
-    public init(stringLiteral value: String) {
-        self = .string(value, at: .right)
-    }
-}

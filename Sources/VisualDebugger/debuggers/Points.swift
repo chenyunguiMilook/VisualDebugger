@@ -14,7 +14,7 @@ import AppKit
 
 public typealias VPoints = Points
 
-public final class Points: BaseDebugger {
+public final class Points: GeometryDebugger {
     
     public let points: [CGPoint]
     public let isClosed: Bool
