@@ -34,8 +34,23 @@ extension Debuggable {
         DebugView(elements: debugElements)
     }
     
-    public var debugContext: DebugContext {
-        DebugContext(elements: debugElements)
+    public func debugContext(
+        minWidth: Double = 250,
+        numSegments: Int = 5,
+        showOrigin: Bool = false,
+        showCoordinate: Bool = true,
+        coordinateSystem: CoordinateSystem2D = .yDown,
+        coordinateStyle: CoordinateStyle = .default
+    ) -> DebugContext {
+        DebugContext(
+            minWidth: minWidth,
+            numSegments: numSegments,
+            showOrigin: showOrigin,
+            showCoordinate: showCoordinate,
+            coordinateSystem: coordinateSystem,
+            coordinateStyle: coordinateStyle,
+            elements: debugElements
+        )
     }
 }
 
