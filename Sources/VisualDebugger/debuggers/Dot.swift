@@ -6,13 +6,23 @@
 //
 
 import CoreGraphics
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
-//public final class Dot {
-//    public init(
-//        _ point: CGPoint,
-//        transform: Matrix2D = .identity,
-//        color: AppColor = .yellow,
-//    ) {
-//        
-//    }
-//}
+public final class Dot: VertexDebugger {
+    
+    public var position: CGPoint
+    
+    public init(
+        _ position: CGPoint,
+        transform: Matrix2D = .identity,
+        color: AppColor = .yellow,
+        vertexShape: VertexShape = .shape(Circle(radius: 2))
+    ) {
+        self.position = position
+        super.init(transform: transform, color: color, vertexShape: vertexShape)
+    }
+}
