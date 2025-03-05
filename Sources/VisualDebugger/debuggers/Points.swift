@@ -104,7 +104,7 @@ public final class Points: BaseDebugger {
         )
     }
     
-    public func overrideVertexStyle(
+    public func setVertexStyle(
         at index: Int,
         shape: VertexShape? = nil,
         style: Style? = nil,
@@ -117,7 +117,7 @@ public final class Points: BaseDebugger {
         return self
     }
     
-    public func overrideEdgeStyle(
+    public func setEdgeStyle(
         at index: Int,
         shape: EdgeShape? = nil,
         style: Style? = nil,
@@ -132,6 +132,12 @@ public final class Points: BaseDebugger {
             nameLocation: nameLocation
         )
         edgeStyleDict[index] = edgeStyle
+        return self
+    }
+    
+    // MARK: - modifier
+    public func display(_ option: DisplayOptions) -> Self {
+        self.displayOptions = option
         return self
     }
 }
@@ -171,18 +177,20 @@ extension Points: Debuggable {
     }
 }
 
-// TODO: add result builder support
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
-    DebugView(elements: [
+    DebugView {
         Points([
             .init(x: 40, y: 10),
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)
-        ], vertexShape: .index, displayOptions: [.vertex, .edge])
-        .overrideVertexStyle(at: 0, shape: .shape(Circle(radius: 2)), name: .string("Corner"))
-        .overrideVertexStyle(at: 1, style: .init(color: .red), name: .coordinate)
-        .overrideEdgeStyle(at: 2, shape: .arrow(.doubleArrow), style: .init(color: .red, mode: .fill))
-        
-    ], coordinateSystem: .yDown)
+        ], vertexShape: .index)
+        .setVertexStyle(at: 0, shape: .shape(Circle(radius: 2)), name: .string("Corner"))
+        .setVertexStyle(at: 1, style: .init(color: .red), name: .coordinate)
+        .setEdgeStyle(at: 2, shape: .arrow(.doubleArrow), style: .init(color: .red, mode: .fill))
+        .display([.vertex, .edge])
+    }
+    .coordinateVisible(true)
+    .coordinateStyle(.default)
+    .coordinateSystem(.yDown)
     //.zoom(1.5, aroundCenter: .init(x: 10, y: 23))
 }

@@ -16,20 +16,6 @@ public final class DebugView: AppView {
     
     var context: DebugContext
     
-    public var showCoordinate: Bool {
-        get { context.showCoordinate }
-        set {
-            context.showCoordinate = newValue
-            self.refresh()
-        }
-    }
-    public var coordinateSystem: CoordinateSystem2D {
-        get { context.coordinateSystem }
-        set {
-            context.coordinateSystem = newValue
-            self.refresh()
-        }
-    }
     public var elements: [any ContextRenderable] {
         get { context.elements }
         set {
@@ -39,22 +25,22 @@ public final class DebugView: AppView {
     }
     
     public init(
-        elements: [any Debuggable],
         minWidth: Double = 250,
         numSegments: Int = 5,
         showOrigin: Bool = false,
         showCoordinate: Bool = true,
         coordinateSystem: CoordinateSystem2D = .yDown,
-        coordinateStyle: CoordinateStyle = .default
+        coordinateStyle: CoordinateStyle = .default,
+        @DebugBuilder builder: () -> [any Debuggable]
     ) {
         let context = DebugContext(
-            elements: elements,
             minWidth: minWidth,
             numSegments: numSegments,
             showOrigin: showOrigin,
             showCoordinate: showCoordinate,
             coordinateSystem: coordinateSystem,
-            coordinateStyle: coordinateStyle
+            coordinateStyle: coordinateStyle,
+            builder: builder
         )
         self.context = context
         super.init(frame: context.frame)
@@ -66,14 +52,15 @@ public final class DebugView: AppView {
     
     public init(
         debugRect: CGRect,
-        elements: [any ContextRenderable],
         minWidth: Double = 250,
         numSegments: Int = 5,
         showOrigin: Bool = false,
         showCoordinate: Bool = true,
         coordinateSystem: CoordinateSystem2D = .yDown,
-        coordinateStyle: CoordinateStyle = .default
+        coordinateStyle: CoordinateStyle = .default,
+        @RenderBuilder builder: () -> [any ContextRenderable]
     ) {
+        let elements = builder()
         let context = DebugContext(
             debugRect: debugRect,
             elements: elements,
@@ -98,6 +85,24 @@ public final class DebugView: AppView {
     
     public func append(_ element: ContextRenderable) {
         self.elements.append(element)
+    }
+    
+    public func coordinateVisible(_ show: Bool) -> DebugView {
+        context.showCoordinate = show
+        self.refresh()
+        return self
+    }
+    
+    public func coordinateSystem( _ coord: CoordinateSystem2D) -> DebugView {
+        context.coordinateSystem = coord
+        self.refresh()
+        return self
+    }
+    
+    public func coordinateStyle(_ style: CoordinateStyle) -> DebugView {
+        context.coordinateStyle = style
+        self.refresh()
+        return self
     }
     
     public func zoom(_ zoom: Double, aroundCenter center: CGPoint? = nil) -> DebugView {

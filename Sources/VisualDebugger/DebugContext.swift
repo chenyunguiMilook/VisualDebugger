@@ -26,14 +26,15 @@ public final class DebugContext {
     public private(set) var frame: CGRect
     
     public convenience init(
-        elements: [any Debuggable],
         minWidth: Double = 250,
         numSegments: Int = 5,
         showOrigin: Bool = false,
         showCoordinate: Bool = true,
         coordinateSystem: CoordinateSystem2D = .yDown,
-        coordinateStyle: CoordinateStyle = .default
+        coordinateStyle: CoordinateStyle = .default,
+        @DebugBuilder builder: () -> [any Debuggable]
     ) {
+        let elements = builder()
         let debugRect = elements.debugBounds ?? CGRect(origin: .zero, size: .unit)
         self.init(
             debugRect: debugRect,

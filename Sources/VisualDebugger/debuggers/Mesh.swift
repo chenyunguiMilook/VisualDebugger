@@ -63,7 +63,7 @@ public final class Mesh: BaseDebugger {
     }
     
     // 自定义方法：设置顶点样式
-    public func overrideVertexStyle(
+    public func setVertexStyle(
         at index: Int,
         shape: VertexShape? = nil,
         style: Style? = nil,
@@ -77,7 +77,7 @@ public final class Mesh: BaseDebugger {
     }
     
     // 自定义方法：设置边样式
-    public func overrideEdgeStyle(
+    public func setEdgeStyle(
         for edge: Edge,
         shape: EdgeShape? = nil,
         style: Style? = nil,
@@ -124,7 +124,7 @@ public final class Mesh: BaseDebugger {
         nameLocation: TextLocation = .center
     ) -> Mesh {
         guard let faceIndex = faces.firstIndex(of: face) else { return self }
-        return self.overrideFaceStyle(
+        return self.setFaceStyle(
             at: faceIndex,
             color: color,
             alpha: alpha,
@@ -133,7 +133,7 @@ public final class Mesh: BaseDebugger {
         )
     }
     
-    public func overrideFaceStyle(
+    public func setFaceStyle(
         at index: Int,
         color: AppColor? = nil,
         alpha: CGFloat = 0.3,
@@ -209,12 +209,11 @@ extension Mesh {
         Mesh.Face(1, 3, 2)
     ]
     
-    DebugView(elements: [
+    DebugView(showOrigin: true) {
         Mesh(vertices, faces: faces)
-            .overrideVertexStyle(at: 0, shape: .index, name: .coordinate, nameLocation: .top)
-            .overrideVertexStyle(at: 1, style: .init(color: .red), name: .string("顶点1"))
-            .overrideEdgeStyle(for: .init(org: 2, dst: 1), style: .init(color: .green))
-            //.overrideEdgeStyle(at: 1, color: .red)
-            .overrideFaceStyle(at: 0, color: .blue, alpha: 0.2)
-    ], showOrigin: true, coordinateSystem: .yDown)
+            .setVertexStyle(at: 0, shape: .index, name: .coordinate, nameLocation: .top)
+            .setVertexStyle(at: 1, style: .init(color: .red), name: .string("顶点1"))
+            .setEdgeStyle(for: .init(org: 2, dst: 1), style: .init(color: .green))
+            .setFaceStyle(at: 0, color: .blue, alpha: 0.2)
+    }
 }
