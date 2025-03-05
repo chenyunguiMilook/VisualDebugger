@@ -14,55 +14,10 @@ import AppKit
 
 public typealias VPoints = Points
 
-public final class Points {
-    public typealias Vertex = PointRenderElement
-    public typealias Edge = SegmentRenderElement
+public final class Points: BaseDebugger {
     
-    public enum VertexShape {
-        case shape(ShapeRenderer)
-        case index
-    }
-    public enum Description {
-        case string(String)
-        case coordinate
-    }
-    public enum EdgeShape {
-        case line
-        case arrow(Arrow)
-    }
-    public struct Style {
-        public enum Mode {
-            case stroke(dashed: Bool)
-            case fill
-        }
-        let color: AppColor?
-        let mode: Mode?
-        public init(color: AppColor?, mode: Mode? = nil) {
-            self.color = color
-            self.mode = mode
-        }
-    }
-    public struct VertexStyle {
-        let shape: VertexShape?
-        let style: Style?
-        let name: Description?
-        let nameLocation: TextLocation
-    }
-    public struct EdgeStyle {
-        let shape: EdgeShape?
-        let style: Style?
-        let name: Description?
-        let nameLocation: TextLocation
-    }
-
     public let points: [CGPoint]
     public let isClosed: Bool
-    public let transform: Matrix2D
-    public let vertexShape: VertexShape
-    public let edgeShape: EdgeShape
-    public let color: AppColor
-    public var vertexStyleDict: [Int: VertexStyle]
-    public var edgeStyleDict: [Int: EdgeStyle] = [:]
     
     public lazy var vertices: [Vertex] = {
         points.enumerated().map { (i, point) in
@@ -122,54 +77,6 @@ public final class Points {
         }
     }()
     
-    func vertexStyle(style: Style?) -> ShapeRenderStyle {
-        let color = style?.color ?? color
-        guard let mode = style?.mode else {
-            return ShapeRenderStyle(fill: .init(color: color, style: .init()))
-        }
-        switch mode {
-        case .stroke(dashed: let dashed):
-            let dash: [CGFloat] = dashed ? [5, 5] : []
-            return ShapeRenderStyle(stroke: .init(color: color, style: .init(lineWidth: 1, dash: dash)))
-        case .fill:
-            return ShapeRenderStyle(fill: .init(color: color, style: .init()))
-        }
-    }
-
-    func edgeStyle(style: Style?) -> ShapeRenderStyle {
-        let color = style?.color ?? color
-        guard let mode = style?.mode else {
-            return ShapeRenderStyle(
-                stroke: .init(color: color, style: .init(lineWidth: 1)),
-                fill: nil
-            )
-        }
-        switch mode {
-        case .stroke(dashed: let dashed):
-            let dash: [CGFloat] = dashed ? [5, 5] : []
-            return ShapeRenderStyle(
-                stroke: .init(color: color, style: .init(lineWidth: 1, dash: dash)),
-                fill: .init(color: color, style: .init())
-            )
-        case .fill:
-            return ShapeRenderStyle(
-                stroke: .init(color: color, style: .init(lineWidth: 1)),
-                fill: .init(color: color, style: .init())
-            )
-        }
-    }
-    
-    func labelStyle(color: AppColor) -> TextRenderStyle {
-        TextRenderStyle(
-            font: AppFont.italicSystemFont(ofSize: 10),
-            insets: .zero,
-            margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
-            anchor: .midCenter,
-            textColor: color,
-            bgStyle: .capsule(color: color, filled: false)
-        )
-    }
-    
     public init(
         _ points: [CGPoint],
         transform: Matrix2D = .identity,
@@ -182,12 +89,15 @@ public final class Points {
     ) {
         self.points = points
         self.isClosed = isClosed
-        self.transform = transform
-        self.vertexShape = vertexShape
-        self.edgeShape = edgeShape
-        self.color = color
-        self.vertexStyleDict = vertexStyleDict
-        self.edgeStyleDict = edgeStyleDict
+        
+        super.init(
+            transform: transform,
+            vertexShape: vertexShape,
+            edgeShape: edgeShape,
+            color: color,
+            vertexStyleDict: vertexStyleDict,
+            edgeStyleDict: edgeStyleDict
+        )
     }
     
     func getRadius(index: Int) -> Double {

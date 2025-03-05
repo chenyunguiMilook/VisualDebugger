@@ -1,0 +1,125 @@
+//
+//  BaseDebugger.swift
+//  VisualDebugger
+//
+//  Created by chenyungui on 2025/3/5.
+//
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
+
+public class BaseDebugger {
+    public typealias Vertex = PointRenderElement
+    public typealias Edge = SegmentRenderElement
+
+    public enum VertexShape {
+        case shape(ShapeRenderer)
+        case index
+    }
+    public enum Description {
+        case string(String)
+        case coordinate
+    }
+    public enum EdgeShape {
+        case line
+        case arrow(Arrow)
+    }
+    public struct Style {
+        public enum Mode {
+            case stroke(dashed: Bool)
+            case fill
+        }
+        let color: AppColor?
+        let mode: Mode?
+        public init(color: AppColor?, mode: Mode? = nil) {
+            self.color = color
+            self.mode = mode
+        }
+    }
+    public struct VertexStyle {
+        let shape: VertexShape?
+        let style: Style?
+        let name: Description?
+        let nameLocation: TextLocation
+    }
+    public struct EdgeStyle {
+        let shape: EdgeShape?
+        let style: Style?
+        let name: Description?
+        let nameLocation: TextLocation
+    }
+    
+    public let transform: Matrix2D
+    public let vertexShape: VertexShape
+    public let edgeShape: EdgeShape
+    public let color: AppColor
+    public var vertexStyleDict: [Int: VertexStyle]
+    public var edgeStyleDict: [Int: EdgeStyle] = [:]
+
+    public init(
+        transform: Matrix2D = .identity,
+        vertexShape: VertexShape = .shape(Circle(radius: 2)),
+        edgeShape: EdgeShape = .arrow(Arrow()),
+        color: AppColor = .yellow,
+        vertexStyleDict: [Int: VertexStyle] = [:],
+        edgeStyleDict: [Int: EdgeStyle] = [:]
+    ) {
+        self.transform = transform
+        self.vertexShape = vertexShape
+        self.edgeShape = edgeShape
+        self.color = color
+        self.vertexStyleDict = vertexStyleDict
+        self.edgeStyleDict = edgeStyleDict
+    }
+    
+    func vertexStyle(style: Style?) -> ShapeRenderStyle {
+        let color = style?.color ?? color
+        guard let mode = style?.mode else {
+            return ShapeRenderStyle(fill: .init(color: color, style: .init()))
+        }
+        switch mode {
+        case .stroke(dashed: let dashed):
+            let dash: [CGFloat] = dashed ? [5, 5] : []
+            return ShapeRenderStyle(stroke: .init(color: color, style: .init(lineWidth: 1, dash: dash)))
+        case .fill:
+            return ShapeRenderStyle(fill: .init(color: color, style: .init()))
+        }
+    }
+
+    func edgeStyle(style: Style?) -> ShapeRenderStyle {
+        let color = style?.color ?? color
+        guard let mode = style?.mode else {
+            return ShapeRenderStyle(
+                stroke: .init(color: color, style: .init(lineWidth: 1)),
+                fill: nil
+            )
+        }
+        switch mode {
+        case .stroke(dashed: let dashed):
+            let dash: [CGFloat] = dashed ? [5, 5] : []
+            return ShapeRenderStyle(
+                stroke: .init(color: color, style: .init(lineWidth: 1, dash: dash)),
+                fill: .init(color: color, style: .init())
+            )
+        case .fill:
+            return ShapeRenderStyle(
+                stroke: .init(color: color, style: .init(lineWidth: 1)),
+                fill: .init(color: color, style: .init())
+            )
+        }
+    }
+    
+    func labelStyle(color: AppColor) -> TextRenderStyle {
+        TextRenderStyle(
+            font: AppFont.italicSystemFont(ofSize: 10),
+            insets: .zero,
+            margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
+            anchor: .midCenter,
+            textColor: color,
+            bgStyle: .capsule(color: color, filled: false)
+        )
+    }
+}
+
