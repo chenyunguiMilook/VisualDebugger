@@ -182,13 +182,13 @@ extension Points: Debuggable {
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)
         ], vertexShape: .index)
-        .setVertexStyle(at: 0, shape: .shape(Circle(radius: 2)), label: .string("Corner"))
+        .setVertexStyle(at: 0, shape: .shape(Circle(radius: 2)), label: "Corner")
         .setVertexStyle(at: 1, style: .init(color: .red), label: .coordinate())
         .setEdgeStyle(at: 2, shape: .arrow(.doubleArrow), style: .init(color: .red, mode: .fill))
         .show([.vertex, .edge])
     }
     .coordinateVisible(true)
-    .coordinateStyle(.default)
+    .coordinateStyle(.color)
     .coordinateSystem(.yDown)
     //.zoom(1.5, aroundCenter: .init(x: 10, y: 23))
 }

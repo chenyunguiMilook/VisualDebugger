@@ -209,7 +209,7 @@ extension Mesh {
     DebugView(showOrigin: true) {
         Mesh(vertices, faces: faces)
             .setVertexStyle(at: 0, shape: .index, label: .coordinate(at: .top))
-            .setVertexStyle(at: 1, style: .init(color: .red), label: .string("顶点1"))
+            .setVertexStyle(at: 1, style: .init(color: .red), label: "顶点1")
             .setEdgeStyle(for: .init(org: 2, dst: 1), style: .init(color: .green))
             .setFaceStyle(at: 0, color: .blue, alpha: 0.2)
     }

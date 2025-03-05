@@ -183,3 +183,10 @@ public class BaseDebugger {
     }
 }
 
+extension BaseDebugger.Description: ExpressibleByStringLiteral {
+    public typealias StringLiteralType = String
+    
+    public init(stringLiteral value: String) {
+        self = .string(value, at: .right)
+    }
+}
