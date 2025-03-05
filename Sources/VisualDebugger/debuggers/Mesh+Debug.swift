@@ -21,7 +21,6 @@ extension Mesh: Transformable, Debuggable {
             vertexShape: vertexShape,
             edgeShape: edgeShape,
             color: color,
-            vertexSize: vertexSize,
             vertexStyleDict: vertexStyleDict,
             edgeStyleDict: edgeStyleDict,
             faceStyleDict: faceStyleDict

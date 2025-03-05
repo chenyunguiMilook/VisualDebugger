@@ -21,6 +21,7 @@ public class BaseDebugger {
     public enum Description {
         case string(String)
         case coordinate
+        case index
     }
     public enum EdgeShape {
         case line
@@ -74,6 +75,14 @@ public class BaseDebugger {
         self.edgeStyleDict = edgeStyleDict
     }
     
+    func getRadius(index: Int) -> Double {
+        let shape = self.vertexStyleDict[index]?.shape ?? vertexShape
+        switch shape {
+        case .shape(let shape): return shape.radius
+        case .index: return 6
+        }
+    }
+
     func vertexStyle(style: Style?) -> ShapeRenderStyle {
         let color = style?.color ?? color
         guard let mode = style?.mode else {
@@ -120,6 +129,33 @@ public class BaseDebugger {
             textColor: color,
             bgStyle: .capsule(color: color, filled: false)
         )
+    }
+    
+    func createVertex(
+        index: Int,
+        position: CGPoint,
+        shape: VertexShape?,
+        style: Style?,
+        name: String?,
+        nameLocation: TextLocation = .right,
+        transform: Matrix2D
+    ) -> Vertex {
+        let shape = shape ?? self.vertexShape
+        let color = style?.color ??  self.color
+        let centerShape: StaticRendable = switch shape {
+        case .shape(let shape):
+            ShapeElement(renderer: shape, style: vertexStyle(style: style))
+        case .index:
+            TextElement(source: .index(index), style: labelStyle(color: color))
+        }
+        var label: TextElement?
+        if let name {
+            var nameStyle: TextRenderStyle = .nameLabel
+            nameStyle.setTextLocation(nameLocation)
+            label = TextElement(source: .string(name), style: nameStyle)
+        }
+        let element = PointElement(shape: centerShape, label: label)
+        return PointRenderElement(content: element, position: position, transform: transform)
     }
 }
 

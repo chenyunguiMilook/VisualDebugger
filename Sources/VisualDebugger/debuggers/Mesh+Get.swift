@@ -25,7 +25,7 @@ extension Mesh {
                     index: i,
                     position: point,
                     shape: style.shape,
-                    color: style.color,
+                    style: style.style,
                     name: nameString,
                     nameLocation: style.nameLocation,
                     transform: transform
@@ -35,7 +35,7 @@ extension Mesh {
                     index: i,
                     position: point,
                     shape: nil,
-                    color: nil,
+                    style: nil,
                     name: nil,
                     transform: transform
                 )
@@ -48,7 +48,6 @@ extension Mesh {
             // 获取样式，优先使用自定义样式，否则使用默认样式
             let customStyle = edgeStyleDict[i]
             let edgeShape = customStyle?.shape ?? self.edgeShape
-            let edgeColor = customStyle?.color ?? self.color
             
             // 根据边形状创建对应的SegmentShapeSource
             let source: SegmentRenderer? = switch edgeShape {
@@ -64,7 +63,7 @@ extension Mesh {
                 end: vertices[endIndex],
                 transform: transform,
                 segmentShape: source,
-                segmentStyle: edgeStyle(color: edgeColor),
+                segmentStyle: edgeStyle(style: customStyle?.style),
                 startOffset: getRadius(index: startIndex),
                 endOffset: getRadius(index: endIndex)
             )

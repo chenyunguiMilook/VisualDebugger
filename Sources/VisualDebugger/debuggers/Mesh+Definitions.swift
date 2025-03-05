@@ -30,36 +30,6 @@ extension Mesh {
         }
     }
     
-    public enum VertexShape {
-        case shape(ShapeRenderer)
-        case index
-    }
-    
-    public enum Description {
-        case string(String)
-        case coordinate
-        case index
-    }
-    
-    public enum EdgeShape {
-        case line
-        case arrow(Arrow)
-    }
-    
-    public struct VertexStyle {
-        let shape: VertexShape?
-        let color: AppColor?
-        let name: Description?
-        let nameLocation: TextLocation
-    }
-    
-    public struct EdgeStyle {
-        let shape: EdgeShape?
-        let color: AppColor?
-        let name: Description?
-        let nameLocation: TextLocation
-    }
-    
     public struct FaceStyle {
         let color: AppColor?
         let alpha: CGFloat

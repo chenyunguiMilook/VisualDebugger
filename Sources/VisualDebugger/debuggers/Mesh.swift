@@ -14,9 +14,8 @@ import AppKit
 
 public typealias VMesh = Mesh
 
-public final class Mesh {
+public final class Mesh: BaseDebugger {
     
-    public typealias Vertex = PointRenderElement
     public typealias MeshEdge = SegmentRenderElement
     public typealias MeshFace = ShapeRenderElement
 
@@ -24,15 +23,8 @@ public final class Mesh {
     public let vertices: [CGPoint]
     public let faces: [Face]
     public let edges: [Edge]
-    public let transform: Matrix2D
     
     // 样式属性
-    public let vertexShape: VertexShape
-    public let edgeShape: EdgeShape
-    public let color: AppColor
-    public let vertexSize: CGSize
-    public var vertexStyleDict: [Int: VertexStyle]
-    public var edgeStyleDict: [Int: EdgeStyle] = [:]
     public var faceStyleDict: [Int: FaceStyle] = [:]
     
     // 是否显示顶点、边、面
@@ -44,31 +36,6 @@ public final class Mesh {
     public lazy var vertexElements: [Vertex] = getVertices()
     public lazy var edgeElements: [MeshEdge] = getMeshEdges()
     public lazy var faceElements: [ShapeRenderElement] = getMeshFaces()
-    
-    // 辅助函数
-    func vertexStyle(color: AppColor) -> ShapeRenderStyle {
-        ShapeRenderStyle(
-            fill: .init(color: color, style: .init())
-        )
-    }
-
-    func edgeStyle(color: AppColor) -> ShapeRenderStyle {
-        ShapeRenderStyle(
-            stroke: .init(color: color, style: .init(lineWidth: 1)),
-            fill: nil
-        )
-    }
-    
-    func labelStyle(color: AppColor) -> TextRenderStyle {
-        TextRenderStyle(
-            font: AppFont.italicSystemFont(ofSize: 10),
-            insets: .zero,
-            margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
-            anchor: .midCenter,
-            textColor: color,
-            bgStyle: .capsule(color: color, filled: false)
-        )
-    }
     
     // 初始化方法
     public init(
@@ -86,63 +53,28 @@ public final class Mesh {
         self.vertices = vertices
         self.faces = faces
         self.edges = Self.getEdges(faces: faces)
-        self.transform = transform
-        self.vertexShape = vertexShape
-        self.edgeShape = edgeShape
-        self.color = color
-        self.vertexSize = vertexSize
-        self.vertexStyleDict = vertexStyleDict
-        self.edgeStyleDict = edgeStyleDict
         self.faceStyleDict = faceStyleDict
-    }
-    
-    // 获取指定索引顶点的半径
-    func getRadius(index: Int) -> Double {
-        let shape = self.vertexStyleDict[index]?.shape ?? vertexShape
-        switch shape {
-        case .shape: return vertexSize.width / 2.0
-        case .index: return 6
-        }
-    }
-    
-    // 创建顶点渲染元素
-    func createVertex(
-        index: Int,
-        position: CGPoint,
-        shape: VertexShape?,
-        color: AppColor?,
-        name: String?,
-        nameLocation: TextLocation = .right,
-        transform: Matrix2D
-    ) -> Vertex {
-        let shape = shape ?? self.vertexShape
-        let color = color ?? self.color
-        let centerShape: StaticRendable = switch shape {
-        case .shape(let shape):
-            ShapeElement(renderer: shape, style: vertexStyle(color: color))
-        case .index:
-            TextElement(source: .index(index), style: labelStyle(color: color))
-        }
-        var label: TextElement?
-        if let name {
-            var style: TextRenderStyle = .nameLabel
-            style.setTextLocation(nameLocation)
-            label = TextElement(source: .string(name), style: style)
-        }
-        let element = PointElement(shape: centerShape, label: label)
-        return PointRenderElement(content: element, position: position, transform: transform)
+
+        super.init(
+            transform: transform,
+            vertexShape: vertexShape,
+            edgeShape: edgeShape,
+            color: color,
+            vertexStyleDict: vertexStyleDict,
+            edgeStyleDict: edgeStyleDict
+        )
     }
     
     // 自定义方法：设置顶点样式
     public func overrideVertexStyle(
         at index: Int,
         shape: VertexShape? = nil,
-        color: AppColor? = nil,
+        style: Style? = nil,
         name: Description? = nil,
         nameLocation: TextLocation = .right
     ) -> Mesh {
         guard index < vertices.count else { return self }
-        let style = VertexStyle(shape: shape, color: color, name: name, nameLocation: nameLocation)
+        let style = VertexStyle(shape: shape, style: style, name: name, nameLocation: nameLocation)
         self.vertexStyleDict[index] = style
         return self
     }
@@ -151,7 +83,7 @@ public final class Mesh {
     public func overrideEdgeStyle(
         for edge: Edge,
         shape: EdgeShape? = nil,
-        color: AppColor? = nil,
+        style: Style? = nil,
         name: Description? = nil,
         nameLocation: TextLocation = .right
     ) -> Mesh {
@@ -159,7 +91,7 @@ public final class Mesh {
             return self.overrideEdgeStyle(
                 at: edgeIndex,
                 shape: shape,
-                color: color,
+                style: style,
                 name: name,
                 nameLocation: nameLocation
             )
@@ -171,13 +103,13 @@ public final class Mesh {
     public func overrideEdgeStyle(
         at index: Int,
         shape: EdgeShape? = nil,
-        color: AppColor? = nil,
+        style: Style? = nil,
         name: Description? = nil,
         nameLocation: TextLocation = .right
     ) -> Mesh {
         let edgeStyle = EdgeStyle(
             shape: shape,
-            color: color,
+            style: style,
             name: name,
             nameLocation: nameLocation
         )
@@ -288,11 +220,11 @@ extension Mesh {
         Mesh.Face(1, 3, 2)
     ]
     
-    return DebugView(elements: [
+    DebugView(elements: [
         Mesh(vertices, faces: faces)
             .overrideVertexStyle(at: 0, shape: .index, name: .coordinate, nameLocation: .top)
-            .overrideVertexStyle(at: 1, color: .red, name: .string("顶点1"))
-            .overrideEdgeStyle(for: .init(org: 2, dst: 1), color: .green)
+            .overrideVertexStyle(at: 1, style: .init(color: .red), name: .string("顶点1"))
+            .overrideEdgeStyle(for: .init(org: 2, dst: 1), style: .init(color: .green))
             //.overrideEdgeStyle(at: 1, color: .red)
             .overrideFaceStyle(at: 0, color: .blue, alpha: 0.2)
             .setDisplay(vertices: true, edges: true, faces: true)

@@ -29,6 +29,8 @@ public final class Points: BaseDebugger {
                         nameString = string
                     case .coordinate:
                         nameString = "(\(point.x), \(point.y))"
+                    case .index:
+                        nameString = "\(i)"
                     }
                 }
                 return createVertex(
@@ -100,38 +102,6 @@ public final class Points: BaseDebugger {
         )
     }
     
-    func getRadius(index: Int) -> Double {
-        let shape = self.vertexStyleDict[index]?.shape ?? vertexShape
-        switch shape {
-        case .shape(let shape): return shape.radius
-        case .index: return 6
-        }
-    }
-    
-    func createVertex(
-        index: Int,
-        position: CGPoint,
-        shape: VertexShape?,
-        style: Style?,
-        name: String?,
-        nameLocation: TextLocation = .right,
-        transform: Matrix2D
-    ) -> Vertex {
-        let shape = shape ?? self.vertexShape
-        let color = style?.color ??  self.color
-        let centerShape: StaticRendable = switch shape {
-        case .shape(let shape):
-            ShapeElement(renderer: shape, style: vertexStyle(style: style))
-        case .index:
-            TextElement(source: .index(index), style: labelStyle(color: color))
-        }
-        var label: TextElement?
-        if let name {
-            label = TextElement(source: .string(name), style: .nameLabel)
-        }
-        let element = PointElement(shape: centerShape, label: label)
-        return PointRenderElement(content: element, position: position, transform: transform)
-    }
     
     public func overrideVertexStyle(
         at index: Int,
