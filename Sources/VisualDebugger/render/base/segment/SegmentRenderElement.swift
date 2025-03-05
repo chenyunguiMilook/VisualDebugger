@@ -12,10 +12,10 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
     public let start: CGPoint
     public let end: CGPoint
     public let transform: Matrix2D
-    public var startElement: StaticRendable?
-    public var endElement: StaticRendable?
-    public var topElement: StaticRendable? // edge center 90 degree direction
-    public var bottomElement: StaticRendable? // edge center -90 degree direction
+    public var startElement: PointElement?
+    public var endElement: PointElement?
+    public var topElement: TextElement? // edge center 90 degree direction
+    public var bottomElement: TextElement? // edge center -90 degree direction
     public var startOffset: Double = 0
     public var endOffset: Double = 0
     public var segmentShape: SegmentRenderer? // rename to segmentShape
@@ -27,6 +27,10 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
         transform: Matrix2D = .identity,
         segmentShape: SegmentRenderer?,
         segmentStyle: ShapeRenderStyle,
+        startElement: PointElement? = nil,
+        endElement: PointElement? = nil,
+        topElement: TextElement? = nil,  // edge center 90 degree direction
+        bottomElement: TextElement? = nil,  // edge center -90 degree direction
         startOffset: Double = 0,
         endOffset: Double = 0
     ) {
@@ -35,6 +39,10 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
         self.transform = transform
         self.segmentShape = segmentShape
         self.segmentStyle = segmentStyle
+        self.startElement = startElement
+        self.endElement = endElement
+        self.topElement = topElement
+        self.bottomElement = bottomElement
         self.startOffset = startOffset
         self.endOffset = endOffset
     }

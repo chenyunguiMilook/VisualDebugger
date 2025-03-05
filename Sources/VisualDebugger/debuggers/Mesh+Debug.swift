@@ -23,28 +23,29 @@ extension Mesh: Transformable, Debuggable {
             color: color,
             vertexStyleDict: vertexStyleDict,
             edgeStyleDict: edgeStyleDict,
-            faceStyleDict: faceStyleDict
+            faceStyleDict: faceStyleDict,
+            displayOptions: displayOptions
         )
     }
     
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         // 首先渲染面
         // TODO: need to fix
-        if showFaces {
+        if displayOptions.contains(.face) {
             for face in faceElements {
                 face.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
             }
         }
         
         // 然后渲染边
-        if showEdges {
+        if displayOptions.contains(.edge) {
             for edge in edgeElements {
                 edge.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
             }
         }
         
         // 最后渲染顶点
-        if showVertices {
+        if displayOptions.contains(.vertex) {
             for vertex in vertexElements {
                 vertex.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
             }

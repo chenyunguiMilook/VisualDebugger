@@ -87,7 +87,8 @@ public final class Points: BaseDebugger {
         edgeShape: EdgeShape = .arrow(Arrow()),
         color: AppColor = .yellow,
         vertexStyleDict: [Int: VertexStyle] = [:],
-        edgeStyleDict: [Int: EdgeStyle] = [:]
+        edgeStyleDict: [Int: EdgeStyle] = [:],
+        displayOptions: DisplayOptions = .all
     ) {
         self.points = points
         self.isClosed = isClosed
@@ -98,10 +99,10 @@ public final class Points: BaseDebugger {
             edgeShape: edgeShape,
             color: color,
             vertexStyleDict: vertexStyleDict,
-            edgeStyleDict: edgeStyleDict
+            edgeStyleDict: edgeStyleDict,
+            displayOptions: displayOptions
         )
     }
-    
     
     public func overrideVertexStyle(
         at index: Int,
@@ -145,7 +146,8 @@ extension Points: Transformable {
             edgeShape: edgeShape,
             color: color,
             vertexStyleDict: vertexStyleDict,
-            edgeStyleDict: edgeStyleDict
+            edgeStyleDict: edgeStyleDict,
+            displayOptions: displayOptions
         )
     }
 }
@@ -156,11 +158,15 @@ extension Points: Debuggable {
         return bounds * transform
     }
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
-        for edge in edges {
-            edge.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+        if displayOptions.contains(.edge) {
+            for edge in edges {
+                edge.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+            }
         }
-        for vtx in vertices {
-            vtx.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+        if displayOptions.contains(.vertex) {
+            for vtx in vertices {
+                vtx.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+            }
         }
     }
 }
@@ -171,7 +177,7 @@ extension Points: Debuggable {
             .init(x: 40, y: 10),
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)
-        ], vertexShape: .index)
+        ], vertexShape: .index, displayOptions: [.vertex, .edge])
         .overrideVertexStyle(at: 0, shape: .shape(Circle(radius: 2)), name: .string("Corner"))
         .overrideVertexStyle(at: 1, style: .init(color: .red), name: .coordinate)
         .overrideEdgeStyle(at: 2, shape: .arrow(.doubleArrow), style: .init(color: .red, mode: .fill))

@@ -27,11 +27,6 @@ public final class Mesh: BaseDebugger {
     // 样式属性
     public var faceStyleDict: [Int: FaceStyle] = [:]
     
-    // 是否显示顶点、边、面
-    public var showVertices: Bool = true
-    public var showEdges: Bool = true
-    public var showFaces: Bool = false
-    
     // 缓存的渲染元素
     public lazy var vertexElements: [Vertex] = getVertices()
     public lazy var edgeElements: [MeshEdge] = getMeshEdges()
@@ -48,7 +43,8 @@ public final class Mesh: BaseDebugger {
         vertexSize: CGSize = CGSize(width: 4, height: 4),
         vertexStyleDict: [Int: VertexStyle] = [:],
         edgeStyleDict: [Int: EdgeStyle] = [:],
-        faceStyleDict: [Int: FaceStyle] = [:]
+        faceStyleDict: [Int: FaceStyle] = [:],
+        displayOptions: DisplayOptions = .all
     ) {
         self.vertices = vertices
         self.faces = faces
@@ -61,7 +57,8 @@ public final class Mesh: BaseDebugger {
             edgeShape: edgeShape,
             color: color,
             vertexStyleDict: vertexStyleDict,
-            edgeStyleDict: edgeStyleDict
+            edgeStyleDict: edgeStyleDict,
+            displayOptions: displayOptions
         )
     }
     
@@ -153,14 +150,6 @@ public final class Mesh: BaseDebugger {
         self.faceStyleDict[index] = style
         return self
     }
-    
-    // 设置显示选项
-    public func setDisplay(vertices: Bool = true, edges: Bool = true, faces: Bool = false) -> Mesh {
-        self.showVertices = vertices
-        self.showEdges = edges
-        self.showFaces = faces
-        return self
-    }
 }
 
 extension Mesh {
@@ -227,6 +216,5 @@ extension Mesh {
             .overrideEdgeStyle(for: .init(org: 2, dst: 1), style: .init(color: .green))
             //.overrideEdgeStyle(at: 1, color: .red)
             .overrideFaceStyle(at: 0, color: .blue, alpha: 0.2)
-            .setDisplay(vertices: true, edges: true, faces: true)
     ], showOrigin: true, coordinateSystem: .yDown)
 }

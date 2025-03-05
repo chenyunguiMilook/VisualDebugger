@@ -51,6 +51,16 @@ public class BaseDebugger {
         let name: Description?
         let nameLocation: TextLocation
     }
+    public struct DisplayOptions: OptionSet, Sendable {
+        public var rawValue: Int
+        public init(rawValue: Int) {
+            self.rawValue = rawValue
+        }
+        public static let vertex = Self.init(rawValue: 1 << 0)
+        public static let edge = Self.init(rawValue: 1 << 1)
+        public static let face = Self.init(rawValue: 1 << 2)
+        public static let all: Self = [.vertex, .edge, .face]
+    }
     
     public let transform: Matrix2D
     public let vertexShape: VertexShape
@@ -58,6 +68,7 @@ public class BaseDebugger {
     public let color: AppColor
     public var vertexStyleDict: [Int: VertexStyle]
     public var edgeStyleDict: [Int: EdgeStyle] = [:]
+    public var displayOptions: DisplayOptions
 
     public init(
         transform: Matrix2D = .identity,
@@ -65,7 +76,8 @@ public class BaseDebugger {
         edgeShape: EdgeShape = .arrow(Arrow()),
         color: AppColor = .yellow,
         vertexStyleDict: [Int: VertexStyle] = [:],
-        edgeStyleDict: [Int: EdgeStyle] = [:]
+        edgeStyleDict: [Int: EdgeStyle] = [:],
+        displayOptions: DisplayOptions = .all
     ) {
         self.transform = transform
         self.vertexShape = vertexShape
@@ -73,6 +85,7 @@ public class BaseDebugger {
         self.color = color
         self.vertexStyleDict = vertexStyleDict
         self.edgeStyleDict = edgeStyleDict
+        self.displayOptions = displayOptions
     }
     
     func getRadius(index: Int) -> Double {
