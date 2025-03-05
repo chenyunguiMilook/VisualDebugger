@@ -10,6 +10,11 @@ import UIKit
 import AppKit
 #endif
 
+extension TextLocation {
+    @usableFromInline
+    static let `default` = TextLocation.right
+}
+
 public class BaseDebugger {
     public typealias Vertex = PointRenderElement
     public typealias Edge = SegmentRenderElement
@@ -19,9 +24,17 @@ public class BaseDebugger {
         case index
     }
     public enum Description {
-        case string(String)
-        case coordinate
-        case index
+        case string(String, at: TextLocation = .default)
+        case coordinate(at: TextLocation = .default)
+        case index(at: TextLocation = .default)
+        
+        public var location: TextLocation {
+            switch self {
+            case .string(_, let location): location
+            case .coordinate(let location): location
+            case .index(let location): location
+            }
+        }
     }
     public enum EdgeShape {
         case line
@@ -42,14 +55,12 @@ public class BaseDebugger {
     public struct VertexStyle {
         let shape: VertexShape?
         let style: Style?
-        let name: Description?
-        let nameLocation: TextLocation
+        let label: Description?
     }
     public struct EdgeStyle {
         let shape: EdgeShape?
         let style: Style?
-        let name: Description?
-        let nameLocation: TextLocation
+        let label: Description?
     }
     public struct DisplayOptions: OptionSet, Sendable {
         public var rawValue: Int
@@ -150,7 +161,7 @@ public class BaseDebugger {
         shape: VertexShape?,
         style: Style?,
         name: String?,
-        nameLocation: TextLocation = .right,
+        nameLocation: TextLocation?,
         transform: Matrix2D
     ) -> Vertex {
         let shape = shape ?? self.vertexShape
@@ -164,7 +175,7 @@ public class BaseDebugger {
         var label: TextElement?
         if let name {
             var nameStyle: TextRenderStyle = .nameLabel
-            nameStyle.setTextLocation(nameLocation)
+            nameStyle.setTextLocation(nameLocation ?? .right)
             label = TextElement(source: .string(name), style: nameStyle)
         }
         let element = PointElement(shape: centerShape, label: label)

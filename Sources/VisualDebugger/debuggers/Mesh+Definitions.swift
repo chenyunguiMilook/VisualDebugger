@@ -34,7 +34,6 @@ extension Mesh {
         let color: AppColor?
         let alpha: CGFloat
         let name: Description?
-        let nameLocation: TextLocation
     }
 
 }

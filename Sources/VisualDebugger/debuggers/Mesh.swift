@@ -67,11 +67,10 @@ public final class Mesh: BaseDebugger {
         at index: Int,
         shape: VertexShape? = nil,
         style: Style? = nil,
-        name: Description? = nil,
-        nameLocation: TextLocation = .right
+        label: Description? = nil
     ) -> Mesh {
         guard index < vertices.count else { return self }
-        let style = VertexStyle(shape: shape, style: style, name: name, nameLocation: nameLocation)
+        let style = VertexStyle(shape: shape, style: style, label: label)
         self.vertexStyleDict[index] = style
         return self
     }
@@ -81,34 +80,30 @@ public final class Mesh: BaseDebugger {
         for edge: Edge,
         shape: EdgeShape? = nil,
         style: Style? = nil,
-        name: Description? = nil,
-        nameLocation: TextLocation = .right
+        label: Description? = nil
     ) -> Mesh {
         if let edgeIndex = edges.firstIndex(of: edge) {
-            return self.overrideEdgeStyle(
+            return self.setEdgeStyle(
                 at: edgeIndex,
                 shape: shape,
                 style: style,
-                name: name,
-                nameLocation: nameLocation
+                name: label
             )
         } else {
             return self
         }
     }
     
-    public func overrideEdgeStyle(
+    public func setEdgeStyle(
         at index: Int,
         shape: EdgeShape? = nil,
         style: Style? = nil,
-        name: Description? = nil,
-        nameLocation: TextLocation = .right
+        name: Description? = nil
     ) -> Mesh {
         let edgeStyle = EdgeStyle(
             shape: shape,
             style: style,
-            name: name,
-            nameLocation: nameLocation
+            label: name
         )
         edgeStyleDict[index] = edgeStyle
         return self
@@ -116,20 +111,18 @@ public final class Mesh: BaseDebugger {
     
     // TODO: - need to implement
     // 自定义方法：设置面样式
-    public func overrideFaceStyle(
+    public func setFaceStyle(
         for face: Face,
         color: AppColor? = nil,
         alpha: CGFloat = 0.3,
-        name: Description? = nil,
-        nameLocation: TextLocation = .center
+        label: Description? = nil
     ) -> Mesh {
         guard let faceIndex = faces.firstIndex(of: face) else { return self }
         return self.setFaceStyle(
             at: faceIndex,
             color: color,
             alpha: alpha,
-            name: name,
-            nameLocation: nameLocation
+            label: label
         )
     }
     
@@ -137,17 +130,21 @@ public final class Mesh: BaseDebugger {
         at index: Int,
         color: AppColor? = nil,
         alpha: CGFloat = 0.3,
-        name: Description? = nil,
-        nameLocation: TextLocation = .center
+        label: Description? = nil
     ) -> Mesh {
         guard index < faces.count else { return self }
         let style = FaceStyle(
             color: color,
             alpha: alpha,
-            name: name,
-            nameLocation: nameLocation
+            name: label
         )
         self.faceStyleDict[index] = style
+        return self
+    }
+    
+    // MARK: - modifier
+    public func show(_ option: DisplayOptions) -> Self {
+        self.displayOptions = option
         return self
     }
 }
@@ -211,8 +208,8 @@ extension Mesh {
     
     DebugView(showOrigin: true) {
         Mesh(vertices, faces: faces)
-            .setVertexStyle(at: 0, shape: .index, name: .coordinate, nameLocation: .top)
-            .setVertexStyle(at: 1, style: .init(color: .red), name: .string("顶点1"))
+            .setVertexStyle(at: 0, shape: .index, label: .coordinate(at: .top))
+            .setVertexStyle(at: 1, style: .init(color: .red), label: .string("顶点1"))
             .setEdgeStyle(for: .init(org: 2, dst: 1), style: .init(color: .green))
             .setFaceStyle(at: 0, color: .blue, alpha: 0.2)
     }

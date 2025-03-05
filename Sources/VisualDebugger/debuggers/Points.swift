@@ -23,9 +23,9 @@ public final class Points: BaseDebugger {
         points.enumerated().map { (i, point) in
             if let style = vertexStyleDict[i] {
                 var nameString: String?
-                if let name = style.name {
+                if let name = style.label {
                     switch name {
-                    case .string(let string):
+                    case .string(let string, _):
                         nameString = string
                     case .coordinate:
                         nameString = "(\(point.x), \(point.y))"
@@ -39,7 +39,7 @@ public final class Points: BaseDebugger {
                     shape: style.shape,
                     style: style.style,
                     name: nameString,
-                    nameLocation: style.nameLocation,
+                    nameLocation: style.label?.location,
                     transform: transform
                 )
             } else {
@@ -49,6 +49,7 @@ public final class Points: BaseDebugger {
                     shape: nil,
                     style: nil,
                     name: nil,
+                    nameLocation: nil,
                     transform: transform
                 )
             }
@@ -108,11 +109,10 @@ public final class Points: BaseDebugger {
         at index: Int,
         shape: VertexShape? = nil,
         style: Style? = nil,
-        name: Description? = nil,
-        nameLocation: TextLocation = .right
+        label: Description? = nil
     ) -> Points {
         guard index < points.count else { return self }
-        let style = VertexStyle(shape: shape, style: style, name: name, nameLocation: nameLocation)
+        let style = VertexStyle(shape: shape, style: style, label: label)
         self.vertexStyleDict[index] = style
         return self
     }
@@ -121,22 +121,20 @@ public final class Points: BaseDebugger {
         at index: Int,
         shape: EdgeShape? = nil,
         style: Style? = nil,
-        name: Description? = nil,
-        nameLocation: TextLocation = .right
+        label: Description? = nil
     ) -> Points {
         guard index < points.count - 1 || (index == points.count - 1 && isClosed) else { return self }
         let edgeStyle = EdgeStyle(
             shape: shape,
             style: style,
-            name: name,
-            nameLocation: nameLocation
+            label: label
         )
         edgeStyleDict[index] = edgeStyle
         return self
     }
     
     // MARK: - modifier
-    public func display(_ option: DisplayOptions) -> Self {
+    public func show(_ option: DisplayOptions) -> Self {
         self.displayOptions = option
         return self
     }
@@ -184,10 +182,10 @@ extension Points: Debuggable {
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)
         ], vertexShape: .index)
-        .setVertexStyle(at: 0, shape: .shape(Circle(radius: 2)), name: .string("Corner"))
-        .setVertexStyle(at: 1, style: .init(color: .red), name: .coordinate)
+        .setVertexStyle(at: 0, shape: .shape(Circle(radius: 2)), label: .string("Corner"))
+        .setVertexStyle(at: 1, style: .init(color: .red), label: .coordinate())
         .setEdgeStyle(at: 2, shape: .arrow(.doubleArrow), style: .init(color: .red, mode: .fill))
-        .display([.vertex, .edge])
+        .show([.vertex, .edge])
     }
     .coordinateVisible(true)
     .coordinateStyle(.default)

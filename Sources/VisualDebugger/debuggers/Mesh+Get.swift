@@ -11,9 +11,9 @@ extension Mesh {
         vertices.enumerated().map { (i, point) in
             if let style = vertexStyleDict[i] {
                 var nameString: String?
-                if let name = style.name {
+                if let name = style.label {
                     switch name {
-                    case .string(let string):
+                    case .string(let string, _):
                         nameString = string
                     case .coordinate:
                         nameString = "(\(point.x), \(point.y))"
@@ -27,7 +27,7 @@ extension Mesh {
                     shape: style.shape,
                     style: style.style,
                     name: nameString,
-                    nameLocation: style.nameLocation,
+                    nameLocation: style.label?.location,
                     transform: transform
                 )
             } else {
@@ -37,6 +37,7 @@ extension Mesh {
                     shape: nil,
                     style: nil,
                     name: nil,
+                    nameLocation: nil,
                     transform: transform
                 )
             }
