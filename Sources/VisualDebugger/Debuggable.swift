@@ -33,6 +33,10 @@ extension Debuggable {
     public var debugView: DebugView {
         DebugView(elements: debugElements)
     }
+    
+    public var debugContext: DebugContext {
+        DebugContext(elements: debugElements)
+    }
 }
 
 extension Array: Transformable where Element == any Transformable {
