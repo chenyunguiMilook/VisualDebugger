@@ -130,14 +130,18 @@ public final class DebugContext {
         }
         guard let cgImage else { return nil }
         #if os(iOS)
-        return AppImage(cgImage: cgImage)
+        return AppImage(cgImage: cgImage, scale: scale, orientation: .up)
         #elseif os(macOS)
         return AppImage(cgImage: cgImage, size: frame.size)
         #endif
     }
     
     @objc public func debugQuickLookObject() -> Any {
-        if let image = getImage(scale: 1) {
+        var scale: Double = 1
+        #if os(iOS)
+        scale = 2
+        #endif
+        if let image = getImage(scale: scale) {
             return image
         } else {
             return "failed to render image"
