@@ -41,9 +41,9 @@ open class OperationBuilder<E> {
       return component
     }
     
-//    public static func buildBlock(_ expresss: Expression...) -> Component {
-//        return Array(expresss)
-//    }
+    public static func buildBlock(_ expresss: Expression...) -> Component {
+        return Array(expresss)
+    }
     
     // Handle optionality by turning nil into the empty list.
     public static func buildOptional(_ children: Component?) -> Component {

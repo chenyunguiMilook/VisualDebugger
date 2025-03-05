@@ -5,6 +5,8 @@
 //  Created by chenyungui on 2025/3/5.
 //
 
+import CoreGraphics
+
 public class SegmentDebugger: VertexDebugger {
     public let edgeShape: EdgeShape
 
@@ -20,6 +22,29 @@ public class SegmentDebugger: VertexDebugger {
             color: color,
             vertexShape: vertexShape
         )
+    }
+    
+    func edgeStyle(style: Style?) -> ShapeRenderStyle {
+        let color = style?.color ?? color
+        guard let mode = style?.mode else {
+            return ShapeRenderStyle(
+                stroke: .init(color: color, style: .init(lineWidth: 1)),
+                fill: nil
+            )
+        }
+        switch mode {
+        case .stroke(dashed: let dashed):
+            let dash: [CGFloat] = dashed ? [5, 5] : []
+            return ShapeRenderStyle(
+                stroke: .init(color: color, style: .init(lineWidth: 1, dash: dash)),
+                fill: .init(color: color, style: .init())
+            )
+        case .fill:
+            return ShapeRenderStyle(
+                stroke: .init(color: color, style: .init(lineWidth: 1)),
+                fill: .init(color: color, style: .init())
+            )
+        }
     }
 }
 
