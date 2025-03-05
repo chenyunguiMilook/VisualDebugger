@@ -7,7 +7,7 @@
 
 
 @resultBuilder
-public final class DebugBuilder: OperationBuilder<any Debuggable> {
+public final class DebugBuilder: OperationBuilder<any DebugRenderable> {
 }
 
 @resultBuilder

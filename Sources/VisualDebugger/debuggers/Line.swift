@@ -58,7 +58,7 @@ extension Line: Transformable {
     }
 }
 
-extension Line: Debuggable {
+extension Line: DebugRenderable {
     public var debugBounds: CGRect? {
         let minX = min(start.x, end.x)
         let minY = min(start.y, end.y)

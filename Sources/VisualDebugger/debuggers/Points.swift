@@ -158,7 +158,7 @@ extension Points: Transformable {
     }
 }
 
-extension Points: Debuggable {
+extension Points: DebugRenderable {
     public var debugBounds: CGRect? {
         guard let bounds = points.bounds else { return nil }
         return bounds * transform

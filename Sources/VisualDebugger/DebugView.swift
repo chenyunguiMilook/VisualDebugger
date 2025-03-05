@@ -31,7 +31,7 @@ public final class DebugView: AppView {
         showCoordinate: Bool = true,
         coordinateSystem: CoordinateSystem2D = .yDown,
         coordinateStyle: CoordinateStyle = .default,
-        @DebugBuilder builder: () -> [any Debuggable]
+        @DebugBuilder builder: () -> [any DebugRenderable]
     ) {
         let context = DebugContext(
             minWidth: minWidth,

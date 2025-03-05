@@ -32,7 +32,7 @@ public final class DebugContext {
         showCoordinate: Bool = true,
         coordinateSystem: CoordinateSystem2D = .yDown,
         coordinateStyle: CoordinateStyle = .default,
-        @DebugBuilder builder: () -> [any Debuggable]
+        @DebugBuilder builder: () -> [any DebugRenderable]
     ) {
         let elements = builder()
         let debugRect = elements.debugBounds ?? CGRect(origin: .zero, size: .unit)
@@ -90,7 +90,7 @@ public final class DebugContext {
         self.elements = elements
     }
     
-    public func append(_ element: Debuggable) {
+    public func append(_ element: DebugRenderable) {
         self.elements.append(element)
     }
     

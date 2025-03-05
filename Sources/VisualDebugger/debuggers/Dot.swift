@@ -48,7 +48,7 @@ extension Dot: Transformable {
     }
 }
 
-extension Dot: Debuggable {
+extension Dot: DebugRenderable {
     public var debugBounds: CGRect? {
         let rect = CGRect(center: position, size: CGSize(width: 4, height: 4))
         return rect * transform

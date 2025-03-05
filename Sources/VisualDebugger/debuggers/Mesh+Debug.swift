@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-extension Mesh: Transformable, Debuggable {
+extension Mesh: Transformable, DebugRenderable {
     public var debugBounds: CGRect? {
         guard let bounds = vertices.bounds else { return nil }
         return bounds * transform

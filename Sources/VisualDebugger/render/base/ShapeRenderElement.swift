@@ -8,7 +8,7 @@
 import Foundation
 import CoreGraphics
 
-public struct ShapeRenderElement: Transformable, Debuggable {
+public struct ShapeRenderElement: Transformable, DebugRenderable {
     
     // TODO: 添加一个transform属性， 这样原始路径可以被保存，不需要频繁变换路径，只在渲染的时候计算即可？
     public let path: AppBezierPath

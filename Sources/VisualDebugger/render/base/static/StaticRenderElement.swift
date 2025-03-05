@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-public struct StaticRenderElement<Content: StaticRendable>: Transformable, Debuggable {
+public struct StaticRenderElement<Content: StaticRendable>: Transformable, DebugRenderable {
     
     public let content: Content
     public let position: CGPoint // this is raw position, transform will no affect this
