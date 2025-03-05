@@ -27,6 +27,7 @@ public final class Line: SegmentDebugger {
     public let end: CGPoint
     
     var edgeStyle: EdgeStyle?
+    var center: CGPoint { (start + end) / 2.0 }
     
     public lazy var vertices: [Vertex] = getVertices(from: [start, end])
     public lazy var edge: Edge = {
@@ -35,12 +36,24 @@ public final class Line: SegmentDebugger {
         case .line: nil
         case .arrow(let arrow): arrow
         }
+        var text: TextElement?
+        if let label = edgeStyle?.label {
+            let string = switch label {
+            case .coordinate(_): "\(center)"
+            case .index(_): "0"
+            case .string(let string, _): string
+            }
+            var labelStyle: TextRenderStyle = .nameLabel
+            labelStyle.setTextLocation(label.location)
+            text = TextElement(source: .string(string), style: labelStyle)
+        }
         return SegmentRenderElement(
             start: start,
             end: end,
             transform: self.transform,
             segmentShape: source,
             segmentStyle: edgeStyle(style: edgeStyle?.style),
+            topElement: text,
             startOffset: getRadius(index: 0),
             endOffset: getRadius(index: 1)
         )
@@ -161,7 +174,7 @@ extension Line {
             color: .green,
             edgeShape: .arrow(Arrow(direction: .double))
         )
-        .setEdgeStyle(style: .init(color: .red, mode: .fill))
+        .setEdgeStyle(style: .init(color: .red, mode: .fill), label: .string("edge", at: .center))
     }
     .coordinateVisible(true)
     .coordinateStyle(.default)
