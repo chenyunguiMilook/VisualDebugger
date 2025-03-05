@@ -15,6 +15,7 @@ public class GeometryDebugger: SegmentDebugger {
     public var edgeStyleDict: [Int: EdgeStyle] = [:]
 
     public init(
+        name: String? = nil,
         transform: Matrix2D = .identity,
         vertexShape: VertexShape = .shape(Circle(radius: 2)),
         edgeShape: EdgeShape = .arrow(Arrow()),
@@ -25,6 +26,7 @@ public class GeometryDebugger: SegmentDebugger {
     ) {
         self.edgeStyleDict = edgeStyleDict
         super.init(
+            name: name, 
             transform: transform,
             color: color,
             vertexShape: vertexShape,

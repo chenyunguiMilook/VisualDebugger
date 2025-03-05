@@ -36,6 +36,7 @@ public final class Mesh: GeometryDebugger {
     public init(
         _ vertices: [CGPoint],
         faces: [Face],
+        name: String? = nil,
         transform: Matrix2D = .identity,
         vertexShape: VertexShape = .index,
         edgeShape: EdgeShape = .line,
@@ -52,6 +53,7 @@ public final class Mesh: GeometryDebugger {
         self.faceStyleDict = faceStyleDict
 
         super.init(
+            name: name, 
             transform: transform,
             vertexShape: vertexShape,
             edgeShape: edgeShape,

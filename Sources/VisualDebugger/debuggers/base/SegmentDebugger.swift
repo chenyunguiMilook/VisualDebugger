@@ -12,6 +12,7 @@ public class SegmentDebugger: VertexDebugger {
     public var vertexStyleDict: [Int: VertexStyle]
 
     public init(
+        name: String? = nil,
         transform: Matrix2D,
         color: AppColor,
         vertexShape: VertexDebugger.VertexShape = .shape(Circle(radius: 2)),
@@ -22,6 +23,7 @@ public class SegmentDebugger: VertexDebugger {
         self.edgeShape = edgeShape
         self.vertexStyleDict = vertexStyleDict
         super.init(
+            name: name, 
             transform: transform,
             color: color,
             vertexShape: vertexShape,

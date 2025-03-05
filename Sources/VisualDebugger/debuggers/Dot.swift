@@ -27,12 +27,13 @@ public final class Dot: VertexDebugger {
     
     public init(
         _ position: CGPoint,
+        name: String? = nil,
         transform: Matrix2D = .identity,
         color: AppColor = .yellow,
         vertexShape: VertexShape = .shape(Circle(radius: 2))
     ) {
         self.position = position
-        super.init(transform: transform, color: color, vertexShape: vertexShape)
+        super.init(name: name, transform: transform, color: color, vertexShape: vertexShape)
     }
 }
 

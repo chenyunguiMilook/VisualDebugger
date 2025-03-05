@@ -82,6 +82,7 @@ public final class Points: GeometryDebugger {
     
     public init(
         _ points: [CGPoint],
+        name: String? = nil,
         transform: Matrix2D = .identity,
         isClosed: Bool = true,
         vertexShape: VertexShape = .shape(Circle(radius: 2)),
@@ -95,6 +96,7 @@ public final class Points: GeometryDebugger {
         self.isClosed = isClosed
         
         super.init(
+            name: name,
             transform: transform,
             vertexShape: vertexShape,
             edgeShape: edgeShape,

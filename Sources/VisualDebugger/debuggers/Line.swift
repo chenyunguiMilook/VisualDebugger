@@ -31,6 +31,7 @@ public final class Line: SegmentDebugger {
     public init(
         start: CGPoint,
         end: CGPoint,
+        name: String? = nil,
         transform: Matrix2D = .identity,
         color: AppColor = .yellow,
         vertexShape: VertexShape = .shape(Circle(radius: 2)),
@@ -40,7 +41,7 @@ public final class Line: SegmentDebugger {
         self.start = start
         self.end = end
         self.edgeStyle = edgeStyle
-        super.init(transform: transform, color: color, vertexShape: vertexShape, edgeShape: edgeShape)
+        super.init(name: name, transform: transform, color: color, vertexShape: vertexShape, edgeShape: edgeShape)
     }
 }
 
@@ -120,6 +121,7 @@ extension Line: Debuggable {
 
 extension Line {
     // 设置边样式
+    @discardableResult
     public func setEdgeStyle(
         shape: EdgeShape? = nil,
         style: Style? = nil,
@@ -134,6 +136,7 @@ extension Line {
     }
     
     // 设置起点样式
+    @discardableResult
     public func setStartStyle(
         shape: VertexShape? = nil,
         style: Style? = nil,
@@ -145,6 +148,7 @@ extension Line {
     }
     
     // 设置终点样式
+    @discardableResult
     public func setEndStyle(
         shape: VertexShape? = nil,
         style: Style? = nil,

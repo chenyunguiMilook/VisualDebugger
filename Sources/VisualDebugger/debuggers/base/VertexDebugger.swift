@@ -13,18 +13,20 @@ extension TextLocation {
 }
 
 public class VertexDebugger {
-    
+    public var name: String?
     public let transform: Matrix2D
     public let color: AppColor
     public let vertexShape: VertexShape
     public var displayOptions: DisplayOptions
 
     public init(
+        name: String? = nil,
         transform: Matrix2D,
         color: AppColor,
         vertexShape: VertexShape = .shape(Circle(radius: 2)),
         displayOptions: DisplayOptions = .all
     ) {
+        self.name = name
         self.transform = transform
         self.color = color
         self.vertexShape = vertexShape
