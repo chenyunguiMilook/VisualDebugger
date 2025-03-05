@@ -136,7 +136,7 @@ public final class DebugContext {
         #endif
     }
     
-    @objc public func debugQuickLookObject() async -> Any {
+    @objc public func debugQuickLookObject() -> Any {
         if let image = getImage(scale: 1) {
             return image
         } else {
