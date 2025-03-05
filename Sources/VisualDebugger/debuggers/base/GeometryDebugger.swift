@@ -12,20 +12,7 @@ import AppKit
 
 public class GeometryDebugger: SegmentDebugger {
 
-    public struct DisplayOptions: OptionSet, Sendable {
-        public var rawValue: Int
-        public init(rawValue: Int) {
-            self.rawValue = rawValue
-        }
-        public static let vertex = Self.init(rawValue: 1 << 0)
-        public static let edge = Self.init(rawValue: 1 << 1)
-        public static let face = Self.init(rawValue: 1 << 2)
-        public static let all: Self = [.vertex, .edge, .face]
-    }
-    
-    public var vertexStyleDict: [Int: VertexStyle]
     public var edgeStyleDict: [Int: EdgeStyle] = [:]
-    public var displayOptions: DisplayOptions
 
     public init(
         transform: Matrix2D = .identity,
@@ -36,23 +23,16 @@ public class GeometryDebugger: SegmentDebugger {
         edgeStyleDict: [Int: EdgeStyle] = [:],
         displayOptions: DisplayOptions = .all
     ) {
-        self.vertexStyleDict = vertexStyleDict
         self.edgeStyleDict = edgeStyleDict
-        self.displayOptions = displayOptions
         super.init(
             transform: transform,
             color: color,
             vertexShape: vertexShape,
-            edgeShape: edgeShape
+            edgeShape: edgeShape,
+            displayOptions: displayOptions,
+            vertexStyleDict: vertexStyleDict
         )
     }
     
-    func getRadius(index: Int) -> Double {
-        let shape = self.vertexStyleDict[index]?.shape ?? vertexShape
-        switch shape {
-        case .shape(let shape): return shape.radius
-        case .index: return 6
-        }
-    }
 }
 

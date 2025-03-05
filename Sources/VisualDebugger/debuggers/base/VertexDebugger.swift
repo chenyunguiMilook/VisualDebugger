@@ -17,15 +17,18 @@ public class VertexDebugger {
     public let transform: Matrix2D
     public let color: AppColor
     public let vertexShape: VertexShape
+    public var displayOptions: DisplayOptions
 
     public init(
         transform: Matrix2D,
         color: AppColor,
-        vertexShape: VertexShape = .shape(Circle(radius: 2))
+        vertexShape: VertexShape = .shape(Circle(radius: 2)),
+        displayOptions: DisplayOptions = .all
     ) {
         self.transform = transform
         self.color = color
         self.vertexShape = vertexShape
+        self.displayOptions = displayOptions
     }
     
     func vertexStyle(style: Style?) -> ShapeRenderStyle {
@@ -122,6 +125,17 @@ extension VertexDebugger {
             case .index(let location): location
             }
         }
+    }
+    
+    public struct DisplayOptions: OptionSet, Sendable {
+        public var rawValue: Int
+        public init(rawValue: Int) {
+            self.rawValue = rawValue
+        }
+        public static let vertex = Self.init(rawValue: 1 << 0)
+        public static let edge = Self.init(rawValue: 1 << 1)
+        public static let face = Self.init(rawValue: 1 << 2)
+        public static let all: Self = [.vertex, .edge, .face]
     }
 }
 

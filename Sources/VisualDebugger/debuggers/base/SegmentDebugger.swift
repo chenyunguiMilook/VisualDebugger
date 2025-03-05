@@ -9,21 +9,34 @@ import CoreGraphics
 
 public class SegmentDebugger: VertexDebugger {
     public let edgeShape: EdgeShape
+    public var vertexStyleDict: [Int: VertexStyle]
 
     public init(
         transform: Matrix2D,
         color: AppColor,
         vertexShape: VertexDebugger.VertexShape = .shape(Circle(radius: 2)),
-        edgeShape: EdgeShape = .arrow(Arrow())
+        edgeShape: EdgeShape = .arrow(Arrow()),
+        displayOptions: DisplayOptions = .all,
+        vertexStyleDict: [Int: VertexStyle] = [:]
     ) {
         self.edgeShape = edgeShape
+        self.vertexStyleDict = vertexStyleDict
         super.init(
             transform: transform,
             color: color,
-            vertexShape: vertexShape
+            vertexShape: vertexShape,
+            displayOptions: displayOptions
         )
     }
     
+    func getRadius(index: Int) -> Double {
+        let shape = self.vertexStyleDict[index]?.shape ?? vertexShape
+        switch shape {
+        case .shape(let shape): return shape.radius
+        case .index: return 6
+        }
+    }
+
     func edgeStyle(style: Style?) -> ShapeRenderStyle {
         let color = style?.color ?? color
         guard let mode = style?.mode else {
