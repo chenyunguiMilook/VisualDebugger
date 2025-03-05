@@ -46,17 +46,21 @@ let package = Package(
 
 ```swift
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
-    DebugView(elements: [
+    DebugView {
         Points([
             .init(x: 40, y: 10),
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)
         ], vertexShape: .index)
-        .overrideVertexStyle(at: 0, shape: .shape(.rect), name: .string("Corner"))
-        .overrideVertexStyle(at: 1, color: .red, name: .coordinate)
-        .overrideEdgeStyle(at: 0, shape: .arrow(style: .triangle, direction: .normal), color: .red)
-        
-    ], coordinateSystem: .yDown)
+        .setVertexStyle(at: 0, shape: .shape(Circle(radius: 2)), label: "Corner")
+        .setVertexStyle(at: 1, style: .init(color: .red), label: .coordinate())
+        .setEdgeStyle(at: 2, shape: .arrow(.doubleArrow), style: .init(color: .red, mode: .fill))
+        .show([.vertex, .edge])
+    }
+    .coordinateVisible(true)
+    .coordinateStyle(.default)
+    .coordinateSystem(.yDown)
+    //.zoom(1.5, aroundCenter: .init(x: 10, y: 23))
 }
 
 ```
@@ -71,7 +75,6 @@ let package = Package(
 
 ```swift
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
-    // 示例：创建一个简单的三角形网格
     let vertices = [
         CGPoint(x: 50, y: 50),
         CGPoint(x: 150, y: 50),
@@ -84,14 +87,13 @@ let package = Package(
         Mesh.Face(1, 3, 2)
     ]
     
-    return DebugView(elements: [
+    DebugView(showOrigin: true) {
         Mesh(vertices, faces: faces)
-            .overrideVertexStyle(at: 0, shape: .index, name: .coordinate, nameLocation: .top)
-            .overrideVertexStyle(at: 1, color: .red, name: .string("顶点1"))
-            .overrideEdgeStyle(for: .init(org: 2, dst: 1), color: .green)
-            .overrideFaceStyle(at: 0, color: .blue, alpha: 0.2)
-            .setDisplay(vertices: true, edges: true, faces: true)
-    ], showOrigin: true, coordinateSystem: .yDown)
+            .setVertexStyle(at: 0, shape: .index, label: .coordinate(at: .top))
+            .setVertexStyle(at: 1, style: .init(color: .red), label: "顶点1")
+            .setEdgeStyle(for: .init(org: 2, dst: 1), style: .init(color: .green))
+            .setFaceStyle(at: 0, color: .blue, alpha: 0.2)
+    }
 }
 ```
 

@@ -193,7 +193,6 @@ extension Mesh {
 }
 
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
-    // 示例：创建一个简单的三角形网格
     let vertices = [
         CGPoint(x: 50, y: 50),
         CGPoint(x: 150, y: 50),

@@ -188,7 +188,7 @@ extension Points: Debuggable {
         .show([.vertex, .edge])
     }
     .coordinateVisible(true)
-    .coordinateStyle(.color)
+    .coordinateStyle(.default)
     .coordinateSystem(.yDown)
     //.zoom(1.5, aroundCenter: .init(x: 10, y: 23))
 }
