@@ -30,15 +30,27 @@ public final class Points {
         case line
         case arrow(Arrow)
     }
+    public struct Style {
+        public enum Mode {
+            case stroke(dashed: Bool)
+            case fill
+        }
+        let color: AppColor?
+        let mode: Mode?
+        public init(color: AppColor?, mode: Mode? = nil) {
+            self.color = color
+            self.mode = mode
+        }
+    }
     public struct VertexStyle {
         let shape: VertexShape?
-        let color: AppColor?
+        let style: Style?
         let name: Description?
         let nameLocation: TextLocation
     }
     public struct EdgeStyle {
         let shape: EdgeShape?
-        let color: AppColor?
+        let style: Style?
         let name: Description?
         let nameLocation: TextLocation
     }
@@ -68,7 +80,7 @@ public final class Points {
                     index: i,
                     position: point,
                     shape: style.shape,
-                    color: style.color,
+                    style: style.style,
                     name: nameString,
                     nameLocation: style.nameLocation,
                     transform: transform
@@ -78,7 +90,7 @@ public final class Points {
                     index: i,
                     position: point,
                     shape: nil,
-                    color: nil,
+                    style: nil,
                     name: nil,
                     transform: transform
                 )
@@ -91,7 +103,6 @@ public final class Points {
             // 获取样式，优先使用自定义样式，否则使用默认样式
             let customStyle = edgeStyleDict[i]
             let edgeShape = customStyle?.shape ?? self.edgeShape
-            let edgeColor = customStyle?.color ?? self.color
             
             // 根据边形状创建对应的SegmentShapeSource
             let source: SegmentRenderer? = switch edgeShape {
@@ -104,24 +115,48 @@ public final class Points {
                 end: seg.end,
                 transform: transform,
                 segmentShape: source,
-                segmentStyle: edgeStyle(color: edgeColor),
+                segmentStyle: edgeStyle(style: customStyle?.style),
                 startOffset: getRadius(index: i),
                 endOffset: getRadius(index: (i+1+points.count)%points.count)
             )
         }
     }()
     
-    func vertexStyle(color: AppColor) -> ShapeRenderStyle {
-        ShapeRenderStyle(
-            fill: .init(color: color, style: .init())
-        )
+    func vertexStyle(style: Style?) -> ShapeRenderStyle {
+        let color = style?.color ?? color
+        guard let mode = style?.mode else {
+            return ShapeRenderStyle(fill: .init(color: color, style: .init()))
+        }
+        switch mode {
+        case .stroke(dashed: let dashed):
+            let dash: [CGFloat] = dashed ? [5, 5] : []
+            return ShapeRenderStyle(stroke: .init(color: color, style: .init(lineWidth: 1, dash: dash)))
+        case .fill:
+            return ShapeRenderStyle(fill: .init(color: color, style: .init()))
+        }
     }
 
-    func edgeStyle(color: AppColor) -> ShapeRenderStyle {
-        ShapeRenderStyle(
-            stroke: .init(color: color, style: .init(lineWidth: 1)),
-            fill: nil
-        )
+    func edgeStyle(style: Style?) -> ShapeRenderStyle {
+        let color = style?.color ?? color
+        guard let mode = style?.mode else {
+            return ShapeRenderStyle(
+                stroke: .init(color: color, style: .init(lineWidth: 1)),
+                fill: nil
+            )
+        }
+        switch mode {
+        case .stroke(dashed: let dashed):
+            let dash: [CGFloat] = dashed ? [5, 5] : []
+            return ShapeRenderStyle(
+                stroke: .init(color: color, style: .init(lineWidth: 1, dash: dash)),
+                fill: .init(color: color, style: .init())
+            )
+        case .fill:
+            return ShapeRenderStyle(
+                stroke: .init(color: color, style: .init(lineWidth: 1)),
+                fill: .init(color: color, style: .init())
+            )
+        }
     }
     
     func labelStyle(color: AppColor) -> TextRenderStyle {
@@ -167,16 +202,16 @@ public final class Points {
         index: Int,
         position: CGPoint,
         shape: VertexShape?,
-        color: AppColor?,
+        style: Style?,
         name: String?,
         nameLocation: TextLocation = .right,
         transform: Matrix2D
     ) -> Vertex {
         let shape = shape ?? self.vertexShape
-        let color = color ??  self.color
+        let color = style?.color ??  self.color
         let centerShape: StaticRendable = switch shape {
         case .shape(let shape):
-            ShapeElement(renderer: shape, style: vertexStyle(color: color))
+            ShapeElement(renderer: shape, style: vertexStyle(style: style))
         case .index:
             TextElement(source: .index(index), style: labelStyle(color: color))
         }
@@ -191,12 +226,12 @@ public final class Points {
     public func overrideVertexStyle(
         at index: Int,
         shape: VertexShape? = nil,
-        color: AppColor? = nil,
+        style: Style? = nil,
         name: Description? = nil,
         nameLocation: TextLocation = .right
     ) -> Points {
         guard index < points.count else { return self }
-        let style = VertexStyle(shape: shape, color: color, name: name, nameLocation: nameLocation)
+        let style = VertexStyle(shape: shape, style: style, name: name, nameLocation: nameLocation)
         self.vertexStyleDict[index] = style
         return self
     }
@@ -204,14 +239,14 @@ public final class Points {
     public func overrideEdgeStyle(
         at index: Int,
         shape: EdgeShape? = nil,
-        color: AppColor? = nil,
+        style: Style? = nil,
         name: Description? = nil,
         nameLocation: TextLocation = .right
     ) -> Points {
         guard index < points.count - 1 || (index == points.count - 1 && isClosed) else { return self }
         let edgeStyle = EdgeStyle(
             shape: shape,
-            color: color,
+            style: style,
             name: name,
             nameLocation: nameLocation
         )
@@ -250,8 +285,6 @@ extension Points: Debuggable {
     }
 }
 
-// TODO: suppor dash arrow
-
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
     DebugView(elements: [
         Points([
@@ -260,8 +293,8 @@ extension Points: Debuggable {
             .init(x: 23, y: 67)
         ], vertexShape: .index)
         .overrideVertexStyle(at: 0, shape: .shape(Circle(radius: 2)), name: .string("Corner"))
-        .overrideVertexStyle(at: 1, color: .red, name: .coordinate)
-        .overrideEdgeStyle(at: 0, shape: .arrow(Arrow()), color: .red)
+        .overrideVertexStyle(at: 1, style: .init(color: .red), name: .coordinate)
+        .overrideEdgeStyle(at: 2, shape: .arrow(.doubleArrow), style: .init(color: .red, mode: .fill))
         
     ], coordinateSystem: .yDown)
 }
