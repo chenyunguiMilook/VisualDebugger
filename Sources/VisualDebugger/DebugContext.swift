@@ -18,12 +18,7 @@ public final class DebugContext {
     private var _coordinate: Coordinate
     lazy var coordinate = CoordinateRenderElement(coordinate: _coordinate, coordSystem: coordinateSystem, style: coordinateStyle)
     
-    public var valueToRender: Matrix2D {
-        switch coordinateSystem {
-        case .yDown: _valueToRender
-        case .yUp: _valueToRender * _flip
-        }
-    }
+    public var transform: Matrix2D = .identity
     public var showCoordinate: Bool
     public var coordinateSystem: CoordinateSystem2D
     public var coordinateStyle: CoordinateStyle
@@ -96,8 +91,16 @@ public final class DebugContext {
         self.elements.append(element)
     }
     
+    public func zoom(_ zoom: Double, aroundCenter center: CGPoint? = nil) {
+        let center = center ?? _coordinate.valueRect.center
+        self.transform = self.transform * Matrix2D(scale: zoom, aroundCenter: center)
+    }
+
     public func render(in context: CGContext, scale: CGFloat, contextHeight: Int) {
-        let transform = self.valueToRender
+        var transform = self.transform * _valueToRender
+        if coordinateSystem == .yUp {
+            transform = transform * _flip
+        }
         if showCoordinate {
             coordinate.render(
                 with: transform,

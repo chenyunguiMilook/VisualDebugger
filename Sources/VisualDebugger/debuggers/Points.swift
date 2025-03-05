@@ -183,4 +183,5 @@ extension Points: Debuggable {
         .overrideEdgeStyle(at: 2, shape: .arrow(.doubleArrow), style: .init(color: .red, mode: .fill))
         
     ], coordinateSystem: .yDown)
+    //.zoom(1.5, aroundCenter: .init(x: 10, y: 23))
 }

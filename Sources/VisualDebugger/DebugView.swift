@@ -72,6 +72,12 @@ public final class DebugView: AppView {
         self.elements.append(element)
     }
     
+    public func zoom(_ zoom: Double, aroundCenter center: CGPoint? = nil) -> DebugView {
+        self.context.zoom(zoom, aroundCenter: center)
+        self.refresh()
+        return self
+    }
+    
     private func refresh() {
         #if os(iOS)
         self.setNeedsDisplay()

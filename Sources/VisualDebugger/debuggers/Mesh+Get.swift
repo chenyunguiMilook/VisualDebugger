@@ -73,7 +73,7 @@ extension Mesh {
     func getMeshFaces() -> [MeshFace] {
         faces.enumerated().map { (i, face) in
             let style = faceStyleDict[i]
-            let faceColor = style?.color ?? self.color.withAlphaComponent(0.3)
+            let faceColor = (style?.color ?? self.color).withAlphaComponent(0.3)
             let path = AppBezierPath()
             path.move(to: vertices[face.v0])
             path.addLine(to: vertices[face.v1])
