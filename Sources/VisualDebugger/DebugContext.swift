@@ -126,7 +126,7 @@ public final class DebugContext {
             scale: scale,
             bgColor: AppColor.black.cgColor
         ) { context in
-            self.render(in: context, scale: scale, contextHeight: Int(frame.height))
+            self.render(in: context, scale: scale, contextHeight: Int(frame.height * scale))
         }
         guard let cgImage else { return nil }
         #if os(iOS)
