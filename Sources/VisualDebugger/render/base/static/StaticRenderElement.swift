@@ -41,8 +41,8 @@ public struct StaticRenderElement<Content: StaticRendable>: Transformable, Debug
 }
 
 extension StaticRenderElement where Content == ShapeElement {
-    public init(source: ShapeSource, style: ShapeRenderStyle, position: CGPoint, transform: Matrix2D = .identity, rotatable: Bool = false) {
-        self.content = ShapeElement(source: source, style: style)
+    public init(source: ShapeRenderer, style: ShapeRenderStyle, position: CGPoint, transform: Matrix2D = .identity, rotatable: Bool = false) {
+        self.content = ShapeElement(renderer: source, style: style)
         self.position = position
         self.transform = transform
         self.rotatable = rotatable

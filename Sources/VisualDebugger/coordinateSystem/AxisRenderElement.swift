@@ -110,7 +110,7 @@ extension Axis.Mark {
             textStyle.setTextLocation(.left)
         }
         
-        let shape = ShapeElement(source: .path(path), style: markStyle)
+        let shape = ShapeElement(renderer: path, style: markStyle)
         let label = TextElement(source: .number(value: self.value, precision: precision), style: textStyle)
         let point = PointElement(shape: shape, label: label)
         return .init(content: point, position: position)

@@ -31,7 +31,7 @@ extension Mesh {
     }
     
     public enum VertexShape {
-        case shape(ShapeType)
+        case shape(ShapeRenderer)
         case index
     }
     

@@ -45,7 +45,7 @@ public final class CoordinateRenderElement: ContextRenderable {
     
     private func getOriginElement() -> StaticRenderElement<PointElement> {
         let shapeStyle = ShapeRenderStyle(fill: .init(color: style.originColor))
-        let shape = ShapeElement(source: .shape(.circle, size: .init(width: 2, height: 2), anchor: .midCenter), style: shapeStyle)
+        let shape = ShapeElement(renderer: Circle(radius: 1), style: shapeStyle)
         var labelStyle = TextRenderStyle.originLabel
             labelStyle.textColor = style.originColor
         let label = TextElement(source: .string("O"), style: labelStyle)

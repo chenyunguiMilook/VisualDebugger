@@ -19,7 +19,7 @@ public final class Points {
     public typealias Edge = SegmentRenderElement
     
     public enum VertexShape {
-        case shape(ShapeType)
+        case shape(ShapeRenderer)
         case index
     }
     public enum Description {
@@ -49,7 +49,6 @@ public final class Points {
     public let vertexShape: VertexShape
     public let edgeShape: EdgeShape
     public let color: AppColor
-    public let vertexSize: CGSize
     public var vertexStyleDict: [Int: VertexStyle]
     public var edgeStyleDict: [Int: EdgeStyle] = [:]
     
@@ -140,10 +139,9 @@ public final class Points {
         _ points: [CGPoint],
         transform: Matrix2D = .identity,
         isClosed: Bool = true,
-        vertexShape: VertexShape = .shape(.circle),
+        vertexShape: VertexShape = .shape(Circle(radius: 2)),
         edgeShape: EdgeShape = .arrow(Arrow()),
         color: AppColor = .yellow,
-        vertexSize: CGSize = CGSize(width: 4, height: 4),
         vertexStyleDict: [Int: VertexStyle] = [:],
         edgeStyleDict: [Int: EdgeStyle] = [:]
     ) {
@@ -153,7 +151,6 @@ public final class Points {
         self.vertexShape = vertexShape
         self.edgeShape = edgeShape
         self.color = color
-        self.vertexSize = vertexSize
         self.vertexStyleDict = vertexStyleDict
         self.edgeStyleDict = edgeStyleDict
     }
@@ -161,7 +158,7 @@ public final class Points {
     func getRadius(index: Int) -> Double {
         let shape = self.vertexStyleDict[index]?.shape ?? vertexShape
         switch shape {
-        case .shape: return vertexSize.width / 2.0
+        case .shape(let shape): return shape.radius
         case .index: return 6
         }
     }
@@ -179,7 +176,7 @@ public final class Points {
         let color = color ??  self.color
         let centerShape: StaticRendable = switch shape {
         case .shape(let shape):
-            ShapeElement(source: .shape(shape, size: vertexSize, anchor: .midCenter), style: vertexStyle(color: color))
+            ShapeElement(renderer: shape, style: vertexStyle(color: color))
         case .index:
             TextElement(source: .index(index), style: labelStyle(color: color))
         }
@@ -232,7 +229,6 @@ extension Points: Transformable {
             vertexShape: vertexShape,
             edgeShape: edgeShape,
             color: color,
-            vertexSize: vertexSize,
             vertexStyleDict: vertexStyleDict,
             edgeStyleDict: edgeStyleDict
         )
@@ -263,7 +259,7 @@ extension Points: Debuggable {
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)
         ], vertexShape: .index)
-        .overrideVertexStyle(at: 0, shape: .shape(.rect), name: .string("Corner"))
+        .overrideVertexStyle(at: 0, shape: .shape(Circle(radius: 2)), name: .string("Corner"))
         .overrideVertexStyle(at: 1, color: .red, name: .coordinate)
         .overrideEdgeStyle(at: 0, shape: .arrow(Arrow()), color: .red)
         

@@ -10,16 +10,16 @@ import CoreGraphics
 
 public final class ShapeElement: StaticRendable {
     
-    public var source: ShapeSource
+    public var renderer: ShapeRenderer
     public var style: ShapeRenderStyle
     
-    public init(source: ShapeSource, style: ShapeRenderStyle) {
-        self.source = source
+    public init(renderer: ShapeRenderer, style: ShapeRenderStyle) {
+        self.renderer = renderer
         self.style = style
     }
     
     public var contentBounds: CGRect {
-        source.bounds
+        renderer.bounds
     }
     
     public func render(
@@ -30,20 +30,14 @@ public final class ShapeElement: StaticRendable {
     ) {
         let t = Matrix2D(translationX: transform.tx, y: transform.ty)
         context.render(
-            path: source.path.cgPath,
+            path: renderer.getBezierPath().cgPath,
             style: style,
             transform: t
         )
     }
     
     public func clone() -> ShapeElement {
-        ShapeElement(source: source, style: style)
-    }
-}
-
-extension ShapeElement {
-    public convenience init(path: AppBezierPath, style: ShapeRenderStyle) {
-        self.init(source: .path(path), style: style)
+        ShapeElement(renderer: renderer, style: style)
     }
 }
 

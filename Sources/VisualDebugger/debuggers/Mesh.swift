@@ -119,7 +119,7 @@ public final class Mesh {
         let color = color ?? self.color
         let centerShape: StaticRendable = switch shape {
         case .shape(let shape):
-            ShapeElement(source: .shape(shape, size: vertexSize, anchor: .midCenter), style: vertexStyle(color: color))
+            ShapeElement(renderer: shape, style: vertexStyle(color: color))
         case .index:
             TextElement(source: .index(index), style: labelStyle(color: color))
         }
@@ -237,10 +237,9 @@ extension Mesh {
         _ vertices: [CGPoint],
         indices: [Int],
         transform: Matrix2D = .identity,
-        vertexShape: VertexShape = .shape(.circle),
+        vertexShape: VertexShape = .shape(Circle(radius: 2)),
         edgeShape: EdgeShape = .line,
-        color: AppColor = .yellow,
-        vertexSize: CGSize = CGSize(width: 4, height: 4)
+        color: AppColor = .yellow
     ) {
         // 验证索引数组的长度是否为3的倍数（每个三角形由3个顶点组成）
         precondition(indices.count % 3 == 0, "索引数组长度必须是3的倍数，以表示三角形面")
@@ -270,8 +269,7 @@ extension Mesh {
             transform: transform,
             vertexShape: vertexShape,
             edgeShape: edgeShape,
-            color: color,
-            vertexSize: vertexSize
+            color: color
         )
     }
 }
