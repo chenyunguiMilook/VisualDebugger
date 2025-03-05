@@ -42,3 +42,11 @@ public final class TextElement: StaticRendable {
         TextElement(source: source, style: style)
     }
 }
+
+extension TextElement {
+    public static func label(_ label: String, at location: TextLocation = .right) -> TextElement {
+        var style = TextRenderStyle.nameLabel
+            style.setTextLocation(location)
+        return TextElement(source: .string(label), style: style)
+    }
+}
