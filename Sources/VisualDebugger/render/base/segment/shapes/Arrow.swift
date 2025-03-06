@@ -22,6 +22,10 @@ extension Arrow {
             case topTriangle // top part of the triangle
             case bottomTriangle // bottom part of the triangle
         }
+        public enum Anchor: Sendable {
+            case midRight
+            case midLeft
+        }
         public var tip: CGPoint
         public var topLeft: CGPoint
         public var bottomLeft: CGPoint
@@ -162,16 +166,23 @@ extension Arrow.Tip {
         (middleLeft - tip).length
     }
     
-    public init(angle: Double = .pi / 8, length: Double = 8, shape: Shape = .triangle) {
+    public init(angle: Double = .pi / 8, length: Double = 8, shape: Shape = .triangle, anchor: Anchor = .midRight) {
         let width = length
         let height = 2 * length * sin(angle)
-        self.init(width: width, height: height, shape: shape)
+        self.init(width: width, height: height, shape: shape, anchor: anchor)
     }
     
-    public init(width: Double, height: Double, shape: Shape) {
-        self.tip = .zero
-        self.topLeft = .init(x: -width, y: -height/2)
-        self.bottomLeft = .init(x: -width, y: height/2)
+    public init(width: Double, height: Double, shape: Shape, anchor: Anchor = .midRight) {
+        switch anchor {
+        case .midRight:
+            self.tip = .zero
+            self.topLeft = .init(x: -width, y: -height/2)
+            self.bottomLeft = .init(x: -width, y: height/2)
+        case .midLeft:
+            self.tip = .init(x: width, y: 0)
+            self.topLeft = .init(x: 0, y: -height/2)
+            self.bottomLeft = .init(x: 0, y: height/2)
+        }
         self.shape = shape
     }
 }

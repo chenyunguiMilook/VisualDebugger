@@ -119,6 +119,11 @@ extension Axis.Mark {
 
 extension Axis {
     func getElement(style: ShapeRenderStyle) -> SegmentRenderElement {
-        return SegmentRenderElement(start: start.position, end: end.position, segmentShape: Arrow(), segmentStyle: style)
+        return SegmentRenderElement(
+            start: start.position,
+            end: end.position,
+            segmentShape: Arrow(tip: .init(anchor: .midLeft)),
+            segmentStyle: style
+        )
     }
 }
