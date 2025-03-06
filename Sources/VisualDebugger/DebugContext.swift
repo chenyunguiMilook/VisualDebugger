@@ -14,8 +14,8 @@ public final class DebugContext {
     
     private var _valueToRender: Matrix2D
     private var _flip: Matrix2D
-    private var _coordinate: Coordinate
-    lazy var coordinate = CoordinateRenderElement(coordinate: _coordinate, coordSystem: coordinateSystem, style: coordinateStyle)
+    public let coordinate: Coordinate
+    lazy var coordinateElement = CoordinateRenderElement(coordinate: coordinate, coordSystem: coordinateSystem, style: coordinateStyle)
     
     public var transform: Matrix2D = .identity
     public var showCoordinate: Bool
@@ -80,7 +80,7 @@ public final class DebugContext {
         let renderRect = frame.shrinked(self.margin)
         self._valueToRender = stretchFit(rect: valueRect, into: renderRect)
         self._flip = Matrix2D(scaleX: 1, scaleY: -1, aroundCenter: renderRect.center)
-        self._coordinate = coordinate
+        self.coordinate = coordinate
         self.showCoordinate = showCoordinate
         self.coordinateSystem = coordinateSystem
         self.coordinateStyle = coordinateStyle
@@ -93,23 +93,28 @@ public final class DebugContext {
     }
     
     public func zoom(_ zoom: Double, aroundCenter center: CGPoint? = nil) {
-        let center = center ?? _coordinate.valueRect.center
+        let center = center ?? coordinate.valueRect.center
         self.transform = self.transform * Matrix2D(scale: zoom, aroundCenter: center)
     }
 
-    public func render(in context: CGContext, scale: CGFloat, contextHeight: Int) {
+    public func render(
+        elements additional: [any ContextRenderable]? = nil,
+        in context: CGContext,
+        scale: CGFloat,
+        contextHeight: Int
+    ) {
         var transform = self.transform * _valueToRender
         if coordinateSystem == .yUp {
             transform = transform * _flip
         }
         if showCoordinate {
-            coordinate.render(
+            coordinateElement.render(
                 with: transform,
                 in: context,
                 scale: scale,
                 contextHeight: contextHeight)
         }
-        for element in elements {
+        for element in self.elements {
             element.render(
                 with: transform,
                 in: context,
@@ -117,16 +122,31 @@ public final class DebugContext {
                 contextHeight: contextHeight
             )
         }
+        if let additional {
+            for element in additional {
+                element.render(
+                    with: transform,
+                    in: context,
+                    scale: scale,
+                    contextHeight: contextHeight
+                )
+            }
+        }
     }
     
-    public func getImage(scale: CGFloat) -> AppImage? {
+    public func getImage(scale: CGFloat, elements: [any ContextRenderable]? = nil) -> AppImage? {
         let cgImage = withImageContext(
             width: frame.width,
             height: frame.height,
             scale: scale,
             bgColor: AppColor.black.cgColor
         ) { context in
-            self.render(in: context, scale: scale, contextHeight: Int(frame.height * scale))
+            self.render(
+                elements: elements,
+                in: context,
+                scale: scale,
+                contextHeight: Int(frame.height * scale)
+            )
         }
         guard let cgImage else { return nil }
         #if os(iOS)
