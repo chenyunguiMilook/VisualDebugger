@@ -26,28 +26,32 @@ public final class DebugCapture: @unchecked Sendable {
         self.folder = folder
     }
     
-    public func capture(
-        action: String,
+    public func captureObjects(
+        _ action: String? = nil,
         @DebugBuilder builder: () -> [any Debuggable]
     ) {
-        let textElement = TextElement(source: .string(action), style: .nameLabel)
-        let text = StaticTextElement(content: textElement, position: context.coordinate.valueRect.bottomCenter)
         var elements = builder().map{ $0.debugElements }.flatMap{ $0 }
-        elements.append(text)
+        if let action {
+            let textElement = TextElement(source: .string(action), style: .nameLabel)
+            let text = StaticTextElement(content: textElement, position: context.coordinate.valueRect.bottomCenter)
+            elements.append(text)
+        }
         
         if let image = context.getImage(scale: scale, elements: elements) {
             imageCaches.append(image)
         }
     }
     
-    public func capture(
-        action: String,
+    public func captureElements(
+        _ action: String? = nil,
         @RenderBuilder builder: () -> [any ContextRenderable]
     ) {
-        let textElement = TextElement(source: .string(action), style: .nameLabel)
-        let text = StaticTextElement(content: textElement, position: context.coordinate.valueRect.bottomCenter)
         var elements = builder()
-        elements.append(text)
+        if let action {
+            let textElement = TextElement(source: .string(action), style: .nameLabel)
+            let text = StaticTextElement(content: textElement, position: context.coordinate.valueRect.bottomCenter)
+            elements.append(text)
+        }
         
         if let image = context.getImage(scale: scale, elements: elements) {
             imageCaches.append(image)
