@@ -6,24 +6,24 @@
 //
 
 @resultBuilder
-public final class DebugBuilder: OperationBuilder<any Debuggable> {
+public final class DebugBuilder: BaseBuilder<any Debuggable> {
 }
 
 @resultBuilder
-public final class DebugRenderBuilder: OperationBuilder<any DebugRenderable> {
+public final class DebugRenderBuilder: BaseBuilder<any DebugRenderable> {
 }
 
 @resultBuilder
-public final class RenderBuilder: OperationBuilder<any ContextRenderable> {
+public final class RenderBuilder: BaseBuilder<any ContextRenderable> {
 }
 
-open class OperationBuilder<E> {
+open class BaseBuilder<E> {
     public typealias Expression = E
     public typealias Component = [E]
     
     // MARK: - Expression
-    public static func buildExpression(_ expression: E) -> E {
-        return expression
+    public static func buildExpression(_ expression: E) -> Component {
+        return [expression]
     }
     
     // MARK: - Block overload
@@ -31,21 +31,17 @@ open class OperationBuilder<E> {
         return Array(expressions)
     }
     
-    public static func buildBlock(_ expressions: E?...) -> Component {
-        return expressions.compactMap { $0 }
+    public static func buildBlock(_ expressions: [E]) -> Component {
+        return expressions
     }
     
-    public static func buildBlock(_ expressions: [Component]) -> Component {
+    public static func buildBlock(_ expressions: [E]...) -> Component {
         return expressions.flatMap { $0 }
     }
     
     // MARK: - Optional overload
-    public static func buildOptional(_ expression: E?) -> Component {
-        return if let expression { [expression] } else { [] }
-    }
-    
-    public static func buildOptional(_ expressions: E?...) -> Component {
-        return expressions.compactMap { $0 }
+    public static func buildOptional(_ expressions: [E]?) -> Component {
+        return if let expressions { expressions } else { [] }
     }
     
     // MARK: - If-else overload
