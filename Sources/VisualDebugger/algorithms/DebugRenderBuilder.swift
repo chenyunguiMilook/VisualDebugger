@@ -26,6 +26,10 @@ open class OperationBuilder<E> {
         return expression
     }
     
+    public static func buildExpression(_ expression: E?) -> Component {
+        return expression != nil ? [expression!] : []
+    }
+    
     // MARK: - Block overload
     public static func buildBlock(_ expressions: E...) -> Component {
         return Array(expressions)
@@ -48,9 +52,6 @@ open class OperationBuilder<E> {
         return expressions.compactMap { $0 }
     }
     
-    public static func buildOptional(_ component: [E]?) -> Component {
-        component ?? []
-    }
     // MARK: - If-else overload
     public static func buildEither(first child: Component) -> Component {
         return child
