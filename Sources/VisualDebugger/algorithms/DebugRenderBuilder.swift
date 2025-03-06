@@ -26,10 +26,6 @@ open class OperationBuilder<E> {
         return expression
     }
     
-    public static func buildExpression(_ expression: E?) -> Component {
-        return expression != nil ? [expression!] : []
-    }
-    
     // MARK: - Block overload
     public static func buildBlock(_ expressions: E...) -> Component {
         return Array(expressions)
@@ -45,7 +41,7 @@ open class OperationBuilder<E> {
     
     // MARK: - Optional overload
     public static func buildOptional(_ expression: E?) -> Component {
-        return expression != nil ? [expression!] : []
+        return if let expression { [expression] } else { [] }
     }
     
     public static func buildOptional(_ expressions: E?...) -> Component {
