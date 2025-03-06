@@ -48,6 +48,9 @@ open class OperationBuilder<E> {
         return expressions.compactMap { $0 }
     }
     
+    public static func buildOptional(_ component: [E]?) -> Component {
+        component ?? []
+    }
     // MARK: - If-else overload
     public static func buildEither(first child: Component) -> Component {
         return child
