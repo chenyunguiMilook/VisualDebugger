@@ -21,49 +21,44 @@ open class OperationBuilder<E> {
     public typealias Expression = E
     public typealias Component = [E]
     
-    // If Component were "any Collection of HTML", we could have this return
-    // CollectionOfOne to avoid an array allocation.
-
-    // 添加直接处理单个表达式的方法
-    public static func buildBlock(_ expression: Expression) -> Component {
-        return [expression]
+    // MARK: - Expression
+    public static func buildExpression(_ expression: E) -> E {
+        return expression
     }
     
-    // Build a combined result from a list of partial results by concatenating.
-    //
-    // If Component were "any Collection of HTML", we could avoid some unnecessary
-    // reallocation work here by just calling joined().
-    public static func buildBlock(_ children: Component...) -> Component {
-      return children.flatMap { $0 }
-    }
-
-    // We can provide this overload as a micro-optimization for the common case
-    // where there's only one partial result in a block.  This shows the flexibility
-    // of using an ad-hoc builder pattern.
-    public static func buildBlock(_ component: Component) -> Component {
-      return component
+    // MARK: - Block overload
+    public static func buildBlock(_ expressions: E...) -> Component {
+        return Array(expressions)
     }
     
-    public static func buildBlock(_ expresss: Expression...) -> Component {
-        return Array(expresss)
+    public static func buildBlock(_ expressions: E?...) -> Component {
+        return expressions.compactMap { $0 }
     }
     
-    // Handle optionality by turning nil into the empty list.
-    public static func buildOptional(_ children: Component?) -> Component {
-      return children ?? []
+    public static func buildBlock(_ expressions: [Component]) -> Component {
+        return expressions.flatMap { $0 }
     }
-
-    // Handle optionally-executed blocks.
+    
+    // MARK: - Optional overload
+    public static func buildOptional(_ expression: E?) -> Component {
+        return expression != nil ? [expression!] : []
+    }
+    
+    public static func buildOptional(_ expressions: E?...) -> Component {
+        return expressions.compactMap { $0 }
+    }
+    
+    // MARK: - If-else overload
     public static func buildEither(first child: Component) -> Component {
-      return child
+        return child
     }
     
-    // Handle optionally-executed blocks.
     public static func buildEither(second child: Component) -> Component {
-      return child
+        return child
     }
     
-    public static func buildArray(_ components: [Component]) -> Component {
-        components.flatMap{ $0 }
+    // MARK: - Array overload
+    public static func buildArray(_ components: [E]) -> Component {
+        return components
     }
 }
