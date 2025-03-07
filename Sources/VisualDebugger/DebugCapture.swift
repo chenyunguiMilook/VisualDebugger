@@ -28,7 +28,7 @@ public final class DebugCapture: @unchecked Sendable {
     
     public func captureObjects(
         _ action: String? = nil,
-        @DebugBuilder builder: () -> [any Debuggable]
+        @DebugBuilder _ builder: () -> [any Debuggable]
     ) {
         var elements = builder().map{ $0.debugElements }.flatMap{ $0 }
         if let action {
@@ -44,7 +44,7 @@ public final class DebugCapture: @unchecked Sendable {
     
     public func captureElements(
         _ action: String? = nil,
-        @RenderBuilder builder: () -> [any ContextRenderable]
+        @RenderBuilder _ builder: () -> [any ContextRenderable]
     ) {
         var elements = builder()
         if let action {

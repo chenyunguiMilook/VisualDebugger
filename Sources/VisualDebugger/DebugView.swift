@@ -57,7 +57,7 @@ public final class DebugView: AppView {
         showCoordinate: Bool = true,
         coordinateSystem: CoordinateSystem2D = .yDown,
         coordinateStyle: CoordinateStyle = .default,
-        @DebugRenderBuilder builder: () -> [any DebugRenderable]
+        @DebugRenderBuilder _ builder: () -> [any DebugRenderable]
     ) {
         let context = DebugContext(
             minWidth: minWidth,
@@ -84,7 +84,7 @@ public final class DebugView: AppView {
         showCoordinate: Bool = true,
         coordinateSystem: CoordinateSystem2D = .yDown,
         coordinateStyle: CoordinateStyle = .default,
-        @RenderBuilder builder: () -> [any ContextRenderable]
+        @RenderBuilder _ builder: () -> [any ContextRenderable]
     ) {
         let elements = builder()
         let context = DebugContext(
