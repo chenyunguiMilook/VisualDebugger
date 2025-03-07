@@ -140,6 +140,11 @@ extension VertexDebugger {
         let shape: VertexShape?
         let style: Style?
         let label: Description?
+        public init(shape: VertexShape?, style: Style?, label: Description?) {
+            self.shape = shape
+            self.style = style
+            self.label = label
+        }
     }
     
     public struct Style {
