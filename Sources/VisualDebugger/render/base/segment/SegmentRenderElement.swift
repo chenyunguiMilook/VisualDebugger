@@ -14,8 +14,7 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
     public let transform: Matrix2D
     public var startElement: PointElement?
     public var endElement: PointElement?
-    public var topElement: TextElement? // edge center 90 degree direction
-    public var bottomElement: TextElement? // edge center -90 degree direction
+    public var centerElement: TextElement?
     public var startOffset: Double = 0
     public var endOffset: Double = 0
     public var segmentShape: SegmentRenderer? // rename to segmentShape
@@ -29,8 +28,7 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
         segmentStyle: ShapeRenderStyle,
         startElement: PointElement? = nil,
         endElement: PointElement? = nil,
-        topElement: TextElement? = nil,  // edge center 90 degree direction
-        bottomElement: TextElement? = nil,  // edge center -90 degree direction
+        centerElement: TextElement? = nil,
         startOffset: Double = 0,
         endOffset: Double = 0
     ) {
@@ -41,8 +39,7 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
         self.segmentStyle = segmentStyle
         self.startElement = startElement
         self.endElement = endElement
-        self.topElement = topElement
-        self.bottomElement = bottomElement
+        self.centerElement = centerElement
         self.startOffset = startOffset
         self.endOffset = endOffset
     }
@@ -85,16 +82,8 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
                 contextHeight: contextHeight
             )
         }
-        if let topElement {
-            topElement.render(
-                with: Matrix2D(translation: (start + end)/2.0) * transform,
-                in: context,
-                scale: scale,
-                contextHeight: contextHeight
-            )
-        }
-        if let bottomElement {
-            bottomElement.render(
+        if let centerElement {
+            centerElement.render(
                 with: Matrix2D(translation: (start + end)/2.0) * transform,
                 in: context,
                 scale: scale,
@@ -116,7 +105,6 @@ public func *(lhs: SegmentRenderElement, rhs: Matrix2D) -> SegmentRenderElement 
     )
     seg.startElement = lhs.startElement
     seg.endElement = lhs.endElement
-    seg.topElement = lhs.topElement
-    seg.bottomElement = lhs.bottomElement
+    seg.centerElement = lhs.centerElement
     return seg
 }

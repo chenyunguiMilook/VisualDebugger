@@ -102,7 +102,7 @@ public class SegmentDebugger: VertexDebugger {
             transform: transform,
             segmentShape: source,
             segmentStyle: getEdgeRenderStyle(style: customStyle?.style),
-            topElement: label,
+            centerElement: label,
             startOffset: getRadius(index: startIndex),
             endOffset: getRadius(index: endIndex)
         )
