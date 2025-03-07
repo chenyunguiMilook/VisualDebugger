@@ -7,12 +7,13 @@
 
 import CoreGraphics
 
-public protocol ShapeRenderer {
+public protocol ShapeRenderer: Sendable {
     var radius: Double { get }
     var bounds: CGRect { get }
     func getBezierPath() -> AppBezierPath
 }
 
+extension AppBezierPath: @retroactive @unchecked Sendable {}
 extension AppBezierPath: ShapeRenderer {
     public var radius: Double {
         let w = self.bounds.width / 2

@@ -131,12 +131,12 @@ extension VertexDebugger {
     
     public typealias Vertex = PointRenderElement
 
-    public enum VertexShape {
+    public enum VertexShape: Sendable {
         case shape(ShapeRenderer)
         case index
     }
     
-    public struct VertexStyle {
+    public struct VertexStyle: Sendable {
         let shape: VertexShape?
         let style: Style?
         let label: Description?
@@ -147,8 +147,8 @@ extension VertexDebugger {
         }
     }
     
-    public struct Style {
-        public enum Mode {
+    public struct Style: Sendable {
+        public enum Mode: Sendable {
             case stroke(dashed: Bool)
             case fill
         }
@@ -160,7 +160,7 @@ extension VertexDebugger {
         }
     }
 
-    public enum Description {
+    public enum Description: Sendable {
         case string(String, at: TextLocation = .default)
         case coordinate(at: TextLocation = .default)
         case index(at: TextLocation = .default)
