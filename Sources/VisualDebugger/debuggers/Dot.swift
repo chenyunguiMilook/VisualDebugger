@@ -34,10 +34,17 @@ public final class Dot: VertexDebugger {
         name: String? = nil,
         transform: Matrix2D = .identity,
         color: AppColor = .yellow,
-        vertexShape: VertexShape = .shape(Circle(radius: 2))
+        vertexShape: VertexShape = .shape(Circle(radius: 2)),
+        useColorfulLabel: Bool = false
     ) {
         self.position = position
-        super.init(name: name, transform: transform, color: color, vertexShape: vertexShape)
+        super.init(
+            name: name,
+            transform: transform,
+            color: color,
+            vertexShape: vertexShape,
+            useColorfulLable: useColorfulLabel
+        )
     }
     
     public func setStyle(
@@ -53,6 +60,11 @@ public final class Dot: VertexDebugger {
         self.vertexStyleDict[0] = style
         return self
     }
+    
+    public func useColorfulLabel(_ value: Bool) -> Dot {
+        self.useColorfulLabel = value
+        return self
+    }
 }
 
 extension Dot: Transformable {
@@ -61,7 +73,8 @@ extension Dot: Transformable {
             self.position,
             transform: self.transform * transform,
             color: self.color,
-            vertexShape: self.vertexShape
+            vertexShape: self.vertexShape,
+            useColorfulLabel: useColorfulLabel
         )
     }
 }

@@ -24,7 +24,8 @@ public class GeometryDebugger: SegmentDebugger {
         vertexStyleDict: [Int: VertexStyle] = [:],
         edgeStyleDict: [Int: EdgeStyle] = [:],
         faceStyleDict: [Int: FaceStyle] = [:],
-        displayOptions: DisplayOptions = .all
+        displayOptions: DisplayOptions = .all,
+        useColorfulLable: Bool = false
     ) {
         self.faceStyle = FaceStyle(style: .init(color: color.withAlphaComponent(0.2)), label: nil)
         self.faceStyleDict = faceStyleDict
@@ -35,6 +36,7 @@ public class GeometryDebugger: SegmentDebugger {
             vertexShape: vertexShape,
             edgeShape: edgeShape,
             displayOptions: displayOptions,
+            useColorfulLable: useColorfulLable,
             vertexStyleDict: vertexStyleDict,
             edgeStyleDict: edgeStyleDict
         )
@@ -80,12 +82,7 @@ public class GeometryDebugger: SegmentDebugger {
                 labelString = "\(faceIndex)"
             }
         }
-        var label: TextElement?
-        if let labelString {
-            var style: TextRenderStyle = .nameLabel
-            style.setTextLocation(customStyle?.label?.location ?? .center)
-            label = TextElement(source: .string(labelString), style: style)
-        }
+        let label = TextElement(text: labelString, location: customStyle?.label?.location ?? .center, textColor: textColor)
         return FaceRenderElement(
             points: vertices,
             transform: transform,

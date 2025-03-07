@@ -24,7 +24,8 @@ extension Mesh: Transformable, DebugRenderable {
             vertexStyleDict: vertexStyleDict,
             edgeStyleDict: edgeStyleDict,
             faceStyleDict: faceStyleDict,
-            displayOptions: displayOptions
+            displayOptions: displayOptions,
+            useColorfulLabel: useColorfulLabel
         )
     }
     

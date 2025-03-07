@@ -41,7 +41,8 @@ public final class Points: GeometryDebugger {
         color: AppColor = .yellow,
         vertexStyleDict: [Int: VertexStyle] = [:],
         edgeStyleDict: [Int: EdgeStyle] = [:],
-        displayOptions: DisplayOptions = .all
+        displayOptions: DisplayOptions = .all,
+        useColorfulLabel: Bool = false
     ) {
         self.points = points
         self.isClosed = isClosed
@@ -54,7 +55,8 @@ public final class Points: GeometryDebugger {
             color: color,
             vertexStyleDict: vertexStyleDict,
             edgeStyleDict: edgeStyleDict,
-            displayOptions: displayOptions
+            displayOptions: displayOptions,
+            useColorfulLable: useColorfulLabel
         )
     }
     
@@ -107,6 +109,11 @@ public final class Points: GeometryDebugger {
         self.faceStyleDict[0] = style
         return self
     }
+    
+    public func useColorfulLabel(_ value: Bool) -> Self {
+        self.useColorfulLabel = value
+        return self
+    }
 
     // MARK: - modifier
     public func show(_ option: DisplayOptions) -> Self {
@@ -126,7 +133,8 @@ extension Points: Transformable {
             color: color,
             vertexStyleDict: vertexStyleDict,
             edgeStyleDict: edgeStyleDict,
-            displayOptions: displayOptions
+            displayOptions: displayOptions,
+            useColorfulLabel: useColorfulLabel
         )
     }
 }

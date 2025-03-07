@@ -18,16 +18,22 @@ public class VertexDebugger {
     public let color: AppColor
     public let vertexShape: VertexShape
     public var displayOptions: DisplayOptions
+    public var useColorfulLabel: Bool
 
     var vertexStyleDict: [Int: VertexStyle]
 
+    var textColor: AppColor? {
+        useColorfulLabel ? color : nil
+    }
+    
     public init(
         name: String? = nil,
         transform: Matrix2D,
         color: AppColor,
         vertexShape: VertexShape = .shape(Circle(radius: 2)),
         vertexStyleDict: [Int: VertexStyle] = [:],
-        displayOptions: DisplayOptions = .all
+        displayOptions: DisplayOptions = .all,
+        useColorfulLable: Bool = false
     ) {
         self.name = name
         self.transform = transform
@@ -35,6 +41,7 @@ public class VertexDebugger {
         self.vertexShape = vertexShape
         self.vertexStyleDict = vertexStyleDict
         self.displayOptions = displayOptions
+        self.useColorfulLabel = useColorfulLable
     }
     
     func getVertexRenderStyle(style: Style?) -> ShapeRenderStyle {
@@ -86,14 +93,19 @@ public class VertexDebugger {
         case .index:
             TextElement(source: .index(index), style: getLabelRenderStyle(color: color))
         }
-        var label: TextElement?
-        if let labelString {
-            var labelStyle: TextRenderStyle = .nameLabel
-            labelStyle.setTextLocation(customStyle?.label?.location ?? .right)
-            label = TextElement(source: .string(labelString), style: labelStyle)
-        }
+        let label = TextElement(text: labelString, location: customStyle?.label?.location ?? .right, textColor: textColor)
         let element = PointElement(shape: centerShape, label: label)
         return PointRenderElement(content: element, position: position, transform: transform)
+    }
+}
+
+extension TextElement {
+    public convenience init?(text: String?, location: TextLocation, textColor: AppColor?) {
+        guard let text else { return nil }
+        var style: TextRenderStyle = .nameLabel
+        style.setTextLocation(location)
+        if let textColor { style.textColor = textColor }
+        self.init(source: .string(text), style: style)
     }
 }
 

@@ -39,7 +39,8 @@ public final class Mesh: GeometryDebugger {
         vertexStyleDict: [Int: VertexStyle] = [:],
         edgeStyleDict: [Int: EdgeStyle] = [:],
         faceStyleDict: [Int: FaceStyle] = [:],
-        displayOptions: DisplayOptions = .all
+        displayOptions: DisplayOptions = .all,
+        useColorfulLabel: Bool = false
     ) {
         self.vertices = vertices
         self.faces = faces
@@ -54,7 +55,8 @@ public final class Mesh: GeometryDebugger {
             vertexStyleDict: vertexStyleDict,
             edgeStyleDict: edgeStyleDict,
             faceStyleDict: faceStyleDict,
-            displayOptions: displayOptions
+            displayOptions: displayOptions,
+            useColorfulLable: useColorfulLabel
         )
     }
     
@@ -141,6 +143,11 @@ public final class Mesh: GeometryDebugger {
             label: label
         )
         self.faceStyleDict[index] = style
+        return self
+    }
+    
+    public func useColorfulLabel(_ value: Bool) -> Self {
+        self.useColorfulLabel = value
         return self
     }
     

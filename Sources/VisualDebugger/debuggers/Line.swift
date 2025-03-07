@@ -41,11 +41,19 @@ public final class Line: SegmentDebugger {
         color: AppColor = .yellow,
         vertexShape: VertexShape = .shape(Circle(radius: 2)),
         edgeShape: EdgeShape = .arrow(Arrow()),
-        edgeStyle: EdgeStyle? = nil
+        edgeStyle: EdgeStyle? = nil,
+        useColorfulLabel: Bool = false
     ) {
         self.start = start
         self.end = end
-        super.init(name: name, transform: transform, color: color, vertexShape: vertexShape, edgeShape: edgeShape)
+        super.init(
+            name: name,
+            transform: transform,
+            color: color,
+            vertexShape: vertexShape,
+            edgeShape: edgeShape,
+            useColorfulLable: useColorfulLabel
+        )
     }
 }
 
@@ -57,7 +65,8 @@ extension Line: Transformable {
             transform: self.transform * transform,
             color: self.color,
             vertexShape: self.vertexShape,
-            edgeShape: self.edgeShape
+            edgeShape: self.edgeShape,
+            useColorfulLabel: useColorfulLabel
         )
     }
 }
@@ -134,6 +143,11 @@ extension Line {
         return self
     }
     
+    public func useColorfulLabel(_ value: Bool) -> Line {
+        self.useColorfulLabel = value
+        return self
+    }
+
     // 显示选项
     public func show(_ option: DisplayOptions) -> Self {
         self.displayOptions = option
