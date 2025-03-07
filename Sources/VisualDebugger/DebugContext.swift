@@ -92,9 +92,11 @@ public final class DebugContext {
         self.elements.append(element)
     }
     
-    public func zoom(_ zoom: Double, aroundCenter center: CGPoint? = nil) {
+    @discardableResult
+    public func zoom(_ zoom: Double, aroundCenter center: CGPoint? = nil) -> Self {
         let center = center ?? coordinate.valueRect.center
         self.transform = self.transform * Matrix2D(scale: zoom, aroundCenter: center)
+        return self
     }
 
     public func render(
