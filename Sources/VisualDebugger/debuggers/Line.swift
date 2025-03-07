@@ -26,7 +26,6 @@ public final class Line: SegmentDebugger {
     public let start: CGPoint
     public let end: CGPoint
     
-    var edgeStyle: EdgeStyle
     var center: CGPoint { (start + end) / 2.0 }
     
     public lazy var vertices: [Vertex] = getVertices(from: [start, end])
@@ -46,7 +45,6 @@ public final class Line: SegmentDebugger {
     ) {
         self.start = start
         self.end = end
-        self.edgeStyle = edgeStyle ?? .init(shape: .line, style: .init(color: color), label: nil)
         super.init(name: name, transform: transform, color: color, vertexShape: vertexShape, edgeShape: edgeShape)
     }
 }

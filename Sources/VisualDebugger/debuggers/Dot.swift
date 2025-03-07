@@ -24,7 +24,6 @@ public typealias VDot = Dot
 public final class Dot: VertexDebugger {
     
     public var position: CGPoint
-    private var customVertexStyle: VertexStyle?
     
     public lazy var vertex: Vertex = {
         createVertex(index: 0, position: position)
@@ -46,12 +45,12 @@ public final class Dot: VertexDebugger {
         style: Style? = nil,
         label: Description? = nil
     ) -> Dot {
-        self.customVertexStyle = VertexStyle(shape: shape, style: style, label: label)
+        self.vertexStyleDict[0] = VertexStyle(shape: shape, style: style, label: label)
         return self
     }
     
     public func setStyle(_ style: VertexStyle) -> Dot {
-        self.customVertexStyle = style
+        self.vertexStyleDict[0] = style
         return self
     }
 }
@@ -81,7 +80,7 @@ extension Dot: DebugRenderable {
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
     DebugView {
         Dot(.init(x: 150, y: 150), vertexShape: .shape(Circle(radius: 2)))
-            .setStyle(label: "Hello")
+            .setStyle(style: .init(color: .green), label: "Hello")
         Dot(.init(x: 200, y: 100), color: .red, vertexShape: .index)
     }
     .coordinateVisible(true)
