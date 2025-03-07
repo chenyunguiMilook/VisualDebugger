@@ -26,18 +26,19 @@ public final class Line: SegmentDebugger {
     public let start: CGPoint
     public let end: CGPoint
     
-    var edgeStyle: EdgeStyle?
+    var edgeStyle: EdgeStyle
+    var customEdgeStyle: EdgeStyle?
     var center: CGPoint { (start + end) / 2.0 }
     
     public lazy var vertices: [Vertex] = getVertices(from: [start, end])
     public lazy var edge: Edge = {
-        let edgeShape = edgeStyle?.shape ?? self.edgeShape
+        let edgeShape = customEdgeStyle?.shape ?? self.edgeShape
         let source: SegmentRenderer? = switch edgeShape {
         case .line: nil
         case .arrow(let arrow): arrow
         }
         var text: TextElement?
-        if let label = edgeStyle?.label {
+        if let label = customEdgeStyle?.label ?? edgeStyle.label {
             let string = switch label {
             case .coordinate(_): "\(center)"
             case .index(_): "0"
@@ -52,7 +53,7 @@ public final class Line: SegmentDebugger {
             end: end,
             transform: self.transform,
             segmentShape: source,
-            segmentStyle: edgeStyle(style: edgeStyle?.style),
+            segmentStyle: edgeStyle(style: customEdgeStyle?.style ?? edgeStyle.style),
             topElement: text,
             startOffset: getRadius(index: 0),
             endOffset: getRadius(index: 1)
@@ -71,7 +72,7 @@ public final class Line: SegmentDebugger {
     ) {
         self.start = start
         self.end = end
-        self.edgeStyle = edgeStyle
+        self.edgeStyle = edgeStyle ?? .init(shape: .line, style: .init(color: color), label: nil)
         super.init(name: name, transform: transform, color: color, vertexShape: vertexShape, edgeShape: edgeShape)
     }
 }
@@ -119,7 +120,7 @@ extension Line {
         style: Style? = nil,
         label: Description? = nil
     ) -> Line {
-        self.edgeStyle = EdgeStyle(
+        self.customEdgeStyle = EdgeStyle(
             shape: shape,
             style: style,
             label: label
