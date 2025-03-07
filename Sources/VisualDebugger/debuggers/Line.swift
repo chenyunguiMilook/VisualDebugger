@@ -151,6 +151,16 @@ extension Line {
         return self
     }
     
+    public func setStartStyle(_ style: VertexStyle) -> Line {
+        self.vertexStyleDict[0] = style
+        return self
+    }
+
+    public func setEndStyle(_ style: VertexStyle) -> Line {
+        self.vertexStyleDict[1] = style
+        return self
+    }
+    
     // 显示选项
     public func show(_ option: DisplayOptions) -> Self {
         self.displayOptions = option

@@ -49,6 +49,11 @@ public final class Dot: VertexDebugger {
         self.customVertexStyle = VertexStyle(shape: shape, style: style, label: label)
         return self
     }
+    
+    public func setStyle(_ style: VertexStyle) -> Dot {
+        self.customVertexStyle = style
+        return self
+    }
 }
 
 extension Dot: Transformable {

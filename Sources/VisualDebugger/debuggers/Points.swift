@@ -84,6 +84,16 @@ public final class Points: GeometryDebugger {
         return self
     }
     
+    public func setVertexStyle(
+        _ style: VertexStyle,
+        for indices: Set<Int>
+    ) -> Points {
+        for index in indices where index < points.count {
+            self.vertexStyleDict[index] = style
+        }
+        return self
+    }
+    
     public func setEdgeStyle(
         at index: Int,
         shape: EdgeShape? = nil,

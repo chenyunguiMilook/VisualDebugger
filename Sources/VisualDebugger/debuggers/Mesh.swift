@@ -77,6 +77,16 @@ public final class Mesh: GeometryDebugger {
         return self
     }
     
+    public func setVertexStyle(
+        _ style: VertexStyle,
+        for indices: Set<Int>
+    ) -> Mesh {
+        for index in indices where index < vertices.count {
+            self.vertexStyleDict[index] = style
+        }
+        return self
+    }
+
     // 自定义方法：设置边样式
     public func setEdgeStyle(
         for edge: Edge,
