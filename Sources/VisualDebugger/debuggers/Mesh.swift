@@ -16,21 +16,15 @@ public typealias VMesh = Mesh
 
 public final class Mesh: GeometryDebugger {
     
-    public typealias MeshEdge = SegmentRenderElement
-    public typealias MeshFace = ShapeRenderElement
-
     // 基本属性
     public let vertices: [CGPoint]
     public let faces: [Face]
     public let edges: [Edge]
     
-    // 样式属性
-    public var faceStyleDict: [Int: FaceStyle] = [:]
-    
     // 缓存的渲染元素
     public lazy var vertexElements: [Vertex] = getVertices()
     public lazy var edgeElements: [MeshEdge] = getMeshEdges()
-    public lazy var faceElements: [ShapeRenderElement] = getMeshFaces()
+    public lazy var faceElements: [MeshFace] = getMeshFaces()
     
     // 初始化方法
     public init(
@@ -50,7 +44,6 @@ public final class Mesh: GeometryDebugger {
         self.vertices = vertices
         self.faces = faces
         self.edges = Self.getEdges(faces: faces)
-        self.faceStyleDict = faceStyleDict
 
         super.init(
             name: name, 
@@ -60,6 +53,7 @@ public final class Mesh: GeometryDebugger {
             color: color,
             vertexStyleDict: vertexStyleDict,
             edgeStyleDict: edgeStyleDict,
+            faceStyleDict: faceStyleDict,
             displayOptions: displayOptions
         )
     }
@@ -125,30 +119,26 @@ public final class Mesh: GeometryDebugger {
     // 自定义方法：设置面样式
     public func setFaceStyle(
         for face: Face,
-        color: AppColor? = nil,
-        alpha: CGFloat = 0.3,
+        style: Style? = nil,
         label: Description? = nil
     ) -> Mesh {
         guard let faceIndex = faces.firstIndex(of: face) else { return self }
         return self.setFaceStyle(
             at: faceIndex,
-            color: color,
-            alpha: alpha,
+            style: style,
             label: label
         )
     }
     
     public func setFaceStyle(
         at index: Int,
-        color: AppColor? = nil,
-        alpha: CGFloat = 0.3,
+        style: Style? = nil,
         label: Description? = nil
     ) -> Mesh {
         guard index < faces.count else { return self }
         let style = FaceStyle(
-            color: color,
-            alpha: alpha,
-            name: label
+            style: style,
+            label: label
         )
         self.faceStyleDict[index] = style
         return self
@@ -222,6 +212,6 @@ extension Mesh {
             .setVertexStyle(at: 0, shape: .index, label: .coordinate(at: .top))
             .setVertexStyle(at: 1, style: .init(color: .red), label: "顶点1")
             .setEdgeStyle(for: .init(org: 2, dst: 1), style: .init(color: .green))
-            .setFaceStyle(at: 0, color: .blue, alpha: 0.2)
+            .setFaceStyle(at: 0, style: .init(color: .blue.withAlphaComponent(0.2)))
     }
 }

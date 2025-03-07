@@ -88,3 +88,37 @@ public func /= (lhs: inout CGPoint, rhs: CGFloat) {
     lhs.x /= rhs
     lhs.y /= rhs
 }
+
+extension Array where Element == CGPoint {
+    var gravityCenter: CGPoint {
+        var c = CGPoint()
+        var area: CGFloat = 0.0
+        let p1X: CGFloat = 0.0
+        let p1Y: CGFloat = 0.0
+        let inv3: CGFloat = 1.0 / 3.0
+
+        for i in stride(from: self.startIndex, to: self.endIndex, by: 1) {
+            let p2 = self[i]
+            let next = self.index(i, offsetBy: 1)
+            let p3 = (next == self.endIndex ? self[self.startIndex] : self[next])
+
+            let e1X = p2.x - p1X
+            let e1Y = p2.y - p1Y
+            let e2X = p3.x - p1X
+            let e2Y = p3.y - p1Y
+
+            let D = (e1X * e2Y - e1Y * e2X)
+
+            let triangleArea = 0.5 * D
+            area += triangleArea
+
+            c.x += triangleArea * inv3 * (p1X + p2.x + p3.x)
+            c.y += triangleArea * inv3 * (p1Y + p2.y + p3.y)
+        }
+
+        c.x *= 1.0 / area
+        c.y *= 1.0 / area
+
+        return c
+    }
+}

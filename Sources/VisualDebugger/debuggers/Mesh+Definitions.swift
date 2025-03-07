@@ -29,13 +29,6 @@ extension Mesh {
             self.dst = dst
         }
     }
-    
-    public struct FaceStyle {
-        let color: AppColor?
-        let alpha: CGFloat
-        let name: Description?
-    }
-
 }
 
 extension Mesh.Face: Equatable {

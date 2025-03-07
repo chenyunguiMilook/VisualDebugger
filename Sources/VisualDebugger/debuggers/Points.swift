@@ -23,26 +23,12 @@ public final class Points: GeometryDebugger {
     
     public lazy var edges: [Edge] = {
         points.segments(isClosed: isClosed).enumerated().map { (i, seg) in
-            // 获取样式，优先使用自定义样式，否则使用默认样式
-            let customStyle = edgeStyleDict[i]
-            let edgeShape = customStyle?.shape ?? self.edgeShape
-            
-            // 根据边形状创建对应的SegmentShapeSource
-            let source: SegmentRenderer? = switch edgeShape {
-            case .line: nil
-            case .arrow(let arrow): arrow
-            }
-            
-            return Edge(
-                start: seg.start,
-                end: seg.end,
-                transform: transform,
-                segmentShape: source,
-                segmentStyle: edgeStyle(style: customStyle?.style),
-                startOffset: getRadius(index: i),
-                endOffset: getRadius(index: (i+1+points.count)%points.count)
-            )
+            createEdge(start: seg.start, end: seg.end, edgeIndex: i, startIndex: i, endIndex: i+1)
         }
+    }()
+    
+    public lazy var face: MeshFace = {
+        createFace(vertices: points, faceIndex: 0)
     }()
     
     public init(
@@ -110,6 +96,18 @@ public final class Points: GeometryDebugger {
         return self
     }
     
+    public func setFaceStyle(
+        style: Style? = nil,
+        label: Description? = nil
+    ) -> Points {
+        let style = FaceStyle(
+            style: style,
+            label: label
+        )
+        self.faceStyleDict[0] = style
+        return self
+    }
+
     // MARK: - modifier
     public func show(_ option: DisplayOptions) -> Self {
         self.displayOptions = option
@@ -139,6 +137,9 @@ extension Points: DebugRenderable {
         return bounds * transform
     }
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
+        if displayOptions.contains(.face) {
+            face.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+        }
         if displayOptions.contains(.edge) {
             for edge in edges {
                 edge.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
@@ -162,7 +163,8 @@ extension Points: DebugRenderable {
         .setVertexStyle(at: 0, shape: .shape(Circle(radius: 2)), label: "Corner")
         .setVertexStyle(at: 1, style: .init(color: .red), label: .coordinate())
         .setEdgeStyle(at: 2, shape: .arrow(.doubleArrow), style: .init(color: .red, mode: .fill))
-        .show([.vertex, .edge])
+        .setFaceStyle(label: .string("face", at: .center))
+        .show([.vertex, .edge, .face])
     }
     .coordinateVisible(true)
     .coordinateStyle(.default)

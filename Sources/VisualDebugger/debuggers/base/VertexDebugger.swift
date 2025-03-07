@@ -19,21 +19,25 @@ public class VertexDebugger {
     public let vertexShape: VertexShape
     public var displayOptions: DisplayOptions
 
+    var vertexStyleDict: [Int: VertexStyle]
+
     public init(
         name: String? = nil,
         transform: Matrix2D,
         color: AppColor,
         vertexShape: VertexShape = .shape(Circle(radius: 2)),
+        vertexStyleDict: [Int: VertexStyle] = [:],
         displayOptions: DisplayOptions = .all
     ) {
         self.name = name
         self.transform = transform
         self.color = color
         self.vertexShape = vertexShape
+        self.vertexStyleDict = vertexStyleDict
         self.displayOptions = displayOptions
     }
     
-    func vertexStyle(style: Style?) -> ShapeRenderStyle {
+    func getVertexRenderStyle(style: Style?) -> ShapeRenderStyle {
         let color = style?.color ?? color
         guard let mode = style?.mode else {
             return ShapeRenderStyle(fill: .init(color: color, style: .init()))
@@ -47,7 +51,7 @@ public class VertexDebugger {
         }
     }
     
-    func labelStyle(color: AppColor) -> TextRenderStyle {
+    func getLabelRenderStyle(color: AppColor) -> TextRenderStyle {
         TextRenderStyle(
             font: AppFont.italicSystemFont(ofSize: 10),
             insets: .zero,
@@ -60,71 +64,37 @@ public class VertexDebugger {
 
     func createVertex(
         index: Int,
-        position: CGPoint,
-        vertexStyle: VertexStyle?
+        position: CGPoint
     ) -> Vertex {
-        
-        if let style = vertexStyle {
-            var nameString: String?
-            if let name = style.label {
-                switch name {
-                case .string(let string, _):
-                    nameString = string
-                case .coordinate:
-                    nameString = "(\(position.x), \(position.y))"
-                case .index:
-                    nameString = "\(index)"
-                }
+        let customStyle = vertexStyleDict[index]
+        var labelString: String?
+        if let vertexLabel = customStyle?.label {
+            switch vertexLabel {
+            case .string(let string, _):
+                labelString = string
+            case .coordinate:
+                labelString = "(\(position.x), \(position.y))"
+            case .index:
+                labelString = "\(index)"
             }
-            return createVertex(
-                index: index,
-                position: position,
-                shape: style.shape,
-                style: style.style,
-                name: nameString,
-                nameLocation: style.label?.location,
-                transform: transform
-            )
-        } else {
-            return createVertex(
-                index: index,
-                position: position,
-                shape: nil,
-                style: nil,
-                name: nil,
-                nameLocation: nil,
-                transform: transform
-            )
         }
-    }
-    
-    func createVertex(
-        index: Int,
-        position: CGPoint,
-        shape: VertexShape?,
-        style: Style?,
-        name: String?,
-        nameLocation: TextLocation?,
-        transform: Matrix2D
-    ) -> Vertex {
-        let shape = shape ?? self.vertexShape
-        let color = style?.color ??  self.color
+        let shape = customStyle?.shape ?? self.vertexShape
+        let color = customStyle?.style?.color ??  self.color
         let centerShape: StaticRendable = switch shape {
         case .shape(let shape):
-            ShapeElement(renderer: shape, style: vertexStyle(style: style))
+            ShapeElement(renderer: shape, style: getVertexRenderStyle(style: customStyle?.style))
         case .index:
-            TextElement(source: .index(index), style: labelStyle(color: color))
+            TextElement(source: .index(index), style: getLabelRenderStyle(color: color))
         }
         var label: TextElement?
-        if let name {
-            var nameStyle: TextRenderStyle = .nameLabel
-            nameStyle.setTextLocation(nameLocation ?? .right)
-            label = TextElement(source: .string(name), style: nameStyle)
+        if let labelString {
+            var labelStyle: TextRenderStyle = .nameLabel
+            labelStyle.setTextLocation(customStyle?.label?.location ?? .right)
+            label = TextElement(source: .string(labelString), style: labelStyle)
         }
         let element = PointElement(shape: centerShape, label: label)
         return PointRenderElement(content: element, position: position, transform: transform)
     }
-
 }
 
 extension VertexDebugger {

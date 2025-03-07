@@ -27,7 +27,7 @@ public final class Dot: VertexDebugger {
     private var customVertexStyle: VertexStyle?
     
     public lazy var vertex: Vertex = {
-        createVertex(index: 0, position: position, vertexStyle: customVertexStyle)
+        createVertex(index: 0, position: position)
     }()
     
     public init(

@@ -9,8 +9,8 @@ import CoreGraphics
 
 public class SegmentDebugger: VertexDebugger {
     public let edgeShape: EdgeShape
-    public var vertexStyleDict: [Int: VertexStyle]
-    
+    public var edgeStyleDict: [Int: EdgeStyle] = [:]
+
     public init(
         name: String? = nil,
         transform: Matrix2D,
@@ -18,15 +18,17 @@ public class SegmentDebugger: VertexDebugger {
         vertexShape: VertexDebugger.VertexShape = .shape(Circle(radius: 2)),
         edgeShape: EdgeShape = .arrow(Arrow()),
         displayOptions: DisplayOptions = .all,
-        vertexStyleDict: [Int: VertexStyle] = [:]
+        vertexStyleDict: [Int: VertexStyle] = [:],
+        edgeStyleDict: [Int: EdgeStyle] = [:]
     ) {
         self.edgeShape = edgeShape
-        self.vertexStyleDict = vertexStyleDict
+        self.edgeStyleDict = edgeStyleDict
         super.init(
             name: name, 
             transform: transform,
             color: color,
             vertexShape: vertexShape,
+            vertexStyleDict: vertexStyleDict,
             displayOptions: displayOptions
         )
     }
@@ -39,7 +41,7 @@ public class SegmentDebugger: VertexDebugger {
         }
     }
 
-    func edgeStyle(style: Style?) -> ShapeRenderStyle {
+    func getEdgeRenderStyle(style: Style?) -> ShapeRenderStyle {
         let color = style?.color ?? color
         guard let mode = style?.mode else {
             return ShapeRenderStyle(
@@ -62,9 +64,53 @@ public class SegmentDebugger: VertexDebugger {
         }
     }
     
+    func createEdge(
+        start: CGPoint,
+        end: CGPoint,
+        edgeIndex: Int,
+        startIndex: Int,
+        endIndex: Int
+    ) -> SegmentRenderElement {
+        let customStyle = edgeStyleDict[edgeIndex]
+        let edgeShape = customStyle?.shape ?? self.edgeShape
+        let source: SegmentRenderer? = switch edgeShape {
+        case .line: nil
+        case .arrow(let arrow): arrow
+        }
+        
+        var labelString: String?
+        if let edgeLabel = customStyle?.label {
+            switch edgeLabel {
+            case .string(let string, _):
+                labelString = string
+            case .coordinate:
+                labelString = "\((start + end) / 2)"
+            case .index:
+                labelString = "\(edgeIndex)"
+            }
+        }
+        var label: TextElement?
+        if let labelString {
+            var style: TextRenderStyle = .nameLabel
+            style.setTextLocation(customStyle?.label?.location ?? .center)
+            label = TextElement(source: .string(labelString), style: style)
+        }
+        
+        return SegmentRenderElement(
+            start: start,
+            end: end,
+            transform: transform,
+            segmentShape: source,
+            segmentStyle: getEdgeRenderStyle(style: customStyle?.style),
+            topElement: label,
+            startOffset: getRadius(index: startIndex),
+            endOffset: getRadius(index: endIndex)
+        )
+    }
+    
     func getVertices(from points: [CGPoint]) -> [Vertex] {
         points.enumerated().map { (i, point) in
-            createVertex(index: i, position: point, vertexStyle: vertexStyleDict[i])
+            createVertex(index: i, position: point)
         }
     }
 }
@@ -81,5 +127,11 @@ extension SegmentDebugger {
         let shape: EdgeShape?
         let style: Style?
         let label: Description?
+        
+        public init(shape: EdgeShape?, style: Style?, label: Description?) {
+            self.shape = shape
+            self.style = style
+            self.label = label
+        }
     }
 }

@@ -12,7 +12,8 @@ import AppKit
 
 public class GeometryDebugger: SegmentDebugger {
 
-    public var edgeStyleDict: [Int: EdgeStyle] = [:]
+    public let faceStyle: FaceStyle
+    public var faceStyleDict: [Int: FaceStyle] = [:]
 
     public init(
         name: String? = nil,
@@ -22,9 +23,11 @@ public class GeometryDebugger: SegmentDebugger {
         color: AppColor = .yellow,
         vertexStyleDict: [Int: VertexStyle] = [:],
         edgeStyleDict: [Int: EdgeStyle] = [:],
+        faceStyleDict: [Int: FaceStyle] = [:],
         displayOptions: DisplayOptions = .all
     ) {
-        self.edgeStyleDict = edgeStyleDict
+        self.faceStyle = FaceStyle(style: .init(color: color.withAlphaComponent(0.2)), label: nil)
+        self.faceStyleDict = faceStyleDict
         super.init(
             name: name, 
             transform: transform,
@@ -32,9 +35,78 @@ public class GeometryDebugger: SegmentDebugger {
             vertexShape: vertexShape,
             edgeShape: edgeShape,
             displayOptions: displayOptions,
-            vertexStyleDict: vertexStyleDict
+            vertexStyleDict: vertexStyleDict,
+            edgeStyleDict: edgeStyleDict
         )
     }
     
+    func getFaceRenderStyle(style: Style?) -> ShapeRenderStyle {
+        let color = style?.color ?? color.withAlphaComponent(0.2)
+        guard let mode = style?.mode else {
+            return ShapeRenderStyle(
+                stroke: nil,
+                fill: .init(color: color)
+            )
+        }
+        switch mode {
+        case .stroke(dashed: let dashed):
+            let dash: [CGFloat] = dashed ? [5, 5] : []
+            return ShapeRenderStyle(
+                stroke: .init(color: color, style: .init(lineWidth: 1, dash: dash)),
+                fill: nil
+            )
+        case .fill:
+            return ShapeRenderStyle(
+                stroke: nil,
+                fill: .init(color: color, style: .init())
+            )
+        }
+    }
+    
+    func createFace(
+        vertices: [CGPoint],
+        faceIndex: Int
+    ) -> FaceRenderElement {
+        let customStyle = faceStyleDict[faceIndex]
+        
+        var labelString: String?
+        if let faceLabel = customStyle?.label {
+            switch faceLabel {
+            case .string(let string, _):
+                labelString = string
+            case .coordinate:
+                labelString = "\(vertices.gravityCenter)"
+            case .index:
+                labelString = "\(faceIndex)"
+            }
+        }
+        var label: TextElement?
+        if let labelString {
+            var style: TextRenderStyle = .nameLabel
+            style.setTextLocation(customStyle?.label?.location ?? .center)
+            label = TextElement(source: .string(labelString), style: style)
+        }
+        return FaceRenderElement(
+            points: vertices,
+            transform: transform,
+            style: getFaceRenderStyle(style: customStyle?.style),
+            label: label
+        )
+    }
 }
 
+
+extension GeometryDebugger {
+    public typealias MeshEdge = SegmentRenderElement
+    public typealias MeshFace = FaceRenderElement
+    
+    public struct FaceStyle {
+        let style: Style?
+        let label: Description?
+        
+        public init(style: Style?, label: Description?) {
+            self.style = style
+            self.label = label
+        }
+    }
+}

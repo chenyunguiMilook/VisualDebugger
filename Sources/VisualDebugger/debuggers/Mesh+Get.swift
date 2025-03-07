@@ -8,82 +8,26 @@
 extension Mesh {
     
     func getVertices() -> [Vertex] {
-        vertices.enumerated().map { (i, point) in
-            if let style = vertexStyleDict[i] {
-                var nameString: String?
-                if let name = style.label {
-                    switch name {
-                    case .string(let string, _):
-                        nameString = string
-                    case .coordinate:
-                        nameString = "(\(point.x), \(point.y))"
-                    case .index:
-                        nameString = "\(i)"
-                    }
-                }
-                return createVertex(
-                    index: i,
-                    position: point,
-                    shape: style.shape,
-                    style: style.style,
-                    name: nameString,
-                    nameLocation: style.label?.location,
-                    transform: transform
-                )
-            } else {
-                return createVertex(
-                    index: i,
-                    position: point,
-                    shape: nil,
-                    style: nil,
-                    name: nil,
-                    nameLocation: nil,
-                    transform: transform
-                )
-            }
-        }
+        getVertices(from: self.vertices)
     }
 
     func getMeshEdges() -> [MeshEdge] {
         return edges.enumerated().map { (i, edge) in
-            // 获取样式，优先使用自定义样式，否则使用默认样式
-            let customStyle = edgeStyleDict[i]
-            let edgeShape = customStyle?.shape ?? self.edgeShape
-            
-            // 根据边形状创建对应的SegmentShapeSource
-            let source: SegmentRenderer? = switch edgeShape {
-            case .line: nil
-            case .arrow(let arrow): arrow
-            }
-            
-            let startIndex = edge.org
-            let endIndex = edge.dst
-            
-            return MeshEdge(
-                start: vertices[startIndex],
-                end: vertices[endIndex],
-                transform: transform,
-                segmentShape: source,
-                segmentStyle: edgeStyle(style: customStyle?.style),
-                startOffset: getRadius(index: startIndex),
-                endOffset: getRadius(index: endIndex)
+            createEdge(
+                start: vertices[edge.org],
+                end: vertices[edge.dst],
+                edgeIndex: i,
+                startIndex: edge.org,
+                endIndex: edge.dst
             )
         }
     }
     
     func getMeshFaces() -> [MeshFace] {
         faces.enumerated().map { (i, face) in
-            let style = faceStyleDict[i]
-            let faceColor = (style?.color ?? self.color).withAlphaComponent(0.3)
-            let path = AppBezierPath()
-            path.move(to: vertices[face.v0])
-            path.addLine(to: vertices[face.v1])
-            path.addLine(to: vertices[face.v2])
-            path.close()
-            
-            return ShapeRenderElement(
-                path: path,
-                style: ShapeRenderStyle(fill: .init(color: faceColor))
+            createFace(
+                vertices: [vertices[face.v0], vertices[face.v1], vertices[face.v2]],
+                faceIndex: i
             )
         }
     }
