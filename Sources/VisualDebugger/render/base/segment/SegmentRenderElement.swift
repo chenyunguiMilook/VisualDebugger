@@ -15,9 +15,10 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
     public var startElement: PointElement?
     public var endElement: PointElement?
     public var centerElement: TextElement?
-    public var startOffset: Double = 0
-    public var endOffset: Double = 0
-    public var segmentShape: SegmentRenderer? // rename to segmentShape
+    public var offset: Double = 0 // rendering offset, 90 degree direction is positive
+    public var startOffset: Double = 0 // shrink or expand start
+    public var endOffset: Double = 0 // shrink or expand end
+    public var segmentShape: SegmentRenderer?
     public var segmentStyle: ShapeRenderStyle
     
     var angle: Double {
@@ -36,6 +37,7 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
         startElement: PointElement? = nil,
         endElement: PointElement? = nil,
         centerElement: TextElement? = nil,
+        offset: Double = 0,
         startOffset: Double = 0,
         endOffset: Double = 0
     ) {
@@ -47,6 +49,7 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
         self.startElement = startElement
         self.endElement = endElement
         self.centerElement = centerElement
+        self.offset = offset
         self.startOffset = startOffset
         self.endOffset = endOffset
     }
@@ -60,6 +63,7 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
         let s = start * transform
         let e = end * transform
         var seg = Segment(start: s, end: e)
+        seg = seg.offseting(distance: offset)
         seg = seg.shrinkingStart(length: startOffset)
         seg = seg.shrinkingEnd(length: endOffset)
         
@@ -90,10 +94,10 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
             )
         }
         if let centerElement {
-            let rotateM = Matrix2D(rotationAngle: angle)
-            let moveM = Matrix2D(translation: center)
+            let rotateM = Matrix2D(rotationAngle: seg.angle)
+            let moveM = Matrix2D(translation: seg.center)
             centerElement.render(
-                with: rotateM * moveM * transform,
+                with: rotateM * moveM,
                 in: context,
                 scale: scale,
                 contextHeight: contextHeight
@@ -109,6 +113,7 @@ public func *(lhs: SegmentRenderElement, rhs: Matrix2D) -> SegmentRenderElement 
         transform: lhs.transform * rhs,
         segmentShape: lhs.segmentShape,
         segmentStyle: lhs.segmentStyle,
+        offset: lhs.offset,
         startOffset: lhs.startOffset,
         endOffset: lhs.endOffset
     )

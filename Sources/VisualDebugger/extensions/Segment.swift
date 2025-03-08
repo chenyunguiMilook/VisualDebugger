@@ -7,6 +7,7 @@
 
 import CoreGraphics
 
+// TODO: using center, angle, length to avoid zero length offset issue
 public struct Segment {
     public var start: CGPoint
     public var end: CGPoint

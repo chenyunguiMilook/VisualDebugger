@@ -106,12 +106,14 @@ public final class Mesh: GeometryDebugger {
         at index: Int,
         shape: EdgeShape? = nil,
         style: PathStyle? = nil,
-        name: LabelStyle? = nil
+        name: LabelStyle? = nil,
+        offset: Double? = nil
     ) -> Mesh {
         let edgeStyle = EdgeStyle(
             shape: shape,
             style: style,
-            label: name
+            label: name,
+            offset: offset
         )
         edgeStyleDict[index] = edgeStyle
         return self

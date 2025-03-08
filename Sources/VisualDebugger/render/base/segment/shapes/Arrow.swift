@@ -34,7 +34,6 @@ extension Arrow {
     
     public enum Style: Sendable {
         case normal
-        case offseted(offset: Double)
         case double(spacing: Double)
     }
 }
@@ -66,10 +65,6 @@ extension Arrow: SegmentRenderer {
         switch self.style {
         case .normal:
             return getArrowPath(start: start, end: end)
-        case .offseted(let offset):
-            var seg = Segment(start: start, end: end)
-            seg = seg.offseting(distance: offset)
-            return getArrowPath(start: seg.start, end: seg.end)
         case .double(let spacing):
             let seg = Segment(start: start, end: end)
             let top = seg.offseting(distance: spacing/2)

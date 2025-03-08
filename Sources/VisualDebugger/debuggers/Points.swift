@@ -86,13 +86,15 @@ public final class Points: GeometryDebugger {
         at index: Int,
         shape: EdgeShape? = nil,
         style: PathStyle? = nil,
-        label: LabelStyle? = nil
+        label: LabelStyle? = nil,
+        offset: Double? = nil
     ) -> Points {
         guard index < points.count - 1 || (index == points.count - 1 && isClosed) else { return self }
         let edgeStyle = EdgeStyle(
             shape: shape,
             style: style,
-            label: label
+            label: label,
+            offset: offset
         )
         edgeStyleDict[index] = edgeStyle
         return self

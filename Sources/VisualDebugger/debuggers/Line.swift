@@ -99,12 +99,14 @@ extension Line {
     public func setEdgeStyle(
         shape: EdgeShape? = nil,
         style: PathStyle? = nil,
-        label: LabelStyle? = nil
+        label: LabelStyle? = nil,
+        offset: Double? = nil
     ) -> Line {
         self.edgeStyleDict[0] = EdgeStyle(
             shape: shape,
             style: style,
-            label: label
+            label: label,
+            offset: offset
         )
         return self
     }

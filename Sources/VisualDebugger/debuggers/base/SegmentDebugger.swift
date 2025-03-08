@@ -104,6 +104,7 @@ public class SegmentDebugger: VertexDebugger {
             segmentShape: source,
             segmentStyle: getEdgeRenderStyle(style: customStyle?.style),
             centerElement: label,
+            offset: customStyle?.offset ?? 0,
             startOffset: getRadius(index: startIndex),
             endOffset: getRadius(index: endIndex)
         )
@@ -128,11 +129,13 @@ extension SegmentDebugger {
         let shape: EdgeShape?
         let style: PathStyle?
         let label: LabelStyle?
+        let offset: Double?
         
-        public init(shape: EdgeShape?, style: PathStyle?, label: LabelStyle?) {
+        public init(shape: EdgeShape?, style: PathStyle?, label: LabelStyle?, offset: Double?) {
             self.shape = shape
             self.style = style
             self.label = label
+            self.offset = offset
         }
     }
 }
