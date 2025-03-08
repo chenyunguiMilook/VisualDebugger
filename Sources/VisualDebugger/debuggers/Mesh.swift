@@ -64,7 +64,7 @@ public final class Mesh: GeometryDebugger {
     public func setVertexStyle(
         at index: Int,
         shape: VertexShape? = nil,
-        style: Style? = nil,
+        style: PathStyle? = nil,
         label: Description? = nil
     ) -> Mesh {
         guard index < vertices.count else { return self }
@@ -87,7 +87,7 @@ public final class Mesh: GeometryDebugger {
     public func setEdgeStyle(
         for edge: Edge,
         shape: EdgeShape? = nil,
-        style: Style? = nil,
+        style: PathStyle? = nil,
         label: Description? = nil
     ) -> Mesh {
         if let edgeIndex = edges.firstIndex(of: edge) {
@@ -105,7 +105,7 @@ public final class Mesh: GeometryDebugger {
     public func setEdgeStyle(
         at index: Int,
         shape: EdgeShape? = nil,
-        style: Style? = nil,
+        style: PathStyle? = nil,
         name: Description? = nil
     ) -> Mesh {
         let edgeStyle = EdgeStyle(
@@ -121,7 +121,7 @@ public final class Mesh: GeometryDebugger {
     // 自定义方法：设置面样式
     public func setFaceStyle(
         for face: Face,
-        style: Style? = nil,
+        style: PathStyle? = nil,
         label: Description? = nil
     ) -> Mesh {
         guard let faceIndex = faces.firstIndex(of: face) else { return self }
@@ -134,7 +134,7 @@ public final class Mesh: GeometryDebugger {
     
     public func setFaceStyle(
         at index: Int,
-        style: Style? = nil,
+        style: PathStyle? = nil,
         label: Description? = nil
     ) -> Mesh {
         guard index < faces.count else { return self }

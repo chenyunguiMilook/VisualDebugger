@@ -43,7 +43,7 @@ public class SegmentDebugger: VertexDebugger {
         }
     }
 
-    func getEdgeRenderStyle(style: Style?) -> ShapeRenderStyle {
+    func getEdgeRenderStyle(style: PathStyle?) -> ShapeRenderStyle {
         let color = style?.color ?? color
         guard let mode = style?.mode else {
             return ShapeRenderStyle(
@@ -121,10 +121,10 @@ extension SegmentDebugger {
     }
     public struct EdgeStyle {
         let shape: EdgeShape?
-        let style: Style?
+        let style: PathStyle?
         let label: Description?
         
-        public init(shape: EdgeShape?, style: Style?, label: Description?) {
+        public init(shape: EdgeShape?, style: PathStyle?, label: Description?) {
             self.shape = shape
             self.style = style
             self.label = label

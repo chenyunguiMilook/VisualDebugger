@@ -44,7 +44,7 @@ public class VertexDebugger {
         self.useColorfulLabel = useColorfulLable
     }
     
-    func getVertexRenderStyle(style: Style?) -> ShapeRenderStyle {
+    func getVertexRenderStyle(style: PathStyle?) -> ShapeRenderStyle {
         let color = style?.color ?? color
         guard let mode = style?.mode else {
             return ShapeRenderStyle(fill: .init(color: color, style: .init()))
@@ -113,23 +113,23 @@ extension VertexDebugger {
     
     public typealias Vertex = PointRenderElement
 
-    public enum VertexShape: Sendable {
-        case shape(ShapeRenderer)
-        case index
-    }
-    
     public struct VertexStyle: Sendable {
         let shape: VertexShape?
-        let style: Style?
+        let style: PathStyle?
         let label: Description?
-        public init(shape: VertexShape?, style: Style?, label: Description?) {
+        public init(shape: VertexShape?, style: PathStyle?, label: Description?) {
             self.shape = shape
             self.style = style
             self.label = label
         }
     }
+
+    public enum VertexShape: Sendable {
+        case shape(ShapeRenderer)
+        case index
+    }
     
-    public struct Style: Sendable {
+    public struct PathStyle: Sendable {
         public enum Mode: Sendable {
             case stroke(dashed: Bool)
             case fill

@@ -63,7 +63,7 @@ public final class Points: GeometryDebugger {
     public func setVertexStyle(
         at index: Int,
         shape: VertexShape? = nil,
-        style: Style? = nil,
+        style: PathStyle? = nil,
         label: Description? = nil
     ) -> Points {
         guard index < points.count else { return self }
@@ -85,7 +85,7 @@ public final class Points: GeometryDebugger {
     public func setEdgeStyle(
         at index: Int,
         shape: EdgeShape? = nil,
-        style: Style? = nil,
+        style: PathStyle? = nil,
         label: Description? = nil
     ) -> Points {
         guard index < points.count - 1 || (index == points.count - 1 && isClosed) else { return self }
@@ -99,7 +99,7 @@ public final class Points: GeometryDebugger {
     }
     
     public func setFaceStyle(
-        style: Style? = nil,
+        style: PathStyle? = nil,
         label: Description? = nil
     ) -> Points {
         let style = FaceStyle(

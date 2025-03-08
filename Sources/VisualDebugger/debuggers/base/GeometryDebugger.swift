@@ -42,7 +42,7 @@ public class GeometryDebugger: SegmentDebugger {
         )
     }
     
-    func getFaceRenderStyle(style: Style?) -> ShapeRenderStyle {
+    func getFaceRenderStyle(style: PathStyle?) -> ShapeRenderStyle {
         let color = style?.color ?? color.withAlphaComponent(0.2)
         guard let mode = style?.mode else {
             return ShapeRenderStyle(
@@ -98,10 +98,10 @@ extension GeometryDebugger {
     public typealias MeshFace = FaceRenderElement
     
     public struct FaceStyle {
-        let style: Style?
+        let style: PathStyle?
         let label: Description?
         
-        public init(style: Style?, label: Description?) {
+        public init(style: PathStyle?, label: Description?) {
             self.style = style
             self.label = label
         }
