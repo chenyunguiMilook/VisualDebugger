@@ -19,6 +19,12 @@ public final class TextElement: StaticRendable {
         self.rotatable = rotatable
     }
     
+    public init(text: String, style: TextRenderStyle, rotatable: Bool = false) {
+        self.source = .string(text)
+        self.style = style
+        self.rotatable = rotatable
+    }
+    
     public var contentBounds: CGRect {
         let size = self.style.getTextSize(text: source.string)
         return CGRect(anchor: style.anchor, center: .zero, size: size)
