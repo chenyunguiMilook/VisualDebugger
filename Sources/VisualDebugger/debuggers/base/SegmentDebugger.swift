@@ -81,9 +81,9 @@ public class SegmentDebugger: VertexDebugger {
         }
         
         var labelString: String?
-        if let edgeLabel = customStyle?.label {
+        if let edgeLabel = customStyle?.label?.text {
             switch edgeLabel {
-            case .string(let string, _):
+            case .string(let string):
                 labelString = string
             case .coordinate:
                 labelString = "\((start + end) / 2)"
@@ -91,7 +91,12 @@ public class SegmentDebugger: VertexDebugger {
                 labelString = "\(edgeIndex)"
             }
         }
-        let label = TextElement(text: labelString, location: customStyle?.label?.location ?? .center, textColor: textColor)
+        let label = TextElement(
+            text: labelString,
+            location: customStyle?.label?.location ?? .center,
+            textColor: textColor,
+            rotatable: customStyle?.label?.rotatable ?? false
+        )
         return SegmentRenderElement(
             start: start,
             end: end,
@@ -122,9 +127,9 @@ extension SegmentDebugger {
     public struct EdgeStyle {
         let shape: EdgeShape?
         let style: PathStyle?
-        let label: Description?
+        let label: LabelStyle?
         
-        public init(shape: EdgeShape?, style: PathStyle?, label: Description?) {
+        public init(shape: EdgeShape?, style: PathStyle?, label: LabelStyle?) {
             self.shape = shape
             self.style = style
             self.label = label

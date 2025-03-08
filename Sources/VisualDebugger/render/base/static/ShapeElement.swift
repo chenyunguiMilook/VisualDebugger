@@ -30,10 +30,9 @@ public final class ShapeElement: StaticRendable {
         scale: CGFloat,
         contextHeight: Int?
     ) {
-        let t: Matrix2D = if rotatable {
-            transform
-        } else {
-            Matrix2D(translationX: transform.tx, y: transform.ty)
+        var t = Matrix2D(translationX: transform.tx, y: transform.ty)
+        if rotatable {
+            t = Matrix2D(rotationAngle: transform.decompose().rotation) * t
         }
         context.render(
             path: renderer.getBezierPath().cgPath,

@@ -99,7 +99,7 @@ extension Line {
     public func setEdgeStyle(
         shape: EdgeShape? = nil,
         style: PathStyle? = nil,
-        label: Description? = nil
+        label: LabelStyle? = nil
     ) -> Line {
         self.edgeStyleDict[0] = EdgeStyle(
             shape: shape,
@@ -114,7 +114,7 @@ extension Line {
     public func setStartStyle(
         shape: VertexShape? = nil,
         style: PathStyle? = nil,
-        label: Description? = nil
+        label: LabelStyle? = nil
     ) -> Line {
         let style = VertexStyle(shape: shape, style: style, label: label)
         self.vertexStyleDict[0] = style
@@ -126,7 +126,7 @@ extension Line {
     public func setEndStyle(
         shape: VertexShape? = nil,
         style: PathStyle? = nil,
-        label: Description? = nil
+        label: LabelStyle? = nil
     ) -> Line {
         let style = VertexStyle(shape: shape, style: style, label: label)
         self.vertexStyleDict[1] = style

@@ -64,7 +64,7 @@ public final class Points: GeometryDebugger {
         at index: Int,
         shape: VertexShape? = nil,
         style: PathStyle? = nil,
-        label: Description? = nil
+        label: LabelStyle? = nil
     ) -> Points {
         guard index < points.count else { return self }
         let style = VertexStyle(shape: shape, style: style, label: label)
@@ -86,7 +86,7 @@ public final class Points: GeometryDebugger {
         at index: Int,
         shape: EdgeShape? = nil,
         style: PathStyle? = nil,
-        label: Description? = nil
+        label: LabelStyle? = nil
     ) -> Points {
         guard index < points.count - 1 || (index == points.count - 1 && isClosed) else { return self }
         let edgeStyle = EdgeStyle(
@@ -100,7 +100,7 @@ public final class Points: GeometryDebugger {
     
     public func setFaceStyle(
         style: PathStyle? = nil,
-        label: Description? = nil
+        label: LabelStyle? = nil
     ) -> Points {
         let style = FaceStyle(
             style: style,
@@ -170,7 +170,7 @@ extension Points: DebugRenderable {
         ], vertexShape: .index)
         .setVertexStyle(at: 0, shape: .shape(Circle(radius: 2)), label: "Corner")
         .setVertexStyle(at: 1, style: .init(color: .red), label: .coordinate())
-        .setEdgeStyle(at: 2, shape: .arrow(.doubleArrow), style: .init(color: .red, mode: .fill))
+        .setEdgeStyle(at: 2, shape: .arrow(.doubleArrow), style: .init(color: .red, mode: .fill), label: .string("edge", rotatable: true))
         .setFaceStyle(label: .string("face", at: .center))
         .show([.vertex, .edge, .face])
     }

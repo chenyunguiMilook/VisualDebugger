@@ -72,9 +72,9 @@ public class GeometryDebugger: SegmentDebugger {
         let customStyle = faceStyleDict[faceIndex]
         
         var labelString: String?
-        if let faceLabel = customStyle?.label {
+        if let faceLabel = customStyle?.label?.text {
             switch faceLabel {
-            case .string(let string, _):
+            case .string(let string):
                 labelString = string
             case .coordinate:
                 labelString = "\(vertices.gravityCenter)"
@@ -99,9 +99,9 @@ extension GeometryDebugger {
     
     public struct FaceStyle {
         let style: PathStyle?
-        let label: Description?
+        let label: LabelStyle?
         
-        public init(style: PathStyle?, label: Description?) {
+        public init(style: PathStyle?, label: LabelStyle?) {
             self.style = style
             self.label = label
         }

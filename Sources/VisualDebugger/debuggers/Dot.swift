@@ -50,7 +50,7 @@ public final class Dot: VertexDebugger {
     public func setStyle(
         shape: VertexShape? = nil,
         style: PathStyle? = nil,
-        label: Description? = nil
+        label: LabelStyle? = nil
     ) -> Dot {
         self.vertexStyleDict[0] = VertexStyle(shape: shape, style: style, label: label)
         return self

@@ -75,9 +75,9 @@ public class VertexDebugger {
     ) -> Vertex {
         let customStyle = vertexStyleDict[index]
         var labelString: String?
-        if let vertexLabel = customStyle?.label {
+        if let vertexLabel = customStyle?.label?.text {
             switch vertexLabel {
-            case .string(let string, _):
+            case .string(let string):
                 labelString = string
             case .coordinate:
                 labelString = "(\(position.x), \(position.y))"
@@ -100,12 +100,12 @@ public class VertexDebugger {
 }
 
 extension TextElement {
-    public convenience init?(text: String?, location: TextLocation, textColor: AppColor?) {
+    public convenience init?(text: String?, location: TextLocation, textColor: AppColor?, rotatable: Bool = false) {
         guard let text else { return nil }
         var style: TextRenderStyle = .nameLabel
         style.setTextLocation(location)
         if let textColor { style.textColor = textColor }
-        self.init(source: .string(text), style: style)
+        self.init(source: .string(text), style: style, rotatable: rotatable)
     }
 }
 
@@ -116,8 +116,8 @@ extension VertexDebugger {
     public struct VertexStyle: Sendable {
         let shape: VertexShape?
         let style: PathStyle?
-        let label: Description?
-        public init(shape: VertexShape?, style: PathStyle?, label: Description?) {
+        let label: LabelStyle?
+        public init(shape: VertexShape?, style: PathStyle?, label: LabelStyle?) {
             self.shape = shape
             self.style = style
             self.label = label
@@ -139,20 +139,6 @@ extension VertexDebugger {
         public init(color: AppColor?, mode: Mode? = nil) {
             self.color = color
             self.mode = mode
-        }
-    }
-
-    public enum Description: Sendable {
-        case string(String, at: TextLocation = .default)
-        case coordinate(at: TextLocation = .default)
-        case index(at: TextLocation = .default)
-        
-        public var location: TextLocation {
-            switch self {
-            case .string(_, let location): location
-            case .coordinate(let location): location
-            case .index(let location): location
-            }
         }
     }
     
@@ -187,11 +173,11 @@ extension VertexDebugger {
     }
 }
 
-extension VertexDebugger.Description: ExpressibleByStringLiteral {
+extension VertexDebugger.LabelStyle.Text: ExpressibleByStringLiteral {
     public typealias StringLiteralType = String
     
     public init(stringLiteral value: String) {
-        self = .string(value, at: .right)
+        self = .string(value)
     }
 }
 
@@ -202,3 +188,16 @@ extension VertexDebugger.LabelStyle: ExpressibleByStringLiteral {
         self = .init(text: .string(value))
     }
 }
+
+extension VertexDebugger.LabelStyle {
+    public static func string(_ string: String, at location: TextLocation? = nil, style: TextRenderStyle? = nil, rotatable: Bool? = nil) -> Self {
+        Self.init(text: .string(string), location: location, style: style, rotatable: rotatable)
+    }
+    public static func coordinate(at location: TextLocation? = nil, style: TextRenderStyle? = nil, rotatable: Bool? = nil) -> Self {
+        Self.init(text: .coordinate, location: location, style: style, rotatable: rotatable)
+    }
+    public static func index(at location: TextLocation? = nil, style: TextRenderStyle? = nil, rotatable: Bool? = nil) -> Self {
+        Self.init(text: .index, location: location, style: style, rotatable: rotatable)
+    }
+}
+

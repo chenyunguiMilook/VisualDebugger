@@ -20,6 +20,13 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
     public var segmentShape: SegmentRenderer? // rename to segmentShape
     public var segmentStyle: ShapeRenderStyle
     
+    var angle: Double {
+        (end - start).angle
+    }
+    var center: CGPoint {
+        (start + end) / 2.0
+    }
+    
     public init(
         start: CGPoint,
         end: CGPoint,
@@ -83,8 +90,10 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
             )
         }
         if let centerElement {
+            let rotateM = Matrix2D(rotationAngle: angle)
+            let moveM = Matrix2D(translation: center)
             centerElement.render(
-                with: Matrix2D(translation: (start + end)/2.0) * transform,
+                with: rotateM * moveM * transform,
                 in: context,
                 scale: scale,
                 contextHeight: contextHeight
