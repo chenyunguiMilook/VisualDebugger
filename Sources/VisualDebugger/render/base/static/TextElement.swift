@@ -11,10 +11,12 @@ public final class TextElement: StaticRendable {
     
     public var source: TextSource
     public var style: TextRenderStyle
+    public var rotatable: Bool
     
-    public init(source: TextSource, style: TextRenderStyle) {
+    public init(source: TextSource, style: TextRenderStyle, rotatable: Bool = false) {
         self.source = source
         self.style = style
+        self.rotatable = rotatable
     }
     
     public var contentBounds: CGRect {
@@ -28,7 +30,11 @@ public final class TextElement: StaticRendable {
         scale: CGFloat,
         contextHeight: Int?
     ) {
-        let t = Matrix2D(translationX: transform.tx, y: transform.ty)
+        let t: Matrix2D = if rotatable {
+            transform
+        } else {
+            Matrix2D(translationX: transform.tx, y: transform.ty)
+        }
         context.render(
             text: source.string,
             transform: t,
@@ -39,7 +45,7 @@ public final class TextElement: StaticRendable {
     }
     
     public func clone() -> TextElement {
-        TextElement(source: source, style: style)
+        TextElement(source: source, style: style, rotatable: rotatable)
     }
 }
 

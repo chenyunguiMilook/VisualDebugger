@@ -12,10 +12,12 @@ public final class ShapeElement: StaticRendable {
     
     public var renderer: ShapeRenderer
     public var style: ShapeRenderStyle
+    public var rotatable: Bool
     
-    public init(renderer: ShapeRenderer, style: ShapeRenderStyle) {
+    public init(renderer: ShapeRenderer, style: ShapeRenderStyle, rotatable: Bool = false) {
         self.renderer = renderer
         self.style = style
+        self.rotatable = rotatable
     }
     
     public var contentBounds: CGRect {
@@ -28,7 +30,11 @@ public final class ShapeElement: StaticRendable {
         scale: CGFloat,
         contextHeight: Int?
     ) {
-        let t = Matrix2D(translationX: transform.tx, y: transform.ty)
+        let t: Matrix2D = if rotatable {
+            transform
+        } else {
+            Matrix2D(translationX: transform.tx, y: transform.ty)
+        }
         context.render(
             path: renderer.getBezierPath().cgPath,
             style: style,
@@ -37,7 +43,7 @@ public final class ShapeElement: StaticRendable {
     }
     
     public func clone() -> ShapeElement {
-        ShapeElement(renderer: renderer, style: style)
+        ShapeElement(renderer: renderer, style: style, rotatable: rotatable)
     }
 }
 

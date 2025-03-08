@@ -12,13 +12,11 @@ public struct StaticRenderElement<Content: StaticRendable>: Transformable, Debug
     public let content: Content
     public let position: CGPoint // this is raw position, transform will no affect this
     public let transform: Matrix2D
-    public let rotatable: Bool  // 决定是否受旋转变换影响
     
-    public init(content: Content, position: CGPoint, transform: Matrix2D = .identity, rotatable: Bool = false) {
+    public init(content: Content, position: CGPoint, transform: Matrix2D = .identity) {
         self.content = content
         self.position = position
         self.transform = transform
-        self.rotatable = rotatable
     }
     
     public var debugBounds: CGRect? {
@@ -41,20 +39,18 @@ public struct StaticRenderElement<Content: StaticRendable>: Transformable, Debug
 }
 
 extension StaticRenderElement where Content == ShapeElement {
-    public init(source: ShapeRenderer, style: ShapeRenderStyle, position: CGPoint, transform: Matrix2D = .identity, rotatable: Bool = false) {
+    public init(source: ShapeRenderer, style: ShapeRenderStyle, position: CGPoint, transform: Matrix2D = .identity) {
         self.content = ShapeElement(renderer: source, style: style)
         self.position = position
         self.transform = transform
-        self.rotatable = rotatable
     }
 }
 
 extension StaticRenderElement where Content == TextElement {
-    public init(source: TextSource, style: TextRenderStyle, position: CGPoint, transform: Matrix2D = .identity, rotatable: Bool = false) {
+    public init(source: TextSource, style: TextRenderStyle, position: CGPoint, transform: Matrix2D = .identity) {
         self.content = TextElement(source: source, style: style)
         self.position = position
         self.transform = transform
-        self.rotatable = rotatable
     }
 }
 
@@ -62,8 +58,7 @@ public func *<T>(lhs: StaticRenderElement<T>, rhs: Matrix2D) -> StaticRenderElem
     return StaticRenderElement(
         content: lhs.content,
         position: lhs.position,
-        transform: lhs.transform * rhs,
-        rotatable: lhs.rotatable
+        transform: lhs.transform * rhs
     )
 }
 

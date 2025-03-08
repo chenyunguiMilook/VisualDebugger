@@ -156,6 +156,25 @@ extension VertexDebugger {
         }
     }
     
+    public struct LabelStyle: Sendable {
+        public enum Text: Sendable {
+            case string(String)
+            case coordinate
+            case index
+        }
+        public var text: Text?
+        public var location: TextLocation?
+        public var style: TextRenderStyle?
+        public var rotatable: Bool?
+        
+        public init(text: Text? = nil, location: TextLocation? = nil, style: TextRenderStyle? = nil, rotatable: Bool? = nil) {
+            self.text = text
+            self.location = location
+            self.style = style
+            self.rotatable = rotatable
+        }
+    }
+    
     public struct DisplayOptions: OptionSet, Sendable {
         public var rawValue: Int
         public init(rawValue: Int) {
@@ -173,5 +192,13 @@ extension VertexDebugger.Description: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
         self = .string(value, at: .right)
+    }
+}
+
+extension VertexDebugger.LabelStyle: ExpressibleByStringLiteral {
+    public typealias StringLiteralType = String
+    
+    public init(stringLiteral value: String) {
+        self = .init(text: .string(value))
     }
 }
