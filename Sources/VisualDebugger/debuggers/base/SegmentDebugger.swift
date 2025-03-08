@@ -94,7 +94,7 @@ public class SegmentDebugger: VertexDebugger {
         let label = TextElement(
             text: labelString,
             location: customStyle?.label?.location ?? .center,
-            textColor: textColor,
+            textColor: useColorfulLabel ? customStyle?.style?.color ?? self.color : nil,
             rotatable: customStyle?.label?.rotatable ?? false
         )
         return SegmentRenderElement(

@@ -21,10 +21,6 @@ public class VertexDebugger {
     public var useColorfulLabel: Bool
 
     var vertexStyleDict: [Int: VertexStyle]
-
-    var textColor: AppColor? {
-        useColorfulLabel ? color : nil
-    }
     
     public init(
         name: String? = nil,
@@ -93,6 +89,7 @@ public class VertexDebugger {
         case .index:
             TextElement(source: .index(index), style: getLabelRenderStyle(color: color))
         }
+        let textColor = useColorfulLabel ? color : nil
         let label = TextElement(text: labelString, location: customStyle?.label?.location ?? .right, textColor: textColor)
         let element = PointElement(shape: centerShape, label: label)
         return PointRenderElement(content: element, position: position, transform: transform)

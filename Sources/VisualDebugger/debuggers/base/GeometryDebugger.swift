@@ -82,6 +82,7 @@ public class GeometryDebugger: SegmentDebugger {
                 labelString = "\(faceIndex)"
             }
         }
+        let textColor: AppColor? = if useColorfulLabel { customStyle?.style?.color ?? self.color } else { nil }
         let label = TextElement(text: labelString, location: customStyle?.label?.location ?? .center, textColor: textColor)
         return FaceRenderElement(
             points: vertices,
