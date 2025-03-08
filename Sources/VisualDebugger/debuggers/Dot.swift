@@ -35,6 +35,7 @@ public final class Dot: VertexDebugger {
         transform: Matrix2D = .identity,
         color: AppColor = .yellow,
         vertexShape: VertexShape = .shape(Circle(radius: 2)),
+        labelStyle: TextRenderStyle = .nameLabel,
         useColorfulLabel: Bool = false
     ) {
         self.position = position
@@ -43,6 +44,7 @@ public final class Dot: VertexDebugger {
             transform: transform,
             color: color,
             vertexShape: vertexShape,
+            labelStyle: labelStyle, 
             useColorfulLable: useColorfulLabel
         )
     }

@@ -42,6 +42,7 @@ public final class Line: SegmentDebugger {
         vertexShape: VertexShape = .shape(Circle(radius: 2)),
         edgeShape: EdgeShape = .arrow(Arrow()),
         edgeStyle: EdgeStyle? = nil,
+        labelStyle: TextRenderStyle = .nameLabel,
         useColorfulLabel: Bool = false
     ) {
         self.start = start
@@ -52,6 +53,7 @@ public final class Line: SegmentDebugger {
             color: color,
             vertexShape: vertexShape,
             edgeShape: edgeShape,
+            labelStyle: labelStyle, 
             useColorfulLable: useColorfulLabel
         )
     }

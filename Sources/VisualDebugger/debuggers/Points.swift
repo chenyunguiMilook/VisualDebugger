@@ -42,6 +42,7 @@ public final class Points: GeometryDebugger {
         vertexStyleDict: [Int: VertexStyle] = [:],
         edgeStyleDict: [Int: EdgeStyle] = [:],
         displayOptions: DisplayOptions = .all,
+        labelStyle: TextRenderStyle = .nameLabel,
         useColorfulLabel: Bool = false
     ) {
         self.points = points
@@ -56,6 +57,7 @@ public final class Points: GeometryDebugger {
             vertexStyleDict: vertexStyleDict,
             edgeStyleDict: edgeStyleDict,
             displayOptions: displayOptions,
+            labelStyle: labelStyle,
             useColorfulLable: useColorfulLabel
         )
     }

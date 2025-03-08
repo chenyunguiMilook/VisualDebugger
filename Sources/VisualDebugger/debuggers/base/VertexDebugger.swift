@@ -18,6 +18,7 @@ public class VertexDebugger {
     public let color: AppColor
     public let vertexShape: VertexShape
     public var displayOptions: DisplayOptions
+    public var labelStyle: TextRenderStyle
     public var useColorfulLabel: Bool
 
     var vertexStyleDict: [Int: VertexStyle]
@@ -29,6 +30,7 @@ public class VertexDebugger {
         vertexShape: VertexShape = .shape(Circle(radius: 2)),
         vertexStyleDict: [Int: VertexStyle] = [:],
         displayOptions: DisplayOptions = .all,
+        labelStyle: TextRenderStyle = .nameLabel,
         useColorfulLable: Bool = false
     ) {
         self.name = name
@@ -37,6 +39,7 @@ public class VertexDebugger {
         self.vertexShape = vertexShape
         self.vertexStyleDict = vertexStyleDict
         self.displayOptions = displayOptions
+        self.labelStyle = labelStyle
         self.useColorfulLabel = useColorfulLable
     }
     
@@ -90,16 +93,30 @@ public class VertexDebugger {
             TextElement(source: .index(index), style: getLabelRenderStyle(color: color))
         }
         let textColor = useColorfulLabel ? color : nil
-        let label = TextElement(text: labelString, location: customStyle?.label?.location ?? .right, textColor: textColor)
+        
+        var label: TextElement?
+        if let labelString {
+            if let labelStyle = customStyle?.label?.style {
+                label = TextElement(text: labelString, style: labelStyle)
+            } else {
+                label = TextElement(text: labelString, defaultStyle: labelStyle, location: customStyle?.label?.location ?? .right, textColor: textColor)
+            }
+        }
         let element = PointElement(shape: centerShape, label: label)
         return PointRenderElement(content: element, position: position, transform: transform)
     }
 }
 
 extension TextElement {
-    public convenience init?(text: String?, location: TextLocation, textColor: AppColor?, rotatable: Bool = false) {
+    public convenience init?(
+        text: String?,
+        defaultStyle: TextRenderStyle,
+        location: TextLocation,
+        textColor: AppColor?,
+        rotatable: Bool = false
+    ) {
         guard let text else { return nil }
-        var style: TextRenderStyle = .nameLabel
+        var style: TextRenderStyle = defaultStyle
         style.setTextLocation(location)
         if let textColor { style.textColor = textColor }
         self.init(source: .string(text), style: style, rotatable: rotatable)

@@ -40,6 +40,7 @@ public final class Mesh: GeometryDebugger {
         edgeStyleDict: [Int: EdgeStyle] = [:],
         faceStyleDict: [Int: FaceStyle] = [:],
         displayOptions: DisplayOptions = .all,
+        labelStyle: TextRenderStyle = .nameLabel,
         useColorfulLabel: Bool = false
     ) {
         self.vertices = vertices
@@ -56,6 +57,7 @@ public final class Mesh: GeometryDebugger {
             edgeStyleDict: edgeStyleDict,
             faceStyleDict: faceStyleDict,
             displayOptions: displayOptions,
+            labelStyle: labelStyle, 
             useColorfulLable: useColorfulLabel
         )
     }

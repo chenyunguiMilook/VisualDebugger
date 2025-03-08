@@ -18,6 +18,7 @@ public class SegmentDebugger: VertexDebugger {
         vertexShape: VertexDebugger.VertexShape = .shape(Circle(radius: 2)),
         edgeShape: EdgeShape = .arrow(Arrow()),
         displayOptions: DisplayOptions = .all,
+        labelStyle: TextRenderStyle = .nameLabel,
         useColorfulLable: Bool = false,
         vertexStyleDict: [Int: VertexStyle] = [:],
         edgeStyleDict: [Int: EdgeStyle] = [:]
@@ -31,6 +32,7 @@ public class SegmentDebugger: VertexDebugger {
             vertexShape: vertexShape,
             vertexStyleDict: vertexStyleDict,
             displayOptions: displayOptions,
+            labelStyle: labelStyle, 
             useColorfulLable: useColorfulLable
         )
     }
@@ -91,12 +93,18 @@ public class SegmentDebugger: VertexDebugger {
                 labelString = "\(edgeIndex)"
             }
         }
-        let label = TextElement(
-            text: labelString,
-            location: customStyle?.label?.location ?? .center,
-            textColor: useColorfulLabel ? customStyle?.style?.color ?? self.color : nil,
-            rotatable: customStyle?.label?.rotatable ?? false
-        )
+        var label: TextElement?
+        if let labelString, let labelStyle = customStyle?.label?.style {
+            label = TextElement(text: labelString, style: labelStyle)
+        } else {
+            label = TextElement(
+                text: labelString,
+                defaultStyle: labelStyle,
+                location: customStyle?.label?.location ?? .center,
+                textColor: useColorfulLabel ? customStyle?.style?.color ?? self.color : nil,
+                rotatable: customStyle?.label?.rotatable ?? false
+            )
+        }
         return SegmentRenderElement(
             start: start,
             end: end,

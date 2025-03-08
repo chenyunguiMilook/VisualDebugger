@@ -25,6 +25,7 @@ public class GeometryDebugger: SegmentDebugger {
         edgeStyleDict: [Int: EdgeStyle] = [:],
         faceStyleDict: [Int: FaceStyle] = [:],
         displayOptions: DisplayOptions = .all,
+        labelStyle: TextRenderStyle = .nameLabel,
         useColorfulLable: Bool = false
     ) {
         self.faceStyle = FaceStyle(style: .init(color: color.withAlphaComponent(0.2)), label: nil)
@@ -36,6 +37,7 @@ public class GeometryDebugger: SegmentDebugger {
             vertexShape: vertexShape,
             edgeShape: edgeShape,
             displayOptions: displayOptions,
+            labelStyle: labelStyle,
             useColorfulLable: useColorfulLable,
             vertexStyleDict: vertexStyleDict,
             edgeStyleDict: edgeStyleDict
@@ -83,7 +85,19 @@ public class GeometryDebugger: SegmentDebugger {
             }
         }
         let textColor: AppColor? = if useColorfulLabel { customStyle?.style?.color ?? self.color } else { nil }
-        let label = TextElement(text: labelString, location: customStyle?.label?.location ?? .center, textColor: textColor)
+        var label: TextElement?
+        if let labelString {
+            if let labelStyle = customStyle?.label?.style {
+                label = TextElement(text: labelString, style: labelStyle)
+            } else {
+                label = TextElement(
+                    text: labelString,
+                    defaultStyle: labelStyle,
+                    location: customStyle?.label?.location ?? .center,
+                    textColor: textColor
+                )
+            }
+        }
         return FaceRenderElement(
             points: vertices,
             transform: transform,
@@ -92,7 +106,6 @@ public class GeometryDebugger: SegmentDebugger {
         )
     }
 }
-
 
 extension GeometryDebugger {
     public typealias MeshEdge = SegmentRenderElement
