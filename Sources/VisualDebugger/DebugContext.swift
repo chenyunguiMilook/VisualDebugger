@@ -12,7 +12,9 @@ public final class DebugContext {
     private var margin: CGFloat = 40
     private var colorIndex: Int = 0
     
-    private var _valueToRender: Matrix2D
+    private var valueToRender: Matrix2D
+    private var renderToValue: Matrix2D { valueToRender.inverted() }
+    private var renderRect: CGRect { coordinate.valueRect * valueToRender }
     private var _flip: Matrix2D
     public let coordinate: Coordinate
     lazy var coordinateElement = CoordinateRenderElement(coordinate: coordinate, coordSystem: coordinateSystem, style: coordinateStyle)
@@ -78,7 +80,7 @@ public final class DebugContext {
         let canvasHeight = valueRect.height * scale + self.margin * 2
         let frame = CGRect(x: 0, y: 0, width: canvasWidth, height: canvasHeight)
         let renderRect = frame.shrinked(self.margin)
-        self._valueToRender = stretchFit(rect: valueRect, into: renderRect)
+        self.valueToRender = stretchFit(rect: valueRect, into: renderRect)
         self._flip = Matrix2D(scaleX: 1, scaleY: -1, aroundCenter: renderRect.center)
         self.coordinate = coordinate
         self.showCoordinate = showCoordinate
@@ -94,15 +96,16 @@ public final class DebugContext {
     
     @discardableResult
     public func zoom(_ zoom: Double, aroundCenter center: CGPoint? = nil) -> Self {
-        let center = center ?? coordinate.valueRect.center
-        self.transform = self.transform * Matrix2D(scale: zoom, aroundCenter: center)
+        let center = (center ?? coordinate.valueRect.center) * valueToRender
+        self.transform = Matrix2D(scale: zoom, aroundCenter: center)
         return self
     }
     
     @discardableResult
     public func zoom(to rect: CGRect) -> Self {
-        let fitM = rect.fit(to: self.coordinate.valueRect, config: .aspectFillInside)
-        self.transform = self.transform * fitM
+        // should calculate render transform
+        let zoomRenderRect = rect * valueToRender
+        self.transform = zoomRenderRect.fit(to: renderRect, config: .aspectFillInside)
         return self
     }
 
@@ -112,7 +115,7 @@ public final class DebugContext {
         scale: CGFloat,
         contextHeight: Int
     ) {
-        var transform = self.transform * _valueToRender
+        var transform = valueToRender * self.transform
         if coordinateSystem == .yUp {
             transform = transform * _flip
         }
