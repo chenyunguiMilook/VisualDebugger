@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreGraphics
+import SwiftUI
 #if canImport(UIKit)
 import UIKit
 #elseif canImport(AppKit)
@@ -14,6 +15,15 @@ import AppKit
 #endif
 
 public struct TextRenderStyle: @unchecked Sendable {
+    public struct Stroke: Sendable {
+        public var color: AppColor
+        public var width: Double // this is value is percentage relative to font size, normally set to 30
+        
+        public init(color: AppColor, width: Double) {
+            self.color = color
+            self.width = width
+        }
+    }
     
     public let font: AppFont
     /// text insets, if bgColor not nil, will fill insets rect
@@ -21,9 +31,20 @@ public struct TextRenderStyle: @unchecked Sendable {
     /// outer insets, control spacing
     public var margin: AppEdgeInsets
     public var anchor: Anchor
+    public var textStroke: Stroke?
     public var textColor: AppColor
     public var textShadow: Shadow?
     public var bgStyle: BgStyle?
+    
+    public var strokeAttribute: [NSAttributedString.Key: Any]? {
+        guard let textStroke else { return nil }
+        var attr = [NSAttributedString.Key: Any]()
+        attr[.font] = font
+        attr[.strokeColor] = textStroke.color
+        attr[.strokeWidth] = textStroke.width
+        attr[.foregroundColor] = AppColor.clear
+        return attr
+    }
     
     public var attributes: [NSAttributedString.Key: Any] {
         var attr = [NSAttributedString.Key: Any]()
@@ -37,6 +58,7 @@ public struct TextRenderStyle: @unchecked Sendable {
         insets: AppEdgeInsets,
         margin: AppEdgeInsets,
         anchor: Anchor,
+        textStroke: Stroke? = nil,
         textColor: AppColor,
         textShadow: Shadow? = nil,
         bgStyle: BgStyle? = nil
@@ -45,6 +67,7 @@ public struct TextRenderStyle: @unchecked Sendable {
         self.insets = insets
         self.margin = margin
         self.anchor = anchor
+        self.textStroke = textStroke
         self.textColor = textColor
         self.textShadow = textShadow
         self.bgStyle = bgStyle
@@ -114,6 +137,12 @@ extension CGContext {
         if let shadow = style.textShadow {
             self.setShadow(offset: shadow.offset, blur: shadow.blur, color: shadow.color.cgColor)
         }
+        
+        if let stroke = style.strokeAttribute {
+            let str = NSAttributedString(string: text, attributes: stroke)
+            str.draw(at: .zero)
+        }
+        
         attributeString.draw(at: .zero)
         UIGraphicsPopContext()
     }
@@ -153,6 +182,12 @@ extension CGContext {
         if let shadow = style.textShadow {
             self.setShadow(offset: shadow.offset, blur: shadow.blur, color: shadow.color.cgColor)
         }
+        
+        if let stroke = style.strokeAttribute {
+            let str = NSAttributedString(string: text, attributes: stroke)
+            str.draw(at: .zero)
+        }
+
         attributeString.draw(at: .zero)
         NSGraphicsContext.current = prevContext
     }

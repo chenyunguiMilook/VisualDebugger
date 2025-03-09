@@ -98,6 +98,12 @@ public final class DebugContext {
         self.transform = self.transform * Matrix2D(scale: zoom, aroundCenter: center)
         return self
     }
+    
+    @discardableResult
+    public func zoom(to rect: CGRect) -> Self {
+        
+        fatalError("need implementation")
+    }
 
     public func render(
         elements additional: [any ContextRenderable]? = nil,

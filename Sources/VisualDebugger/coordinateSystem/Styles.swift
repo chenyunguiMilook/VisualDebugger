@@ -61,8 +61,8 @@ extension TextRenderStyle {
         insets: .zero,
         margin: AppEdgeInsets(top: 2, left: 10, bottom: 2, right: 2),
         anchor: .midLeft,
-        textColor: AppColor.white,
-        textShadow: .init(color: .black, offset: .init(width: 0, height: 1), blur: 1)
+        textStroke: .init(color: .black, width: -30),
+        textColor: AppColor.white
     )
     
     public static let edgeNameLabel = TextRenderStyle(
@@ -70,8 +70,7 @@ extension TextRenderStyle {
         insets: .zero,
         margin: AppEdgeInsets(top: 2, left: 10, bottom: 2, right: 2),
         anchor: .midCenter,
-        textColor: AppColor.white,
-        textShadow: .init(color: .black, offset: .init(width: 0, height: 1), blur: 1)
+        textColor: AppColor.white
     )
 }
 
