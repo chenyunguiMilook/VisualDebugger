@@ -83,6 +83,15 @@ extension CGRect {
     public func shrinked(_ value: CGFloat) -> CGRect {
         return self.insetBy(dx: value, dy: value)
     }
+    
+    public func fit(to rect: CGRect, config: FitConfig) -> CGAffineTransform {
+        RectFitter.fit(rect: self, to: rect, config: config)
+    }
+
+    public func fitted(to rect: CGRect, config: FitConfig) -> CGRect {
+        let t = self.fit(to: rect, config: config)
+        return self.applying(t)
+    }
 }
 
 extension CGRect {

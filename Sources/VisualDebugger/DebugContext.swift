@@ -101,8 +101,9 @@ public final class DebugContext {
     
     @discardableResult
     public func zoom(to rect: CGRect) -> Self {
-        
-        fatalError("need implementation")
+        let fitM = rect.fit(to: self.coordinate.valueRect, config: .aspectFillInside)
+        self.transform = self.transform * fitM
+        return self
     }
 
     public func render(
