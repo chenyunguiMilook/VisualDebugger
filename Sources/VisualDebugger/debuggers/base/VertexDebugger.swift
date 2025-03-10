@@ -82,6 +82,8 @@ public class VertexDebugger {
                 labelString = "(\(position.x), \(position.y))"
             case .index:
                 labelString = "\(index)"
+            default:
+                break
             }
         }
         let shape = customStyle?.shape ?? self.vertexShape
@@ -161,6 +163,7 @@ extension VertexDebugger {
             case string(String)
             case coordinate
             case index
+            case orientation
         }
         public var text: Text?
         public var location: TextLocation?
@@ -212,6 +215,9 @@ extension VertexDebugger.LabelStyle {
     }
     public static func index(at location: TextLocation? = nil, style: TextRenderStyle? = nil, rotatable: Bool? = nil) -> Self {
         Self.init(text: .index, location: location, style: style, rotatable: rotatable)
+    }
+    public static func orientation(at location: TextLocation? = nil, style: TextRenderStyle? = nil, rotatable: Bool? = nil) -> Self {
+        Self.init(text: .orientation, location: location, style: style, rotatable: rotatable)
     }
 }
 

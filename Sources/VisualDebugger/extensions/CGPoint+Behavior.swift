@@ -121,4 +121,14 @@ extension Array where Element == CGPoint {
 
         return c
     }
+    
+    var polyIsCCW: Bool {
+        var sum: CGFloat = 0.0
+        for i in 0..<count {
+            let curt = self[i]
+            let next = self[i == count - 1 ? 0 : i + 1]
+            sum += (next.x - curt.x) * (next.y + curt.y)
+        }
+        return sum > 0
+    }
 }

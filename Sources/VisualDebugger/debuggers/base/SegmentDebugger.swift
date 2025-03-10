@@ -91,6 +91,8 @@ public class SegmentDebugger: VertexDebugger {
                 labelString = "\((start + end) / 2)"
             case .index:
                 labelString = "\(edgeIndex)"
+            default:
+                break
             }
         }
         var label: TextElement?

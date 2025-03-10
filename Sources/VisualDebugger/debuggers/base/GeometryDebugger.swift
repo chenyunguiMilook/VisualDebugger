@@ -82,6 +82,8 @@ public class GeometryDebugger: SegmentDebugger {
                 labelString = "\(vertices.gravityCenter)"
             case .index:
                 labelString = "\(faceIndex)"
+            case .orientation:
+                labelString = vertices.polyIsCCW ? "↺" : "↻"
             }
         }
         let textColor: AppColor? = if useColorfulLabel { customStyle?.style?.color ?? self.color } else { nil }

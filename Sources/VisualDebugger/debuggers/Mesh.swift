@@ -150,6 +150,17 @@ public final class Mesh: GeometryDebugger {
         return self
     }
     
+    public func setFaceStyle(
+        _ style: FaceStyle,
+        for indices: Range<Int>?
+    ) -> Mesh {
+        let idxs = indices ?? 0 ..< faces.count
+        for i in idxs {
+            self.faceStyleDict[i] = style
+        }
+        return self
+    }
+    
     public func useColorfulLabel(_ value: Bool) -> Self {
         self.useColorfulLabel = value
         return self
@@ -223,6 +234,7 @@ extension Mesh {
             .setVertexStyle(at: 0, shape: .index, label: .coordinate(at: .top))
             .setVertexStyle(at: 1, style: .init(color: .red), label: "顶点1")
             .setEdgeStyle(for: .init(org: 2, dst: 1), style: .init(color: .green))
-            .setFaceStyle(at: 0, style: .init(color: .blue.withAlphaComponent(0.2)))
+            .setFaceStyle(at: 0, style: .init(color: .blue.withAlphaComponent(0.2)), label: .orientation())
+            .setFaceStyle(.init(style: nil, label: .orientation()), for: nil)
     }
 }
