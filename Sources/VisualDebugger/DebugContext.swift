@@ -16,6 +16,7 @@ public final class DebugContext {
         public var showCoordinate: Bool
         public var coordinateSystem: CoordinateSystem2D
         public var coordinateStyle: CoordinateStyle
+        public let bgElements: [any DebugRenderable]? // such as background elements
         
         public init(
             minWidth: Double = 250,
@@ -23,7 +24,8 @@ public final class DebugContext {
             showOrigin: Bool = false,
             showCoordinate: Bool = true,
             coordinateSystem: CoordinateSystem2D = .yDown,
-            coordinateStyle: CoordinateStyle = .default
+            coordinateStyle: CoordinateStyle = .default,
+            bgElements: [any DebugRenderable]? = nil
         ) {
             self.minWidth = minWidth
             self.numSegments = numSegments
@@ -31,6 +33,7 @@ public final class DebugContext {
             self.showCoordinate = showCoordinate
             self.coordinateSystem = coordinateSystem
             self.coordinateStyle = coordinateStyle
+            self.bgElements = bgElements
         }
     }
     
@@ -92,7 +95,9 @@ public final class DebugContext {
         config: Config,
         elements: [any DebugRenderable]
     ) {
-        let debugRect = elements.debugBounds ?? CGRect(origin: .zero, size: .unit)
+        var array = config.bgElements ?? []
+            array.append(contentsOf: elements)
+        let debugRect = array.debugBounds ?? CGRect(origin: .zero, size: .unit)
         self.init(debugRect: debugRect, elements: elements, config: config)
     }
     
@@ -187,6 +192,16 @@ public final class DebugContext {
                 in: context,
                 scale: scale,
                 contextHeight: contextHeight)
+        }
+        if let bgElements = config.bgElements {
+            for element in bgElements {
+                element.render(
+                    with: transform,
+                    in: context,
+                    scale: scale,
+                    contextHeight: contextHeight
+                )
+            }
         }
         for element in self.elements {
             element.render(
