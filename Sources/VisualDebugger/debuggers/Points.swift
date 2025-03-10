@@ -138,6 +138,7 @@ extension Points: Transformable {
             vertexStyleDict: vertexStyleDict,
             edgeStyleDict: edgeStyleDict,
             displayOptions: displayOptions,
+            labelStyle: labelStyle,
             useColorfulLabel: useColorfulLabel
         )
     }
