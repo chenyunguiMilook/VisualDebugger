@@ -12,9 +12,9 @@ import UIKit
 import AppKit
 #endif
 
-public typealias VPoints = Points
+public typealias VPolygon = Polygon
 
-public final class Points: GeometryDebugger {
+public final class Polygon: GeometryDebugger {
     
     public let points: [CGPoint]
     public let isClosed: Bool
@@ -67,7 +67,7 @@ public final class Points: GeometryDebugger {
         shape: VertexShape? = nil,
         style: PathStyle? = nil,
         label: LabelStyle? = nil
-    ) -> Points {
+    ) -> Polygon {
         guard index < points.count else { return self }
         let style = VertexStyle(shape: shape, style: style, label: label)
         self.vertexStyleDict[index] = style
@@ -77,7 +77,7 @@ public final class Points: GeometryDebugger {
     public func setVertexStyle(
         _ style: VertexStyle,
         for indices: Set<Int>
-    ) -> Points {
+    ) -> Polygon {
         for index in indices where index < points.count {
             self.vertexStyleDict[index] = style
         }
@@ -90,7 +90,7 @@ public final class Points: GeometryDebugger {
         style: PathStyle? = nil,
         label: LabelStyle? = nil,
         offset: Double? = nil
-    ) -> Points {
+    ) -> Polygon {
         guard index < points.count - 1 || (index == points.count - 1 && isClosed) else { return self }
         let edgeStyle = EdgeStyle(
             shape: shape,
@@ -105,7 +105,7 @@ public final class Points: GeometryDebugger {
     public func setFaceStyle(
         style: PathStyle? = nil,
         label: LabelStyle? = nil
-    ) -> Points {
+    ) -> Polygon {
         let style = FaceStyle(
             style: style,
             label: label
@@ -126,9 +126,9 @@ public final class Points: GeometryDebugger {
     }
 }
 
-extension Points: Transformable {
-    public func applying(transform: Matrix2D) -> Points {
-        Points(
+extension Polygon: Transformable {
+    public func applying(transform: Matrix2D) -> Polygon {
+        Polygon(
             points,
             transform: self.transform * transform,
             isClosed: isClosed,
@@ -144,7 +144,7 @@ extension Points: Transformable {
     }
 }
 
-extension Points: DebugRenderable {
+extension Polygon: DebugRenderable {
     public var debugBounds: CGRect? {
         guard let bounds = points.bounds else { return nil }
         return bounds * transform
@@ -168,7 +168,7 @@ extension Points: DebugRenderable {
 
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
     DebugView {
-        Points([
+        Polygon([
             .init(x: 40, y: 10),
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)

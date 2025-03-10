@@ -19,7 +19,7 @@ struct Test {
     @Test func testPointDebug() {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.
         let context = DebugContext(elements: [
-            Points([
+            Polygon([
                 .init(x: 10, y: 10),
                 .init(x: 10, y: 23),
                 .init(x: 23, y: 67)
