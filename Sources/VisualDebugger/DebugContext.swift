@@ -9,6 +9,31 @@ import CoreGraphics
 
 public final class DebugContext {
     
+    public class Config {
+        public let minWidth: Double
+        public let numSegments: Int
+        public let showOrigin: Bool
+        public var showCoordinate: Bool
+        public var coordinateSystem: CoordinateSystem2D
+        public var coordinateStyle: CoordinateStyle
+        
+        public init(
+            minWidth: Double = 250,
+            numSegments: Int = 5,
+            showOrigin: Bool = false,
+            showCoordinate: Bool = true,
+            coordinateSystem: CoordinateSystem2D = .yDown,
+            coordinateStyle: CoordinateStyle = .default
+        ) {
+            self.minWidth = minWidth
+            self.numSegments = numSegments
+            self.showOrigin = showOrigin
+            self.showCoordinate = showCoordinate
+            self.coordinateSystem = coordinateSystem
+            self.coordinateStyle = coordinateStyle
+        }
+    }
+    
     private var margin: CGFloat = 40
     private var colorIndex: Int = 0
     
@@ -20,9 +45,25 @@ public final class DebugContext {
     lazy var coordinateElement = CoordinateRenderElement(coordinate: coordinate, coordSystem: coordinateSystem, style: coordinateStyle)
     
     public var transform: Matrix2D = .identity
-    public var showCoordinate: Bool
-    public var coordinateSystem: CoordinateSystem2D
-    public var coordinateStyle: CoordinateStyle
+    
+    private let config: Config
+    
+    public var minWidth: Double { config.minWidth }
+    public var numSegments: Int { config.numSegments }
+    public var showOrigin: Bool { config.showOrigin }
+    public var showCoordinate: Bool {
+        get { config.showCoordinate }
+        set { config.showCoordinate = newValue }
+    }
+    public var coordinateSystem: CoordinateSystem2D {
+        get { config.coordinateSystem }
+        set { config.coordinateSystem = newValue }
+    }
+    public var coordinateStyle: CoordinateStyle {
+        get { config.coordinateStyle }
+        set { config.coordinateStyle = newValue }
+    }
+    
     public var elements: [any ContextRenderable] = []
     public private(set) var frame: CGRect
     
@@ -35,10 +76,7 @@ public final class DebugContext {
         coordinateStyle: CoordinateStyle = .default,
         elements: [any DebugRenderable]
     ) {
-        let debugRect = elements.debugBounds ?? CGRect(origin: .zero, size: .unit)
-        self.init(
-            debugRect: debugRect,
-            elements: elements,
+        let config = Config(
             minWidth: minWidth,
             numSegments: numSegments,
             showOrigin: showOrigin,
@@ -46,9 +84,19 @@ public final class DebugContext {
             coordinateSystem: coordinateSystem,
             coordinateStyle: coordinateStyle
         )
+        let debugRect = elements.debugBounds ?? CGRect(origin: .zero, size: .unit)
+        self.init(debugRect: debugRect, elements: elements, config: config)
     }
     
-    public init(
+    public convenience init(
+        config: Config,
+        elements: [any DebugRenderable]
+    ) {
+        let debugRect = elements.debugBounds ?? CGRect(origin: .zero, size: .unit)
+        self.init(debugRect: debugRect, elements: elements, config: config)
+    }
+    
+    public convenience init(
         debugRect: CGRect,
         elements: [any ContextRenderable],
         minWidth: Double = 250,
@@ -58,15 +106,32 @@ public final class DebugContext {
         coordinateSystem: CoordinateSystem2D = .yDown,
         coordinateStyle: CoordinateStyle = .default
     ) {
+        let config = Config(
+            minWidth: minWidth,
+            numSegments: numSegments,
+            showOrigin: showOrigin,
+            showCoordinate: showCoordinate,
+            coordinateSystem: coordinateSystem,
+            coordinateStyle: coordinateStyle
+        )
+        self.init(debugRect: debugRect, elements: elements, config: config)
+    }
+    
+    public init(
+        debugRect: CGRect,
+        elements: [any ContextRenderable],
+        config: Config = .init()
+    ) {
+        self.config = config
         var area = debugRect
         if area.width == 0 { area.size.width = 1 }
         if area.height == 0 { area.size.height = 1 }
-        area = showOrigin ? area.rectFromOrigin : area
+        area = config.showOrigin ? area.rectFromOrigin : area
         
-        let coordinate = Coordinate(rect: area, numSegments: numSegments)
+        let coordinate = Coordinate(rect: area, numSegments: config.numSegments)
         
         // calculate the proper segment length
-        let minSegmentLength = minWidth / CGFloat(numSegments)
+        let minSegmentLength = config.minWidth / CGFloat(config.numSegments)
         var segmentLength = minSegmentLength
         if let maxLabelWidth = coordinate.xAxis.estimateMaxLabelWidth {
             segmentLength = max(maxLabelWidth, segmentLength)
@@ -83,9 +148,6 @@ public final class DebugContext {
         self.valueToRender = stretchFit(rect: valueRect, into: renderRect)
         self._flip = Matrix2D(scaleX: 1, scaleY: -1, aroundCenter: renderRect.center)
         self.coordinate = coordinate
-        self.showCoordinate = showCoordinate
-        self.coordinateSystem = coordinateSystem
-        self.coordinateStyle = coordinateStyle
         self.frame = frame
         self.elements = elements
     }

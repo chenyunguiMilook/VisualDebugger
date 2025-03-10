@@ -25,30 +25,25 @@ public protocol DebugRenderable: ContextRenderable {
 }
 
 public protocol Debuggable {
+    var preferredDebugConfig: DebugContext.Config? { get }
     var debugElements: [any DebugRenderable] { get }
 }
 
 extension Debuggable {
+    public var preferredDebugConfig: DebugContext.Config? {
+        nil
+    }
+    
     @MainActor
     public var debugView: DebugView {
         DebugView(elements: debugElements)
     }
     
     public func debugContext(
-        minWidth: Double = 250,
-        numSegments: Int = 5,
-        showOrigin: Bool = false,
-        showCoordinate: Bool = true,
-        coordinateSystem: CoordinateSystem2D = .yDown,
-        coordinateStyle: CoordinateStyle = .default
+        config: DebugContext.Config = .init()
     ) -> DebugContext {
         DebugContext(
-            minWidth: minWidth,
-            numSegments: numSegments,
-            showOrigin: showOrigin,
-            showCoordinate: showCoordinate,
-            coordinateSystem: coordinateSystem,
-            coordinateStyle: coordinateStyle,
+            config: preferredDebugConfig ?? config,
             elements: debugElements
         )
     }
