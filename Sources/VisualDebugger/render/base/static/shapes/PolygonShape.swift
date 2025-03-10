@@ -13,7 +13,7 @@ import CoreGraphics
     import AppKit
 #endif
 
-public struct Polygon: ShapeRenderer {
+public struct PolygonShape: ShapeRenderer {
     public var center: CGPoint
     public var radius: Double
     public var edgeCount: Int
