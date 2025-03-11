@@ -7,6 +7,7 @@
 
 import CoreGraphics
 
+public typealias VVectorTriangle = VectorTriangle
 public struct VectorTriangle {
     public var segment: Bezier3Segment
     public var vertex: CGPoint
