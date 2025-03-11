@@ -185,7 +185,7 @@ extension VectorMesh: Transformable, DebugRenderable {
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
     // 创建一些示例三角形
     let triangle1 = VectorTriangle(
-        segment: Bezier3Segment(
+        segment: .init(
             start: CGPoint(x: 50, y: 50),
             control1: CGPoint(x: 70, y: 30),
             control2: CGPoint(x: 90, y: 30),
@@ -195,7 +195,7 @@ extension VectorMesh: Transformable, DebugRenderable {
     )
     
     let triangle2 = VectorTriangle(
-        segment: Bezier3Segment(
+        segment: .init(
             start: CGPoint(x: 110, y: 50),
             control1: CGPoint(x: 130, y: 70),
             control2: CGPoint(x: 150, y: 70),

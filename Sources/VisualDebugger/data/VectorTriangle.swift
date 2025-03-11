@@ -9,10 +9,24 @@ import CoreGraphics
 
 public typealias VVectorTriangle = VectorTriangle
 public struct VectorTriangle {
-    public var segment: Bezier3Segment
+    public struct Segment {
+        public var start: CGPoint
+        public var control1: CGPoint
+        public var control2: CGPoint
+        public var end: CGPoint
+        
+        public init(start: CGPoint, control1: CGPoint, control2: CGPoint, end: CGPoint) {
+            self.start = start
+            self.control1 = control1
+            self.control2 = control2
+            self.end = end
+        }
+    }
+    
+    public var segment: Segment
     public var vertex: CGPoint
     
-    public init(segment: Bezier3Segment, vertex: CGPoint) {
+    public init(segment: Segment, vertex: CGPoint) {
         self.segment = segment
         self.vertex = vertex
     }
