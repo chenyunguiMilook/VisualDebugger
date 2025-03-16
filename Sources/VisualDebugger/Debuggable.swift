@@ -49,9 +49,12 @@ extension Debuggable {
     }
 }
 
-extension Array: Debuggable where Element: DebugRenderable {
+extension Array: Debuggable where Element: Debuggable {
+    public var preferredDebugConfig: DebugContext.Config? {
+        self.first?.preferredDebugConfig
+    }
     public var debugElements: [any DebugRenderable] {
-        self.map{ $0 }
+        self.map{ $0.debugElements }.flatMap{ $0 }
     }
 }
 
