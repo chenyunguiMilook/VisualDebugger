@@ -12,17 +12,17 @@ import UIKit
 import AppKit
 #endif
 
-public final class CoordinateRenderElement: ContextRenderable {
+final class CoordinateRenderElement: ContextRenderable {
     
-    public let coordinate: Coordinate
-    public let coordSystem: CoordinateSystem2D
-    public let style: CoordinateStyle
+    let coordinate: Coordinate
+    let coordSystem: CoordinateSystem2D
+    let style: CoordinateStyle
     
     lazy var xAxis = AxisRenderElement(axis: coordinate.xAxis, color: style.xAxisColor, coord: coordSystem)
     lazy var yAxis = AxisRenderElement(axis: coordinate.yAxis, color: style.yAxisColor, coord: coordSystem)
     lazy var origin = getOriginElement()
     
-    public init(
+    init(
         coordinate: Coordinate,
         coordSystem: CoordinateSystem2D,
         style: CoordinateStyle
@@ -32,7 +32,7 @@ public final class CoordinateRenderElement: ContextRenderable {
         self.style = style
     }
     
-    public func render(
+    func render(
         with transform: Matrix2D,
         in context: CGContext,
         scale: CGFloat,

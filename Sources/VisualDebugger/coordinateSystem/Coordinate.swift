@@ -8,15 +8,15 @@
 
 import Foundation
 
-public struct Coordinate {
+struct Coordinate {
     
-    public let segmentValue: CGFloat
-    public let valueRect: CGRect
-    public let origin: CGPoint
-    public let xAxis: Axis
-    public let yAxis: Axis
+    let segmentValue: CGFloat
+    let valueRect: CGRect
+    let origin: CGPoint
+    let xAxis: Axis
+    let yAxis: Axis
     
-    public init(rect: CGRect, numSegments: Int) {
+    init(rect: CGRect, numSegments: Int) {
         let maxValue = max(rect.size.width, rect.size.height)
         self.segmentValue = CGFloat(getDivision(Double(maxValue), segments: numSegments))
         let xAxisData = AxisData(min: rect.minX, max: rect.maxX, segmentValue: segmentValue)

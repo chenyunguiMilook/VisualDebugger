@@ -7,38 +7,38 @@
 
 import Foundation
 
-public struct Axis {
-    public enum Kind {
+struct Axis {
+    enum Kind {
         case x(origin: CGPoint) // x axis with origin
         case y(origin: CGPoint) // y axis with origin
     }
-    public struct Mark {
-        public enum Kind {
+    struct Mark {
+        enum Kind {
             case x, y
         }
-        public var type: Kind
-        public var position: CGPoint
+        var type: Kind
+        var position: CGPoint
         
-        public var value: Double {
+        var value: Double {
             switch self.type {
             case .x: position.x
             case .y: position.y
             }
         }
         
-        public init(type: Kind, position: CGPoint) {
+        init(type: Kind, position: CGPoint) {
             self.type = type
             self.position = position
         }
     }
     
-    public var type: Kind
-    public var start: Mark
-    public var origin: Mark
-    public var end: Mark
-    public var marks: [Mark]
+    var type: Kind
+    var start: Mark
+    var origin: Mark
+    var end: Mark
+    var marks: [Mark]
     
-    public init(type: Kind, start: Double, end: Double, marks: [Double], side: Double) {
+    init(type: Kind, start: Double, end: Double, marks: [Double], side: Double) {
         self.type = type
         switch type {
         case .x(let center):
@@ -56,7 +56,7 @@ public struct Axis {
         }
     }
     
-    public var estimateMaxLabelWidth: CGFloat? {
+    var estimateMaxLabelWidth: CGFloat? {
         self.marks.compactMap { $0.estimateSize().width }.max()
     }
 }

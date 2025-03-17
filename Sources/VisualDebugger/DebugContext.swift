@@ -44,7 +44,7 @@ public final class DebugContext {
     private var renderToValue: Matrix2D { valueToRender.inverted() }
     private var renderRect: CGRect { coordinate.valueRect * valueToRender }
     private var _flip: Matrix2D
-    public let coordinate: Coordinate
+    let coordinate: Coordinate
     lazy var coordinateElement = CoordinateRenderElement(coordinate: coordinate, coordSystem: coordinateSystem, style: coordinateStyle)
     
     public var transform: Matrix2D = .identity

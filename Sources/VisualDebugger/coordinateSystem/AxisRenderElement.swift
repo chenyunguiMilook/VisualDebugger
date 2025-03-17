@@ -17,12 +17,12 @@ extension Int {
     static let markPrecision: Int = 6
 }
 
-public final class AxisRenderElement: ContextRenderable {
-    public static let markLength: Double = 6
+final class AxisRenderElement: ContextRenderable {
+    static let markLength: Double = 6
 
-    public let axis: Axis
-    public let color: AppColor
-    public let coord: CoordinateSystem2D
+    let axis: Axis
+    let color: AppColor
+    let coord: CoordinateSystem2D
     
     lazy var markStyle = ShapeRenderStyle(
         stroke: .init(color: color, style: .init(lineWidth: 1))
@@ -42,7 +42,7 @@ public final class AxisRenderElement: ContextRenderable {
     lazy var marks = createMarks()
     lazy var arrow = axis.getElement(style: arrowStyle)
     
-    public init(
+    init(
         axis: Axis,
         color: AppColor = .lightGray,
         coord: CoordinateSystem2D
@@ -52,7 +52,7 @@ public final class AxisRenderElement: ContextRenderable {
         self.coord = coord
     }
     
-    public func render(
+    func render(
         with transform: Matrix2D,
         in context: CGContext,
         scale: CGFloat,

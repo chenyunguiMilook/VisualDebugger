@@ -15,7 +15,7 @@ import AppKit
 
 extension TextRenderStyle {
     
-    public static let `default` = TextRenderStyle(
+    static let `default` = TextRenderStyle(
         font: AppFont.systemFont(ofSize: 10),
         insets: .zero,
         margin: .zero,
@@ -23,7 +23,7 @@ extension TextRenderStyle {
         textColor: AppColor.white
     )
     
-    public static let xAxisLabel = TextRenderStyle(
+    static let xAxisLabel = TextRenderStyle(
         font: AppFont(name: "HelveticaNeueInterface-Thin", size: 10) ?? AppFont.systemFont(ofSize: 10),
         insets: .zero,
         margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
@@ -31,7 +31,7 @@ extension TextRenderStyle {
         textColor: AppColor.lightGray
     )
     
-    public static let yAxisLabel = TextRenderStyle(
+    static let yAxisLabel = TextRenderStyle(
         font: AppFont(name: "HelveticaNeueInterface-Thin", size: 10) ?? AppFont.systemFont(ofSize: 10),
         insets: .zero,
         margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
@@ -39,7 +39,7 @@ extension TextRenderStyle {
         textColor: AppColor.lightGray
     )
     
-    public static let originLabel = TextRenderStyle(
+    static let originLabel = TextRenderStyle(
         font: AppFont.italicSystemFont(ofSize: 10),
         insets: .zero,
         margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
@@ -47,7 +47,7 @@ extension TextRenderStyle {
         textColor: AppColor.lightGray
     )
     
-    public static let indexLabel = TextRenderStyle(
+    static let indexLabel = TextRenderStyle(
         font: AppFont.italicSystemFont(ofSize: 10),
         insets: .zero,
         margin: AppEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
@@ -65,7 +65,7 @@ extension TextRenderStyle {
         textColor: AppColor.white
     )
     
-    public static let edgeNameLabel = TextRenderStyle(
+    static let edgeNameLabel = TextRenderStyle(
         font: AppFont.italicSystemFont(ofSize: 10),
         insets: .zero,
         margin: AppEdgeInsets(top: 2, left: 10, bottom: 2, right: 2),
@@ -76,10 +76,10 @@ extension TextRenderStyle {
 
 extension ShapeRenderStyle {
     
-    public static let axis = ShapeRenderStyle(
+    static let axis = ShapeRenderStyle(
         stroke: Stroke(color: AppColor.lightGray.withAlphaComponent(0.5), style: .init(lineWidth: 1))
     )
-    public static let arrow = ShapeRenderStyle(
+    static let arrow = ShapeRenderStyle(
         fill: Fill(color: AppColor.lightGray.withAlphaComponent(0.5), style: .init())
     )
 }

@@ -33,11 +33,11 @@
     public typealias AppView = NSView
 
 extension NSEdgeInsets {
-    public static let zero = NSEdgeInsets()
+    static let zero = NSEdgeInsets()
 }
 
 extension NSFont {
-    public static func italicSystemFont(ofSize size: CGFloat) -> NSFont {
+    static func italicSystemFont(ofSize size: CGFloat) -> NSFont {
         let baseFont = NSFont.systemFont(ofSize: size)
         let italicDescriptor = baseFont.fontDescriptor.withSymbolicTraits(.italic)
         // Create the italic font using the descriptor
@@ -47,7 +47,7 @@ extension NSFont {
 
 extension NSBezierPath {
     
-    public convenience init(cgPath: CGPath) {
+    convenience init(cgPath: CGPath) {
         self.init()
         cgPath.applyWithBlock { pointer in
             let element = pointer.pointee
@@ -68,32 +68,11 @@ extension NSBezierPath {
         }
     }
     
-    public convenience init(roundedRect: CGRect, cornerRadius: CGFloat) {
+    convenience init(roundedRect: CGRect, cornerRadius: CGFloat) {
         self.init(roundedRect: roundedRect, xRadius: cornerRadius, yRadius: cornerRadius)
     }
-    
-    /*
-    public var cgPath: CGPath {
-        let path = CGMutablePath()
-        guard self.elementCount > 0 else { return path }
-        var points = [NSPoint](repeating: NSPoint.zero, count: 3)
 
-        for index in 0..<elementCount {
-            let pathType = self.element(at: index, associatedPoints: &points)
-            switch pathType {
-            case .moveTo: path.move(to: points[0])
-            case .lineTo: path.addLine(to: points[0])
-            case .curveTo:
-                path.addCurve(to: points[2], control1: points[0], control2: points[1])
-            case .closePath: path.closeSubpath()
-            @unknown default:
-                fatalError()
-            }
-        }
-        return path
-    }*/
-
-    public func apply(_ t: CGAffineTransform) {
+    func apply(_ t: CGAffineTransform) {
         let transform = AffineTransform(
             m11: t.a,
             m12: t.b,
@@ -105,15 +84,15 @@ extension NSBezierPath {
         self.transform(using: transform)
     }
 
-    public func reversing() -> NSBezierPath {
+    func reversing() -> NSBezierPath {
         return self.reversed
     }
 
-    public func addLine(to point: CGPoint) {
+    func addLine(to point: CGPoint) {
         self.line(to: point)
     }
 
-    public func addCurve(
+    func addCurve(
         to point: CGPoint,
         controlPoint1 point1: CGPoint,
         controlPoint2 point2: CGPoint
@@ -125,14 +104,14 @@ extension NSBezierPath {
         return CGPoint(x: p1.x + (p2.x - p1.x) * ratio, y: p1.y + (p2.y - p1.y) * ratio)
     }
 
-    public func addQuadCurve(to end: CGPoint, controlPoint: CGPoint) {
+    func addQuadCurve(to end: CGPoint, controlPoint: CGPoint) {
         let start = self.currentPoint
         let control1 = self.interpolate(start, controlPoint, 0.666666)
         let control2 = self.interpolate(end, controlPoint, 0.666666)
         self.curve(to: end, controlPoint1: control1, controlPoint2: control2)
     }
 
-    public func addArc(
+    func addArc(
         withCenter center: CGPoint,
         radius: CGFloat,
         startAngle: CGFloat,
