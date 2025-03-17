@@ -27,7 +27,7 @@ public class VertexDebugger {
         name: String? = nil,
         transform: Matrix2D,
         color: AppColor,
-        vertexShape: VertexShape = .shape(Circle(radius: 2)),
+        vertexShape: VertexShape = .shape(.circle(radius: 2)),
         vertexStyleDict: [Int: VertexStyle] = [:],
         displayOptions: DisplayOptions = .all,
         labelStyle: TextRenderStyle = .nameLabel,

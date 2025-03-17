@@ -24,3 +24,9 @@ public struct Circle: ShapeRenderer {
         AppBezierPath(ovalIn: bounds)
     }
 }
+
+extension ShapeRenderer where Self == Circle {
+    public static func circle(center: CGPoint = .zero, radius: Double) -> Circle {
+        return Circle(center: center, radius: radius)
+    }
+}

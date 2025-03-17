@@ -83,3 +83,9 @@ public struct PolygonShape: ShapeRenderer {
         return path
     }
 }
+
+extension ShapeRenderer where Self == PolygonShape {
+    public static func polygon(center: CGPoint = .zero, radius: Double, edgeCount: Int) -> PolygonShape {
+        return PolygonShape(center: center, radius: radius, edgeCount: edgeCount)   
+    }
+}

@@ -94,7 +94,7 @@ extension Dot: DebugRenderable {
 
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
     DebugView {
-        Dot(.init(x: 150, y: 150), vertexShape: .shape(Circle(radius: 2)))
+        Dot(.init(x: 150, y: 150), vertexShape: .shape(.circle(radius: 2)))
             .setStyle(style: .init(color: .green), label: "Hello")
         Dot(.init(x: 200, y: 100), color: .red, vertexShape: .index)
     }
