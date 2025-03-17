@@ -11,53 +11,53 @@ import CoreGraphics
 extension CGRect {
     
     // MARK: - top
-    public init(topLeft point: CGPoint, size: CGSize) {
+    init(topLeft point: CGPoint, size: CGSize) {
         self.init(origin: point, size: size)
     }
     
-    public init(topCenter point: CGPoint, size: CGSize) {
+    init(topCenter point: CGPoint, size: CGSize) {
         let origin = CGPoint(x: point.x - size.width / 2, y: point.y)
         self.init(origin: origin, size: size)
     }
     
-    public init(topRight point: CGPoint, size: CGSize) {
+    init(topRight point: CGPoint, size: CGSize) {
         let origin = CGPoint(x: point.x - size.width, y: point.y)
         self.init(origin: origin, size: size)
     }
     
     // MARK: - middle
-    public init(middleLeft point: CGPoint, size: CGSize) {
+    init(middleLeft point: CGPoint, size: CGSize) {
         let origin = CGPoint(x: point.x, y: point.y - size.height / 2)
         self.init(origin: origin, size: size)
     }
     
-    public init(center point: CGPoint, size: CGSize) {
+    init(center point: CGPoint, size: CGSize) {
         let origin = CGPoint(x: point.x - size.width / 2, y: point.y - size.height / 2)
         self.init(origin: origin, size: size)
     }
     
-    public init(middleRight point: CGPoint, size: CGSize) {
+    init(middleRight point: CGPoint, size: CGSize) {
         let origin = CGPoint(x: point.x - size.width, y: point.y - size.height / 2)
         self.init(origin: origin, size: size)
     }
     
     // MARK: - right
-    public init(bottomLeft point: CGPoint, size: CGSize) {
+    init(bottomLeft point: CGPoint, size: CGSize) {
         let origin = CGPoint(x: point.x, y: point.y - size.height)
         self.init(origin: origin, size: size)
     }
     
-    public init(bottomCenter point: CGPoint, size: CGSize) {
+    init(bottomCenter point: CGPoint, size: CGSize) {
         let origin = CGPoint(x: point.x - size.width / 2, y: point.y - size.height)
         self.init(origin: origin, size: size)
     }
     
-    public init(bottomRight point: CGPoint, size: CGSize) {
+    init(bottomRight point: CGPoint, size: CGSize) {
         let origin = CGPoint(x: point.x - size.width, y: point.y - size.height)
         self.init(origin: origin, size: size)
     }
     
-    public init(anchor: Anchor, center: CGPoint, size: CGSize) {
+    init(anchor: Anchor, center: CGPoint, size: CGSize) {
         switch anchor {
         case .topLeft: self = CGRect(topLeft: center, size: size)
         case .topCenter: self = CGRect(topCenter: center, size: size)
@@ -71,7 +71,7 @@ extension CGRect {
         }
     }
     
-    public func expanding(by insets: AppEdgeInsets) -> CGRect {
+    func expanding(by insets: AppEdgeInsets) -> CGRect {
 
         let x = self.origin.x - insets.left
         let y = self.origin.y - insets.top
@@ -80,26 +80,26 @@ extension CGRect {
         return CGRect(x: x, y: y, width: w, height: h)
     }
     
-    public func shrinked(_ value: CGFloat) -> CGRect {
+    func shrinked(_ value: CGFloat) -> CGRect {
         return self.insetBy(dx: value, dy: value)
     }
     
-    public func fit(to rect: CGRect, config: FitConfig) -> CGAffineTransform {
+    func fit(to rect: CGRect, config: FitConfig) -> CGAffineTransform {
         RectFitter.fit(rect: self, to: rect, config: config)
     }
 
-    public func fitted(to rect: CGRect, config: FitConfig) -> CGRect {
+    func fitted(to rect: CGRect, config: FitConfig) -> CGRect {
         let t = self.fit(to: rect, config: config)
         return self.applying(t)
     }
 }
 
 extension CGRect {
-    public func offseted(_ offset: CGPoint) -> CGRect {
+    func offseted(_ offset: CGPoint) -> CGRect {
         return CGRect(origin: self.origin + offset, size: self.size)
     }
 
-    public func offseted(x: CGFloat, y: CGFloat) -> CGRect {
+    func offseted(x: CGFloat, y: CGFloat) -> CGRect {
         return CGRect(
             x: self.origin.x + x,
             y: self.origin.y + y,
@@ -110,46 +110,46 @@ extension CGRect {
 }
 
 extension CGRect {
-    public var topLeft: CGPoint {
+    var topLeft: CGPoint {
         return CGPoint(x: self.minX, y: self.minY)
     }
 
-    public var topCenter: CGPoint {
+    var topCenter: CGPoint {
         return CGPoint(x: self.midX, y: self.minY)
     }
 
-    public var topRight: CGPoint {
+    var topRight: CGPoint {
         return CGPoint(x: self.maxX, y: self.minY)
     }
 
-    public var middleLeft: CGPoint {
+    var middleLeft: CGPoint {
         return CGPoint(x: self.minX, y: self.midY)
     }
 
-    public var middleRight: CGPoint {
+    var middleRight: CGPoint {
         return CGPoint(x: self.maxX, y: self.midY)
     }
 
-    public var bottomLeft: CGPoint {
+    var bottomLeft: CGPoint {
         return CGPoint(x: self.minX, y: self.maxY)
     }
 
-    public var bottomCenter: CGPoint {
+    var bottomCenter: CGPoint {
         return CGPoint(x: self.midX, y: self.maxY)
     }
 
-    public var bottomRight: CGPoint {
+    var bottomRight: CGPoint {
         return CGPoint(x: self.maxX, y: self.maxY)
     }
 
-    public var center: CGPoint {
+    var center: CGPoint {
         return CGPoint(
             x: self.origin.x + self.size.width / 2,
             y: self.origin.y + self.size.height / 2
         )
     }
 
-    public func getAnchor(_ anchor: Anchor) -> CGPoint {
+    func getAnchor(_ anchor: Anchor) -> CGPoint {
         switch anchor {
         case .topLeft: return self.topLeft
         case .topCenter: return self.topCenter
@@ -167,7 +167,7 @@ extension CGRect {
 }
 
 extension CGRect {
-    public var rectFromOrigin: CGRect {
+    var rectFromOrigin: CGRect {
         let minX = min(0, self.minX)
         let minY = min(0, self.minY)
         let maxX = max(0, self.maxX)
@@ -178,7 +178,7 @@ extension CGRect {
 
 extension Array where Element == CGRect {
 
-    public var bounds: CGRect? {
+    var bounds: CGRect? {
         guard !self.isEmpty else { return nil }
         var rect = self[0]
         for i in 1..<self.count {

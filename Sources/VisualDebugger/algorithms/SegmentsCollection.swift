@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension Collection {
+extension Collection {
     func segments(isClosed: Bool) -> SegmentsCollection<Self> {
         SegmentsCollection(base: self, isClosed: isClosed)
     }
@@ -22,7 +22,7 @@ public extension Collection {
     }
 }
 
-public struct SegmentsCollection<Base: Collection> {
+struct SegmentsCollection<Base: Collection> {
     internal let base: Base
     internal let isClosed: Bool
 
@@ -33,10 +33,10 @@ public struct SegmentsCollection<Base: Collection> {
 }
 
 extension SegmentsCollection: Collection {
-    public typealias Element = (start: Base.Element, end: Base.Element)
-    public typealias Index = Base.Index
+    typealias Element = (start: Base.Element, end: Base.Element)
+    typealias Index = Base.Index
 
-    public var isEmpty: Bool {
+    var isEmpty: Bool {
         guard !base.isEmpty else { return true }
         if !isClosed { // open
             return base.count < 2
@@ -45,15 +45,15 @@ extension SegmentsCollection: Collection {
         }
     }
 
-    public var count: Int {
+    var count: Int {
         base.isEmpty ? 0 : base.count - 1
     }
 
-    public var startIndex: Index {
+    var startIndex: Index {
         return base.startIndex
     }
 
-    public var endIndex: Index {
+    var endIndex: Index {
         if isClosed {
             return base.endIndex
         } else {
@@ -61,11 +61,11 @@ extension SegmentsCollection: Collection {
         }
     }
 
-    public var lastIndex: Index {
+    var lastIndex: Index {
         return base.index(base.endIndex, offsetBy: -1)
     }
 
-    public subscript(position: Index) -> Element {
+    subscript(position: Index) -> Element {
         let start = base[position]
         let end: Base.Element
         if position == lastIndex {
@@ -76,27 +76,27 @@ extension SegmentsCollection: Collection {
         return (start, end)
     }
 
-    public func index(after i: Index) -> Index {
+    func index(after i: Index) -> Index {
         precondition(i != endIndex, "Advancing past end index")
         return base.index(after: i)
     }
     
-    public func makeIterator() -> SegmentsIterator<Base> {
+    func makeIterator() -> SegmentsIterator<Base> {
         return SegmentsIterator(base: self)
     }
 }
 
-public struct SegmentsIterator<T: Collection>: IteratorProtocol {
-    public typealias Base = SegmentsCollection<T>
+struct SegmentsIterator<T: Collection>: IteratorProtocol {
+    typealias Base = SegmentsCollection<T>
     private var base: Base
     private var position: Base.Index
 
-    public init(base: Base) {
+    init(base: Base) {
         self.base = base
         self.position = base.startIndex
     }
 
-    public mutating func next() -> Base.Element? {
+    mutating func next() -> Base.Element? {
         guard !self.base.isEmpty else { return nil }
         guard self.position >= base.startIndex, self.position < base.endIndex else { return nil }
         let result = base[position]
@@ -106,7 +106,7 @@ public struct SegmentsIterator<T: Collection>: IteratorProtocol {
 }
 
 extension SegmentsCollection: BidirectionalCollection where Base: BidirectionalCollection {
-    public func index(before i: Index) -> Index {
+    func index(before i: Index) -> Index {
         precondition(i != startIndex, "Incrementing past start index")
         return base.index(before: i)
     }

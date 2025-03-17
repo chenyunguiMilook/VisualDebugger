@@ -7,11 +7,11 @@
 
 import Foundation
 
-public typealias FitConfig = RectFitter.Config
+typealias FitConfig = RectFitter.Config
 
-public struct RectFitter {
+struct RectFitter {
     
-    public static func fit(
+    static func fit(
         rect source: CGRect,
         to target: CGRect,
         config: Config = .aspectFillInside
@@ -24,7 +24,7 @@ public struct RectFitter {
         )
     }
 
-    public static func fit(
+    static func fit(
         rect source: CGRect,
         to target: CGRect,
         align: Align,
@@ -80,7 +80,7 @@ public struct RectFitter {
 }
 
 extension RectFitter {
-    public enum HAlign: Int, Sendable {
+    enum HAlign: Int, Sendable {
         case left = 1   // 1 << 0
         case center = 2 // 1 << 1
         case right = 4  // 1 << 2
@@ -96,7 +96,7 @@ extension RectFitter {
 }
 
 extension RectFitter {
-    public enum VAlign: Int, Sendable {
+    enum VAlign: Int, Sendable {
         case top = 8  // 1 << 3
         case center = 16  // 1 << 4
         case bottom = 32  // 1 << 5
@@ -112,7 +112,7 @@ extension RectFitter {
 }
 
 extension RectFitter {
-    public enum Align: Int, Sendable {
+    enum Align: Int, Sendable {
         case topLeft = 9  //VAlign.top.rawValue | HAlign.left.rawValue
         case topCenter = 10  //VAlign.top.rawValue | HAlign.center.rawValue
         case topRight = 12  //VAlign.top.rawValue | HAlign.right.rawValue
@@ -125,7 +125,7 @@ extension RectFitter {
         case btmCenter = 34  //VAlign.bottom.rawValue | HAlign.center.rawValue
         case btmRight = 36  //VAlign.bottom.rawValue | HAlign.right.rawValue
         
-        public var hAlign: HAlign {
+        var hAlign: HAlign {
             switch self {
             case .topLeft, .midLeft, .btmLeft: .left
             case .topCenter, .midCenter, .btmCenter: .center
@@ -133,7 +133,7 @@ extension RectFitter {
             }
         }
         
-        public var vAlign: VAlign {
+        var vAlign: VAlign {
             switch self {
             case .topLeft, .topCenter, .topRight: .top
             case .midLeft, .midCenter, .midRight: .center
@@ -141,29 +141,29 @@ extension RectFitter {
             }
         }
         
-        public var anchor: CGPoint {
+        var anchor: CGPoint {
             CGPoint(x: hAlign.ratio, y: vAlign.ratio)
         }
 
-        public init(hAlign: HAlign, vAlign: VAlign) {
+        init(hAlign: HAlign, vAlign: VAlign) {
             self.init(rawValue: hAlign.rawValue | vAlign.rawValue)!
         }
     }
 }
 
 extension RectFitter {
-    public enum Scale: Sendable {
-        public enum Length: Sendable {
+    enum Scale: Sendable {
+        enum Length: Sendable {
             case width, height, minEdge, maxEdge
         }
-        public struct Edge: OptionSet, Sendable {
-            public let rawValue: Int
-            public init(rawValue: Int) {
+        struct Edge: OptionSet, Sendable {
+            let rawValue: Int
+            init(rawValue: Int) {
                 self.rawValue = rawValue
             }
-            public static let width = Self(rawValue: 1 << 0)
-            public static let height = Self(rawValue: 1 << 1)
-            public static let all: Self = [width, height]
+            static let width = Self(rawValue: 1 << 0)
+            static let height = Self(rawValue: 1 << 1)
+            static let all: Self = [width, height]
         }
         case none
         case aspect(match: Length)
@@ -172,11 +172,11 @@ extension RectFitter {
 }
 
 extension RectFitter {
-    public struct Config: Sendable {
-        public var align: Align
-        public var scale: Scale
+    struct Config: Sendable {
+        var align: Align
+        var scale: Scale
         
-        public init(align: Align, scale: Scale) {
+        init(align: Align, scale: Scale) {
             self.align = align
             self.scale = scale
         }
@@ -184,10 +184,10 @@ extension RectFitter {
 }
 
 extension RectFitter.Config {
-    public static let aspectFillInside: Self = .init(align: .midCenter, scale: .aspect(match: .minEdge))
-    public static let aspectFillOutside: Self = .init(align: .midCenter, scale: .aspect(match: .maxEdge))
-    public static let stretchFill: Self = .init(align: .midCenter, scale: .stretch(match: .all))
-    public static let alignCenter: Self = .init(align: .midCenter, scale: .none)
+    static let aspectFillInside: Self = .init(align: .midCenter, scale: .aspect(match: .minEdge))
+    static let aspectFillOutside: Self = .init(align: .midCenter, scale: .aspect(match: .maxEdge))
+    static let stretchFill: Self = .init(align: .midCenter, scale: .stretch(match: .all))
+    static let alignCenter: Self = .init(align: .midCenter, scale: .none)
 }
 
 extension CGRect {
