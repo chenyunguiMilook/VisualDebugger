@@ -30,16 +30,6 @@ extension CGAffineTransform {
 
     // MARK: Initialize
 
-    public init(rotationAngle radian: CGFloat) {
-        let cosa = cos(radian)
-        let sina = sin(radian)
-        let a = cosa
-        let b = sina
-        let c = -sina
-        let d = cosa
-        self.init(a: a, b: b, c: c, d: d, tx: 0, ty: 0)
-    }
-
     public init(rotate radian: CGFloat, aroundCenter center: CGPoint) {
         let cosa = cos(radian)
         let sina = sin(radian)
@@ -151,12 +141,6 @@ extension CGAffineTransform {
         self.init(a: a, b: 0, c: 0, d: d, tx: 0, ty: 0)
     }
     
-    public init(scaleX sx: CGFloat, y sy: CGFloat) {
-        let a = sx
-        let d = sy
-        self.init(a: a, b: 0, c: 0, d: d, tx: 0, ty: 0)
-    }
-
     /// skew and does not affect scale
     /// - Parameters:
     ///   - sx: skew x in radian
