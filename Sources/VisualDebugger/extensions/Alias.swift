@@ -45,7 +45,7 @@ extension NSFont {
     }
 }
 
-extension NSBezierPath {
+public extension NSBezierPath {
     
     convenience init(cgPath: CGPath) {
         self.init()

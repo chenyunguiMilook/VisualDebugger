@@ -124,10 +124,6 @@ extension CGAffineTransform {
         let y = center.y - center.x * m.b - center.y * m.d + m.ty
         self.init(a: m.a, b: m.b, c: m.c, d: m.d, tx: x, ty: y)
     }
-
-    public init(translationX tx: CGFloat, y ty: CGFloat) {
-        self.init(a: 1, b: 0, c: 0, d: 1, tx: tx, ty: ty)
-    }
     
     public init(translation: CGPoint) {
         let tx = translation.x
