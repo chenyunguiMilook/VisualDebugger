@@ -125,11 +125,21 @@ public class SegmentDebugger: VertexDebugger {
             createVertex(index: i, position: point)
         }
     }
+    func getMeshEdges(vertices: [CGPoint], edges: [Edge]) -> [MeshEdge] {
+        return edges.enumerated().map { (i, edge) in
+            createEdge(
+                start: vertices[edge.org],
+                end: vertices[edge.dst],
+                edgeIndex: i,
+                startIndex: edge.org,
+                endIndex: edge.dst
+            )
+        }
+    }
 }
 
 extension SegmentDebugger {
-    
-    public typealias Edge = SegmentRenderElement
+    public typealias MeshEdge = SegmentRenderElement
 
     public enum EdgeShape {
         case line
@@ -147,5 +157,24 @@ extension SegmentDebugger {
             self.label = label
             self.offset = offset
         }
+    }
+}
+
+extension SegmentDebugger {
+    public struct Edge {
+        public var org: Int
+        public var dst: Int
+        
+        public init(org: Int, dst: Int) {
+            self.org = org
+            self.dst = dst
+        }
+    }
+}
+
+extension SegmentDebugger.Edge: Equatable {
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
+        // 只要是使用的相同的两个顶点，就代表相等，不考虑顶点顺序
+        return (lhs.org == rhs.org && lhs.dst == rhs.dst) || (lhs.org == rhs.dst && lhs.dst == rhs.org)
     }
 }

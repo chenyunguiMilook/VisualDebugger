@@ -10,18 +10,6 @@ extension Mesh {
     func getVertices() -> [Vertex] {
         getVertices(from: self.vertices)
     }
-
-    func getMeshEdges() -> [MeshEdge] {
-        return edges.enumerated().map { (i, edge) in
-            createEdge(
-                start: vertices[edge.org],
-                end: vertices[edge.dst],
-                edgeIndex: i,
-                startIndex: edge.org,
-                endIndex: edge.dst
-            )
-        }
-    }
     
     func getMeshFaces() -> [MeshFace] {
         faces.enumerated().map { (i, face) in

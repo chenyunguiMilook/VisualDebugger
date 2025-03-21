@@ -23,7 +23,7 @@ public final class Mesh: GeometryDebugger {
     
     // 缓存的渲染元素
     public lazy var vertexElements: [Vertex] = getVertices()
-    public lazy var edgeElements: [MeshEdge] = getMeshEdges()
+    public lazy var edgeElements: [MeshEdge] = getMeshEdges(vertices: vertices, edges: edges)
     public lazy var faceElements: [MeshFace] = getMeshFaces()
     
     // 初始化方法

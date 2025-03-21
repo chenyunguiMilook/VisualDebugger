@@ -20,15 +20,6 @@ extension Mesh {
         }
     }
     
-    public struct Edge {
-        public var org: Int
-        public var dst: Int
-        
-        public init(org: Int, dst: Int) {
-            self.org = org
-            self.dst = dst
-        }
-    }
 }
 
 extension Mesh.Face: Equatable {
@@ -40,9 +31,3 @@ extension Mesh.Face: Equatable {
     }
 }
 
-extension Mesh.Edge: Equatable {
-    public static func ==(lhs: Self, rhs: Self) -> Bool {
-        // 只要是使用的相同的两个顶点，就代表相等，不考虑顶点顺序
-        return (lhs.org == rhs.org && lhs.dst == rhs.dst) || (lhs.org == rhs.dst && lhs.dst == rhs.org)
-    }
-}

@@ -110,7 +110,6 @@ public class GeometryDebugger: SegmentDebugger {
 }
 
 extension GeometryDebugger {
-    public typealias MeshEdge = SegmentRenderElement
     public typealias MeshFace = FaceRenderElement
     
     public struct FaceStyle {

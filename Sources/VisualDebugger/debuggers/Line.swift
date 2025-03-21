@@ -29,7 +29,7 @@ public final class Line: SegmentDebugger {
     var center: CGPoint { (start + end) / 2.0 }
     
     public lazy var vertices: [Vertex] = getVertices(from: [start, end])
-    public lazy var edge: Edge = {
+    public lazy var edge: MeshEdge = {
         createEdge(start: start, end: end, edgeIndex: 0, startIndex: 0, endIndex: 1)
     }()
     

@@ -21,7 +21,7 @@ public final class Polygon: GeometryDebugger {
     
     public lazy var vertices: [Vertex] = getVertices(from: points)
     
-    public lazy var edges: [Edge] = {
+    public lazy var edges: [MeshEdge] = {
         points.segments(isClosed: isClosed).enumerated().map { (i, seg) in
             createEdge(start: seg.start, end: seg.end, edgeIndex: i, startIndex: i, endIndex: i+1)
         }
