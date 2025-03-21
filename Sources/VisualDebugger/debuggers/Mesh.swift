@@ -214,6 +214,10 @@ extension Mesh {
             color: color
         )
     }
+    
+    public var indices: [Int] {
+        self.faces.map{ [$0.v0, $0.v1, $0.v2] }.flatMap{ $0 }
+    }
 }
 
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
