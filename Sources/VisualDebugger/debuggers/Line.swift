@@ -171,7 +171,7 @@ extension Line {
             end: .init(x: 250, y: 150),
             edgeShape: .line
         )
-        .setStartStyle(label: "Start")
+        .setStartStyle(shape: .shape(.empty()), label: "Start")
         .setEndStyle(shape: .index, style: .init(color: .red), label: "End")
         
         Line(
