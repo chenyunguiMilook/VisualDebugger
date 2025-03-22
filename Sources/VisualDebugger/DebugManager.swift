@@ -19,7 +19,7 @@ public final class DebugManager: @unchecked Sendable {
         
     }
     
-    func add(_ element: any ContextRenderable) {
+    public func add(_ element: any ContextRenderable) {
         queue.sync {
             self.elements.append(element)
         }
