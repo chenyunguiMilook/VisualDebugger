@@ -29,6 +29,8 @@ public final class DebugView: AppView {
         numSegments: Int = 5,
         showOrigin: Bool = false,
         showCoordinate: Bool = true,
+        showLog: Bool = true,
+        showGlobalElements: Bool = true,
         coordinateSystem: CoordinateSystem2D = .yDown,
         coordinateStyle: CoordinateStyle = .default,
         elements: [any DebugRenderable]
@@ -38,6 +40,8 @@ public final class DebugView: AppView {
             numSegments: numSegments,
             showOrigin: showOrigin,
             showCoordinate: showCoordinate,
+            showLog: showLog,
+            showGlobalElements: showGlobalElements,
             coordinateSystem: coordinateSystem,
             coordinateStyle: coordinateStyle,
             elements: elements
@@ -55,6 +59,8 @@ public final class DebugView: AppView {
         numSegments: Int = 5,
         showOrigin: Bool = false,
         showCoordinate: Bool = true,
+        showLog: Bool = true,
+        showGlobalElements: Bool = true,
         coordinateSystem: CoordinateSystem2D = .yDown,
         coordinateStyle: CoordinateStyle = .default,
         @DebugRenderBuilder _ builder: () -> [any DebugRenderable]
@@ -64,6 +70,8 @@ public final class DebugView: AppView {
             numSegments: numSegments,
             showOrigin: showOrigin,
             showCoordinate: showCoordinate,
+            showLog: showLog,
+            showGlobalElements: showGlobalElements,
             coordinateSystem: coordinateSystem,
             coordinateStyle: coordinateStyle,
             elements: builder()
@@ -111,6 +119,18 @@ public final class DebugView: AppView {
     
     public func append(_ element: ContextRenderable) {
         self.elements.append(element)
+    }
+    
+    public func showLog(_ show: Bool) -> DebugView {
+        context.showLog = show
+        self.refresh()
+        return self
+    }
+    
+    public func showGlobalElements(_ show: Bool) -> DebugView {
+        context.showGlobalElements = show
+        self.refresh()
+        return self
     }
     
     public func coordinateVisible(_ show: Bool) -> DebugView {
