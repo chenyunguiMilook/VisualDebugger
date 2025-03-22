@@ -158,8 +158,8 @@ extension Line {
         return self
     }
     
-    public func log(_ message: String, _ level: Logger.Log.Level = .info) -> Self {
-        self.logging(message, level)
+    public func log(_ message: Any..., level: Logger.Log.Level = .info) -> Self {
+        self.logging(message, level: level)
         return self
     }
 }

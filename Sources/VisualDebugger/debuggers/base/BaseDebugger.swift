@@ -24,8 +24,9 @@ public class BaseDebugger {
         self.color = color
     }
     
-    public func logging(_ message: String, _ level: Logger.Log.Level = .info) {
-        let log = Logger.Log(message: message, level: level)
+    func logging(_ messages: [Any], level: Logger.Log.Level = .info, separator: String = ", ") {
+        let stringMessage = messages.map { String(reflecting: $0) }.joined(separator: separator)
+        let log = Logger.Log(message: stringMessage, level: level)
         self.logs.append(log)
     }
 }
