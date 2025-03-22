@@ -63,8 +63,9 @@ public final class Logger: @unchecked Sendable {
     private init() {}
     
     // 核心日志记录方法
-    public func log(_ level: Log.Level, message: String) {
-        let log = Log(message: message, level: level)
+    func logging(_ messages: [Any], level: Logger.Log.Level = .info, separator: String = ", ") {
+        let stringMessage = messages.map { String(reflecting: $0) }.joined(separator: separator)
+        let log = Logger.Log(message: stringMessage, level: level)
         queue.sync {
             logs.append(log)
             // 打印到控制台，包含时间戳和级别
@@ -74,24 +75,24 @@ public final class Logger: @unchecked Sendable {
     }
     
     // 便利方法，按经典命名标准实现
-    public func debug(_ message: String) {
-        log(.debug, message: message)
+    public func debug(_ message: Any...) {
+        logging(message, level: .debug)
     }
     
-    public func info(_ message: String) {
-        log(.info, message: message)
+    public func info(_ message: Any...) {
+        logging(message, level: .info)
     }
     
-    public func warning(_ message: String) {
-        log(.warning, message: message)
+    public func warning(_ message: Any...) {
+        logging(message, level: .warning)
     }
     
-    public func error(_ message: String) {
-        log(.error, message: message)
+    public func error(_ message: Any...) {
+        logging(message, level: .error)
     }
     
-    public func critical(_ message: String) {
-        log(.critical, message: message)
+    public func critical(_ message: Any...) {
+        logging(message, level: .critical)
     }
     
     // 可选：获取所有日志的方法
