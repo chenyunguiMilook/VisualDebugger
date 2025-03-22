@@ -157,6 +157,11 @@ extension Line {
         self.displayOptions = option
         return self
     }
+    
+    public func log(_ message: String, _ level: Logger.Log.Level = .info) -> Self {
+        self.logging(message, level)
+        return self
+    }
 }
 
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {

@@ -12,10 +12,7 @@ extension TextLocation {
     static let `default` = TextLocation.right
 }
 
-public class VertexDebugger {
-    public var name: String?
-    public let transform: Matrix2D
-    public let color: AppColor
+public class VertexDebugger: BaseDebugger {
     public let vertexShape: VertexShape
     public var displayOptions: DisplayOptions
     public var labelStyle: TextRenderStyle
@@ -33,14 +30,12 @@ public class VertexDebugger {
         labelStyle: TextRenderStyle = .nameLabel,
         useColorfulLable: Bool = false
     ) {
-        self.name = name
-        self.transform = transform
-        self.color = color
         self.vertexShape = vertexShape
         self.vertexStyleDict = vertexStyleDict
         self.displayOptions = displayOptions
         self.labelStyle = labelStyle
         self.useColorfulLabel = useColorfulLable
+        super.init(name: name, transform: transform, color: color)
     }
     
     func getVertexRenderStyle(style: PathStyle?) -> ShapeRenderStyle {

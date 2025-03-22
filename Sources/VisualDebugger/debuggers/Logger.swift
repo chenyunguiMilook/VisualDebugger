@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 public typealias VLogger = Logger
 
@@ -56,7 +57,7 @@ public final class Logger: @unchecked Sendable {
     
     // 线程安全队列
     private let queue = DispatchQueue(label: "logger.queue")
-    private var logs: [Log] = []
+    public private(set) var logs: [Log] = []
     
     // 私有初始化，确保单例
     private init() {}
@@ -97,6 +98,42 @@ public final class Logger: @unchecked Sendable {
     public func getLogs() -> [Log] {
         queue.sync {
             return logs
+        }
+    }
+}
+
+extension TextRenderStyle {
+    public static func log(color: AppColor) -> TextRenderStyle {
+        TextRenderStyle(
+            font: AppFont.italicSystemFont(ofSize: 10),
+            insets: .zero,
+            margin: AppEdgeInsets(top: 2, left: 10, bottom: 2, right: 2),
+            anchor: .topLeft,
+            textStroke: .init(color: .black, width: -30),
+            textColor: color
+        )
+    }
+}
+
+extension Logger.Log {
+    func textElement(at position: CGPoint) -> StaticTextElement? {
+        guard !message.isEmpty else { return nil }
+        return StaticTextElement(source: .string(message), style: .log(color: self.level.color), position: position)
+    }
+}
+
+extension Array where Element == Logger.Log {
+    public func render(
+        in context: CGContext,
+        scale: CGFloat,
+        contextHeight: Int?
+    ) {
+        var y: CGFloat = 25
+        let lineHeight: CGFloat = 12
+        for log in self {
+            let element = log.textElement(at: CGPoint(x: 0, y: y))
+            element?.render(with: .identity, in: context, scale: scale, contextHeight: contextHeight)
+            y += lineHeight
         }
     }
 }

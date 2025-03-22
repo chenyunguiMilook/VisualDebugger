@@ -124,6 +124,11 @@ public final class Polygon: GeometryDebugger {
         self.displayOptions = option
         return self
     }
+    
+    public func log(_ message: String, _ level: Logger.Log.Level = .info) -> Self {
+        self.logging(message, level)
+        return self
+    }
 }
 
 extension Polygon: Transformable {

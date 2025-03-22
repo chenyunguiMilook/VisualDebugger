@@ -67,6 +67,11 @@ public final class Dot: VertexDebugger {
         self.useColorfulLabel = value
         return self
     }
+    
+    public func log(_ message: String, _ level: Logger.Log.Level = .info) -> Self {
+        self.logging(message, level)
+        return self
+    }
 }
 
 extension Dot: Transformable {

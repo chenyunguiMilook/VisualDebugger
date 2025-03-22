@@ -171,6 +171,11 @@ public final class Mesh: GeometryDebugger {
         self.displayOptions = option
         return self
     }
+    
+    public func log(_ message: String, _ level: Logger.Log.Level = .info) -> Self {
+        self.logging(message, level)
+        return self
+    }
 }
 
 extension Mesh {
@@ -240,5 +245,6 @@ extension Mesh {
             .setEdgeStyle(for: .init(org: 2, dst: 1), style: .init(color: .green))
             .setFaceStyle(at: 0, style: .init(color: .blue.withAlphaComponent(0.2)), label: .orientation())
             .setFaceStyle(.init(style: nil, label: .orientation()), for: nil)
+            .log("faceCount: \(faces.count)")
     }
 }

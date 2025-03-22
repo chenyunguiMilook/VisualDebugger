@@ -14,6 +14,7 @@ public final class DebugContext {
         public let numSegments: Int
         public let showOrigin: Bool
         public var showCoordinate: Bool
+        public var showLog: Bool
         public var coordinateSystem: CoordinateSystem2D
         public var coordinateStyle: CoordinateStyle
         public let bgElements: [any DebugRenderable]? // such as background elements
@@ -23,6 +24,7 @@ public final class DebugContext {
             numSegments: Int = 5,
             showOrigin: Bool = false,
             showCoordinate: Bool = true,
+            showLog: Bool = true,
             coordinateSystem: CoordinateSystem2D = .yDown,
             coordinateStyle: CoordinateStyle = .default,
             bgElements: [any DebugRenderable]? = nil
@@ -31,6 +33,7 @@ public final class DebugContext {
             self.numSegments = numSegments
             self.showOrigin = showOrigin
             self.showCoordinate = showCoordinate
+            self.showLog = showLog
             self.coordinateSystem = coordinateSystem
             self.coordinateStyle = coordinateStyle
             self.bgElements = bgElements
@@ -58,6 +61,10 @@ public final class DebugContext {
         get { config.showCoordinate }
         set { config.showCoordinate = newValue }
     }
+    public var showLog: Bool {
+        get { config.showLog }
+        set { config.showLog = newValue }
+    }
     public var coordinateSystem: CoordinateSystem2D {
         get { config.coordinateSystem }
         set { config.coordinateSystem = newValue }
@@ -75,6 +82,7 @@ public final class DebugContext {
         numSegments: Int = 5,
         showOrigin: Bool = false,
         showCoordinate: Bool = true,
+        showLog: Bool = true,
         coordinateSystem: CoordinateSystem2D = .yDown,
         coordinateStyle: CoordinateStyle = .default,
         elements: [any DebugRenderable]
@@ -84,6 +92,7 @@ public final class DebugContext {
             numSegments: numSegments,
             showOrigin: showOrigin,
             showCoordinate: showCoordinate,
+            showLog: showLog,
             coordinateSystem: coordinateSystem,
             coordinateStyle: coordinateStyle
         )
@@ -108,6 +117,7 @@ public final class DebugContext {
         numSegments: Int = 5,
         showOrigin: Bool = false,
         showCoordinate: Bool = true,
+        showLog: Bool = true,
         coordinateSystem: CoordinateSystem2D = .yDown,
         coordinateStyle: CoordinateStyle = .default
     ) {
@@ -116,6 +126,7 @@ public final class DebugContext {
             numSegments: numSegments,
             showOrigin: showOrigin,
             showCoordinate: showCoordinate,
+            showLog: showLog,
             coordinateSystem: coordinateSystem,
             coordinateStyle: coordinateStyle
         )
@@ -203,7 +214,9 @@ public final class DebugContext {
                 )
             }
         }
+        var logs: [Logger.Log] = Logger.default.logs
         for element in self.elements {
+            logs.append(contentsOf: element.logs)
             element.render(
                 with: transform,
                 in: context,
@@ -213,6 +226,7 @@ public final class DebugContext {
         }
         if let additional {
             for element in additional {
+                logs.append(contentsOf: element.logs)
                 element.render(
                     with: transform,
                     in: context,
@@ -220,6 +234,9 @@ public final class DebugContext {
                     contextHeight: contextHeight
                 )
             }
+        }
+        if showLog {
+            logs.render(in: context, scale: scale, contextHeight: contextHeight)
         }
     }
     

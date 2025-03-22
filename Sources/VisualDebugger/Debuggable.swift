@@ -12,12 +12,17 @@ public protocol Transformable {
 }
 
 public protocol ContextRenderable {
+    var logs: [Logger.Log] { get }
     func render(
         with transform: Matrix2D,
         in context: CGContext,
         scale: CGFloat,
         contextHeight: Int?
     )
+}
+
+extension ContextRenderable {
+    public var logs: [Logger.Log] { [] }
 }
 
 public protocol DebugRenderable: ContextRenderable {
@@ -65,6 +70,9 @@ extension Array: Transformable where Element == any Transformable {
 }
 
 extension Array: ContextRenderable where Element == any DebugRenderable {
+    public var logs: [Logger.Log] {
+        self.map{ $0.logs }.flatMap{ $0 }
+    }
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         for element in self {
             element.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)

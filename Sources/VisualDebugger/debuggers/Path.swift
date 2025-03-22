@@ -13,7 +13,7 @@ import AppKit
 
 public typealias VPath = Path
 
-public final class Path {
+public final class Path: BaseDebugger {
     
     public enum PathStyle {
         case stroke(width: CGFloat = 1, dashed: Bool = false)
@@ -37,6 +37,12 @@ public final class Path {
             .init(fill: .init(color: color))
         }
         self.element = ShapeRenderElement(path: path, style: style)
+        super.init(name: name, transform: .identity, color: color)
+    }
+    
+    public func log(_ message: String, _ level: Logger.Log.Level = .info) -> Self {
+        self.logging(message, level)
+        return self
     }
 }
 
