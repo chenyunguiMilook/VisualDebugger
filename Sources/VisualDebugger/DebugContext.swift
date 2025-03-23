@@ -7,7 +7,7 @@
 import Foundation
 import CoreGraphics
 
-public final class DebugContext {
+public final class DebugContext: BaseLogger {
     
     public class Config {
         public let minWidth: Double
@@ -198,6 +198,11 @@ public final class DebugContext {
         return self
     }
 
+    public func log(_ message: Any..., level: Logger.Log.Level = .info) -> Self {
+        self.logging(message, level: level)
+        return self
+    }
+    
     public func render(
         elements additional: [any ContextRenderable]? = nil,
         in context: CGContext,
@@ -225,7 +230,7 @@ public final class DebugContext {
                 )
             }
         }
-        var logs: [Logger.Log] = Logger.default.logs
+        var logs: [Logger.Log] = Logger.default.logs + self.logs
         for element in self.elements {
             logs.append(contentsOf: element.logs)
             element.render(

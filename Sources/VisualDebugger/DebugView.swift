@@ -157,6 +157,11 @@ public final class DebugView: AppView {
         return self
     }
     
+    public func log(_ message: Any..., level: Logger.Log.Level = .info) -> DebugView {
+        context.logging(message, level: level)
+        return self
+    }
+    
     private func refresh() {
         #if os(iOS)
         self.setNeedsDisplay()
