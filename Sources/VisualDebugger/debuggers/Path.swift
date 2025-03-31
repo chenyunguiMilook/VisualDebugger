@@ -26,6 +26,7 @@ public final class Path: BaseDebugger {
     public init(
         path: AppBezierPath,
         name: String? = nil,
+        transform: Matrix2D = .identity,
         color: AppColor = .yellow,
         style: PathStyle =  .stroke()
     ) {
@@ -36,8 +37,8 @@ public final class Path: BaseDebugger {
         case .fill:
             .init(fill: .init(color: color))
         }
-        self.element = ShapeRenderElement(path: path, style: style)
-        super.init(name: name, transform: .identity, color: color)
+        self.element = ShapeRenderElement(path: path, transform: transform, style: style)
+        super.init(name: name, transform: transform, color: color)
     }
     
     public func log(_ message: Any..., level: Logger.Log.Level = .info) -> Self {
