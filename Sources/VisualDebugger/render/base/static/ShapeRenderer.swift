@@ -6,6 +6,7 @@
 //
 
 import CoreGraphics
+import VisualUtils
 
 public protocol ShapeRenderer: Sendable {
     var radius: Double { get }

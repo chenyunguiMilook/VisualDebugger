@@ -6,6 +6,7 @@
 //
 
 import CoreGraphics
+import VisualUtils
 
 public class BaseDebugger: BaseLogger {
     

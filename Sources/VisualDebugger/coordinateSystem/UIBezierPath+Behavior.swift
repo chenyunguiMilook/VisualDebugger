@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import VisualUtils
 
 extension AppBezierPath {
     

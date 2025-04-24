@@ -5,6 +5,8 @@
 //  Created by chenyungui on 2025/3/4.
 //
 
+import VisualUtils
+
 public struct CoordinateStyle: @unchecked Sendable {
     
     public let xAxisColor: AppColor

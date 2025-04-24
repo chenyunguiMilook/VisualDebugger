@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreGraphics
+import VisualUtils
 
 public final class ShapeElement: StaticRendable {
     

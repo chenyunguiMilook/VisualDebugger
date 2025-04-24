@@ -8,7 +8,7 @@
 
 import CoreGraphics
 
-extension CGRect {
+public extension CGRect {
     
     // MARK: - top
     init(topLeft point: CGPoint, size: CGSize) {
@@ -94,7 +94,7 @@ extension CGRect {
     }
 }
 
-extension CGRect {
+public extension CGRect {
     func offseted(_ offset: CGPoint) -> CGRect {
         return CGRect(origin: self.origin + offset, size: self.size)
     }
@@ -109,7 +109,7 @@ extension CGRect {
     }
 }
 
-extension CGRect {
+public extension CGRect {
     var topLeft: CGPoint {
         return CGPoint(x: self.minX, y: self.minY)
     }
@@ -166,7 +166,7 @@ extension CGRect {
     }
 }
 
-extension CGRect {
+public extension CGRect {
     var rectFromOrigin: CGRect {
         let minX = min(0, self.minX)
         let minY = min(0, self.minY)
@@ -176,7 +176,7 @@ extension CGRect {
     }
 }
 
-extension Array where Element == CGRect {
+public extension Array where Element == CGRect {
 
     var bounds: CGRect? {
         guard !self.isEmpty else { return nil }

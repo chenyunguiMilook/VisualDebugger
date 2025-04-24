@@ -5,6 +5,8 @@
 //  Created by chenyungui on 2025/3/2.
 //
 
+import VisualUtils
+
 public enum TextLocation: String, Sendable {
     case center
     case left, right, top, bottom

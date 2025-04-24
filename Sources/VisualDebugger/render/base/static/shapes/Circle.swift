@@ -6,6 +6,7 @@
 //
 
 import CoreGraphics
+import VisualUtils
 
 public struct Circle: ShapeRenderer {
     public var center: CGPoint

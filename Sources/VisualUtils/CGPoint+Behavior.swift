@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-extension Array where Element == CGPoint {
+public extension Array where Element == CGPoint {
     var bounds: CGRect? {
         guard !self.isEmpty else { return nil }
         let pnt = self.first!
@@ -27,7 +27,7 @@ extension Array where Element == CGPoint {
     }
 }
 
-extension CGPoint {
+public extension CGPoint {
     var angle: CGFloat {
         return CGFloat(atan2(Double(self.y), Double(self.x)))
     }
@@ -41,21 +41,21 @@ extension CGPoint {
     }
 }
 
-func += (left: inout CGPoint, right: CGPoint) {
+public func += (left: inout CGPoint, right: CGPoint) {
     left.x += right.x
     left.y += right.y
 }
 
-func -= (left: inout CGPoint, right: CGPoint) {
+public func -= (left: inout CGPoint, right: CGPoint) {
     left.x -= right.x
     left.y -= right.y
 }
 
-func - (left: CGPoint, right: CGPoint) -> CGPoint {
+public func - (left: CGPoint, right: CGPoint) -> CGPoint {
     return CGPoint(x: left.x - right.x, y: left.y - right.y)
 }
 
-func + (left: CGPoint, right: CGPoint) -> CGPoint {
+public func + (left: CGPoint, right: CGPoint) -> CGPoint {
     return CGPoint(x: left.x + right.x, y: left.y + right.y)
 }
 
@@ -63,33 +63,33 @@ public prefix func - (point: CGPoint) -> CGPoint {
     return CGPoint(x: -point.x, y: -point.y)
 }
 
-func / (left: CGPoint, right: CGFloat) -> CGPoint {
+public func / (left: CGPoint, right: CGFloat) -> CGPoint {
     return CGPoint(x: left.x / right, y: left.y / right)
 }
 
-func * (left: CGPoint, right: CGFloat) -> CGPoint {
+public func * (left: CGPoint, right: CGFloat) -> CGPoint {
     return CGPoint(x: left.x * right, y: left.y * right)
 }
 
-func * (left: CGFloat, right: CGPoint) -> CGPoint {
+public func * (left: CGFloat, right: CGPoint) -> CGPoint {
     return CGPoint(x: left * right.x, y: left * right.y)
 }
 
-func * (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
+public func * (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
     return CGPoint(x: lhs.x * rhs.x, y: lhs.y * rhs.y)
 }
 
-func *= (lhs: inout CGPoint, rhs: CGFloat) {
+public func *= (lhs: inout CGPoint, rhs: CGFloat) {
     lhs.x *= rhs
     lhs.y *= rhs
 }
 
-func /= (lhs: inout CGPoint, rhs: CGFloat) {
+public func /= (lhs: inout CGPoint, rhs: CGFloat) {
     lhs.x /= rhs
     lhs.y /= rhs
 }
 
-extension Array where Element == CGPoint {
+public extension Array where Element == CGPoint {
     var gravityCenter: CGPoint {
         var c = CGPoint()
         var area: CGFloat = 0.0

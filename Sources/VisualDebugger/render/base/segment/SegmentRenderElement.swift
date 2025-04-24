@@ -6,6 +6,7 @@
 //
 
 import CoreGraphics
+import VisualUtils
 
 public final class SegmentRenderElement: Transformable, ContextRenderable {
     

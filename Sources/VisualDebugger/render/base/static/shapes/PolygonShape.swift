@@ -12,6 +12,7 @@ import CoreGraphics
 #elseif canImport(AppKit)
     import AppKit
 #endif
+import VisualUtils
 
 public struct PolygonShape: ShapeRenderer {
     public var center: CGPoint

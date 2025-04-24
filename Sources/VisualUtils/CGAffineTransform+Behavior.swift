@@ -13,13 +13,6 @@ import simd
 
 extension CGAffineTransform {
 
-    public static let identity = CGAffineTransform(a: 1, b: 0, c: 0, d: 1, tx: 0, ty: 0)
-
-    public var isIdentity: Bool {
-        return self.a == 1 && self.b == 0 && self.c == 0 && self.d == 1 && self.tx == 0
-            && self.ty == 0
-    }
-
     public var determinant: CGFloat {
         return a * d - b * c
     }
@@ -155,11 +148,6 @@ extension CGAffineTransform {
         let c: CGFloat = sx
         let d: CGFloat = 1
         self.init(a: a, b: b, c: c, d: d, tx: 0, ty: 0)
-    }
-
-    // MARK: Transforms
-    public func inverted() -> CGAffineTransform {
-        CGAffineTransformInvert(self)
     }
 
     public mutating func invert() {

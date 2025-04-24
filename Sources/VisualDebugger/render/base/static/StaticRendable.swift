@@ -6,6 +6,7 @@
 //
 
 import CoreGraphics
+import VisualUtils
 
 public protocol Cloneable {
     func clone() -> Self

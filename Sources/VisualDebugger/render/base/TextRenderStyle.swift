@@ -13,6 +13,9 @@ import UIKit
 #elseif canImport(AppKit)
 import AppKit
 #endif
+import VisualUtils
+
+public typealias Anchor = VisualUtils.Anchor
 
 public struct TextRenderStyle: @unchecked Sendable {
     public struct Stroke: Sendable {

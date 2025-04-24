@@ -6,6 +6,7 @@
 //
 
 import CoreGraphics
+import VisualUtils
 
 public struct StaticRenderElement<Content: StaticRendable>: Transformable, DebugRenderable {
     

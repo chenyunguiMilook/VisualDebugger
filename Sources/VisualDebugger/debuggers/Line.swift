@@ -18,6 +18,7 @@ import UIKit
 #elseif canImport(AppKit)
 import AppKit
 #endif
+import VisualUtils
 
 public typealias VLine = Line
 

@@ -6,6 +6,7 @@
 //
 
 import CoreGraphics
+import VisualUtils
 
 public protocol Transformable {
     func applying(transform: Matrix2D) -> Self

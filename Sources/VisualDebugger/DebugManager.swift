@@ -6,6 +6,7 @@
 //
 import Foundation
 import CoreGraphics
+import VisualUtils
 
 // manager global debug elements
 public final class DebugManager: @unchecked Sendable {

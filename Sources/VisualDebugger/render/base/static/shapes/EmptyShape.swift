@@ -6,6 +6,7 @@
 //
 
 import CoreGraphics
+import VisualUtils
 
 public struct EmptyShape: ShapeRenderer {
     public var center: CGPoint

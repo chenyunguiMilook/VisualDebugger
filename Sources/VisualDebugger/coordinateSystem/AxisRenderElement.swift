@@ -11,6 +11,7 @@ import UIKit
 #elseif canImport(AppKit)
 import AppKit
 #endif
+import VisualUtils
 
 extension Int {
     @usableFromInline

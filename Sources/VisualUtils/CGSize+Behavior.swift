@@ -8,5 +8,5 @@
 import CoreGraphics
 
 extension CGSize {
-    static let unit: CGSize = CGSize(width: 1, height: 1)
+    public static let unit: CGSize = CGSize(width: 1, height: 1)
 }

@@ -9,6 +9,7 @@
 import Foundation
 import CoreGraphics
 import SwiftUI
+import VisualUtils
 
 public protocol RenderableShape {
     var path: AppBezierPath { get }

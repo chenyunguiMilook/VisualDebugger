@@ -6,6 +6,7 @@
 //
 
 import CoreGraphics
+import VisualUtils
 
 public protocol SegmentRenderer {
     func getBezierPath(start: CGPoint, end: CGPoint) -> AppBezierPath

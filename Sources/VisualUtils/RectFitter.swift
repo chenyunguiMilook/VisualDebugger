@@ -7,11 +7,11 @@
 
 import Foundation
 
-typealias FitConfig = RectFitter.Config
+public typealias FitConfig = RectFitter.Config
 
-struct RectFitter {
+public struct RectFitter {
     
-    static func fit(
+    public static func fit(
         rect source: CGRect,
         to target: CGRect,
         config: Config = .aspectFillInside
@@ -24,7 +24,7 @@ struct RectFitter {
         )
     }
 
-    static func fit(
+    public static func fit(
         rect source: CGRect,
         to target: CGRect,
         align: Align,
@@ -80,7 +80,7 @@ struct RectFitter {
 }
 
 extension RectFitter {
-    enum HAlign: Int, Sendable {
+    public enum HAlign: Int, Sendable {
         case left = 1   // 1 << 0
         case center = 2 // 1 << 1
         case right = 4  // 1 << 2
@@ -96,7 +96,7 @@ extension RectFitter {
 }
 
 extension RectFitter {
-    enum VAlign: Int, Sendable {
+    public enum VAlign: Int, Sendable {
         case top = 8  // 1 << 3
         case center = 16  // 1 << 4
         case bottom = 32  // 1 << 5
@@ -112,7 +112,7 @@ extension RectFitter {
 }
 
 extension RectFitter {
-    enum Align: Int, Sendable {
+    public enum Align: Int, Sendable {
         case topLeft = 9  //VAlign.top.rawValue | HAlign.left.rawValue
         case topCenter = 10  //VAlign.top.rawValue | HAlign.center.rawValue
         case topRight = 12  //VAlign.top.rawValue | HAlign.right.rawValue
@@ -152,18 +152,18 @@ extension RectFitter {
 }
 
 extension RectFitter {
-    enum Scale: Sendable {
-        enum Length: Sendable {
+    public enum Scale: Sendable {
+        public enum Length: Sendable {
             case width, height, minEdge, maxEdge
         }
-        struct Edge: OptionSet, Sendable {
-            let rawValue: Int
-            init(rawValue: Int) {
+        public struct Edge: OptionSet, Sendable {
+            public let rawValue: Int
+            public init(rawValue: Int) {
                 self.rawValue = rawValue
             }
-            static let width = Self(rawValue: 1 << 0)
-            static let height = Self(rawValue: 1 << 1)
-            static let all: Self = [width, height]
+            public static let width = Self(rawValue: 1 << 0)
+            public static let height = Self(rawValue: 1 << 1)
+            public static let all: Self = [width, height]
         }
         case none
         case aspect(match: Length)
@@ -172,7 +172,7 @@ extension RectFitter {
 }
 
 extension RectFitter {
-    struct Config: Sendable {
+    public struct Config: Sendable {
         var align: Align
         var scale: Scale
         
@@ -183,7 +183,7 @@ extension RectFitter {
     }
 }
 
-extension RectFitter.Config {
+public extension RectFitter.Config {
     static let aspectFillInside: Self = .init(align: .midCenter, scale: .aspect(match: .minEdge))
     static let aspectFillOutside: Self = .init(align: .midCenter, scale: .aspect(match: .maxEdge))
     static let stretchFill: Self = .init(align: .midCenter, scale: .stretch(match: .all))

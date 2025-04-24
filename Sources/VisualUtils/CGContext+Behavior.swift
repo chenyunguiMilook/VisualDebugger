@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-func withImageContext(
+public func withImageContext(
     width w: CGFloat,
     height h: CGFloat,
     scale: CGFloat = 1,
