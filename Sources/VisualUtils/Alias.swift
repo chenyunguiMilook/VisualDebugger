@@ -33,11 +33,11 @@
     public typealias AppView = NSView
 
 extension NSEdgeInsets {
-    static let zero = NSEdgeInsets()
+    public static let zero = NSEdgeInsets()
 }
 
 extension NSFont {
-    static func italicSystemFont(ofSize size: CGFloat) -> NSFont {
+    public static func italicSystemFont(ofSize size: CGFloat) -> NSFont {
         let baseFont = NSFont.systemFont(ofSize: size)
         let italicDescriptor = baseFont.fontDescriptor.withSymbolicTraits(.italic)
         // Create the italic font using the descriptor
