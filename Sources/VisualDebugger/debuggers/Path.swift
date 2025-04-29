@@ -58,3 +58,15 @@ extension Path: DebugRenderable {
         element.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
     }
 }
+
+#Preview(traits: .fixedLayout(width: 400, height: 420)) {
+    DebugView {
+        Path(path: AppBezierPath(rect: .init(x: 0, y: 0, width: 100, height: 100)))
+        Path(path: AppBezierPath(ovalIn: .init(x: 20, y: 20, width: 60, height: 60)))
+    }
+    .coordinateVisible(true)
+    .coordinateStyle(.default)
+    .coordinateSystem(.yDown)
+}
+
+
