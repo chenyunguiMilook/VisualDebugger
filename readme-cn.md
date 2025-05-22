@@ -6,7 +6,7 @@
 
 - [x] 支持多种坐标系统（yUp, yDown）
 - [x] 支持可视化调试Mesh网格结构
-- [x] 支持可视化调试点集（Points）及样式定制
+- [x] 支持可视化调试多边形（Polygon）及样式定制
 - [x] 支持可视化调试贝塞尔路径
 - [x] 支持可视化调试线条、点和多边形
 - [x] 支持iOS和macOS平台
@@ -74,7 +74,7 @@ DebugView(
 
 ### 支持的调试器
 
-- **Points**：使用可自定义样式可视化点集合
+- **Polygon**：使用可自定义样式可视化点集合
 - **Mesh**：调试具有顶点、边和面的网格结构
 - **Line**：使用各种样式可视化线段
 - **Dot**：使用自定义形状和标签显示点
@@ -83,12 +83,12 @@ DebugView(
 
 ## 使用示例
 
-### 调试点集
+### 调试多边形
 
 ```swift
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
     DebugView {
-        Points([
+        Polygon([
             .init(x: 40, y: 10),
             .init(x: 10, y: 23),
             .init(x: 23, y: 67)
@@ -105,7 +105,7 @@ DebugView(
 }
 ```
 
-![调试点集](./Images/debug_points.png)
+![调试多边形](./Images/debug_points.png)
 
 ### 调试网格结构
 
@@ -218,19 +218,19 @@ func processAlgorithm() {
     // 初始状态
     let points = [CGPoint(x: 10, y: 20), CGPoint(x: 30, y: 40)]
     DebugCapture.shared?.captureElements("初始状态") {
-        Points(points, vertexShape: .circle)
+        Polygon(points, vertexShape: .circle)
     }
     
     // 第一次转换后
     let transformedPoints = transform(points)
     DebugCapture.shared?.captureElements("转换后") {
-        Points(transformedPoints, vertexShape: .circle)
+        Polygon(transformedPoints, vertexShape: .circle)
     }
     
     // 最终结果
     let result = finalProcess(transformedPoints)
     DebugCapture.shared?.captureElements("最终结果") {
-        Points(result, vertexShape: .circle)
+        Polygon(result, vertexShape: .circle)
     }
     
     // 生成整个过程的可视化
@@ -248,7 +248,7 @@ func processAlgorithm() {
 // 创建包含您数据的调试上下文 - 必须在初始化时提供元素
 // 以便正确计算视图大小
 let vertices = [CGPoint(x: 10, y: 20), CGPoint(x: 30, y: 40), CGPoint(x: 50, y: 10)]
-let debugContext = DebugContext(elements: [Points(vertices, vertexShape: .circle)])
+let debugContext = DebugContext(elements: [Polygon(vertices, vertexShape: .circle)])
 
 // 或者，您可以设置其他参数
 let debugContext = DebugContext(
@@ -258,7 +258,7 @@ let debugContext = DebugContext(
     showCoordinate: true,
     coordinateSystem: .yDown,
     coordinateStyle: .default,
-    elements: [Points(vertices, vertexShape: .circle)]
+    elements: [Polygon(vertices, vertexShape: .circle)]
 )
 
 // 在调试模式下，您可以使用 Quick Look 来可视化数据
