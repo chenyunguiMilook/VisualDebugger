@@ -8,7 +8,7 @@ The most elegant and easiest way to visualize your data in source files. VisualD
 
 - [x] Support for multiple coordinate systems (yUp, yDown)
 - [x] Visual debugging of Mesh structures
-- [x] Visual debugging of Points collections with customizable styles
+- [x] Visual debugging of Polygon collections with customizable styles
 - [x] Visual debugging of Bezier paths
 - [x] Visual debugging of Lines, Dots, and Polygons
 - [x] Support for iOS and macOS platforms
@@ -84,7 +84,7 @@ DebugView(
 
 ## Usage Examples
 
-### Debugging Points
+### Debugging Polygons
 
 ```swift
 #Preview(traits: .fixedLayout(width: 400, height: 420)) {
@@ -106,7 +106,7 @@ DebugView(
 }
 ```
 
-<img src="./Images/debug_points.png" title="Debug Points" />
+<img src="./Images/debug_points.png" title="Debug Polygons" />
 
 ### Debugging Mesh Structures
 
