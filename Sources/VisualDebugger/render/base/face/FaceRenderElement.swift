@@ -8,7 +8,7 @@
 import CoreGraphics
 import VisualUtils
 
-public final class FaceRenderElement: Transformable, ContextRenderable {
+public final class FaceRenderElement: ContextRenderable {
     
     public let points: [CGPoint]
     public let transform: Matrix2D
@@ -33,10 +33,6 @@ public final class FaceRenderElement: Transformable, ContextRenderable {
         self.transform = transform
         self.label = label
         self.style = style
-    }
-    
-    public func applying(transform: Matrix2D) -> FaceRenderElement {
-        self * transform
     }
     
     public func render(with matrix: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {

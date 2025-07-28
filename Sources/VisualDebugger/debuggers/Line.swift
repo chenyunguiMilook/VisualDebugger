@@ -60,20 +60,6 @@ public final class Line: SegmentDebugger {
     }
 }
 
-extension Line: Transformable {
-    public func applying(transform: Matrix2D) -> Line {
-        Line(
-            start: self.start,
-            end: self.end,
-            transform: self.transform * transform,
-            color: self.color,
-            vertexShape: self.vertexShape,
-            edgeShape: self.edgeShape,
-            useColorfulLabel: useColorfulLabel
-        )
-    }
-}
-
 extension Line: DebugRenderable {
     public var debugBounds: CGRect? {
         let minX = min(start.x, end.x)
@@ -85,12 +71,13 @@ extension Line: DebugRenderable {
     }
     
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
+        let targetTransform = self.transform * transform
         if displayOptions.contains(.edge) {
-            edge.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+            edge.render(with: targetTransform, in: context, scale: scale, contextHeight: contextHeight)
         }
         if displayOptions.contains(.vertex) {
             for vertex in self.vertices {
-                vertex.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+                vertex.render(with: targetTransform, in: context, scale: scale, contextHeight: contextHeight)
             }
         }
     }

@@ -8,7 +8,7 @@
 import CoreGraphics
 import VisualUtils
 
-public struct StaticRenderElement<Content: StaticRendable>: Transformable, DebugRenderable {
+public struct StaticRenderElement<Content: StaticRendable>: DebugRenderable {
     
     public let content: Content
     public let position: CGPoint // this is raw position, transform will no affect this
@@ -24,11 +24,7 @@ public struct StaticRenderElement<Content: StaticRendable>: Transformable, Debug
         let pos = position * transform
         return self.content.contentBounds.offseted(pos)
     }
-    
-    public func applying(transform: Matrix2D) -> StaticRenderElement<Content> {
-        self * transform
-    }
-    
+        
     public func render(with matrix: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
         self.content.render(
             with: Matrix2D(translation: position) * transform * matrix,
@@ -53,14 +49,6 @@ extension StaticRenderElement where Content == TextElement {
         self.position = position
         self.transform = transform
     }
-}
-
-public func *<T>(lhs: StaticRenderElement<T>, rhs: Matrix2D) -> StaticRenderElement<T> {
-    return StaticRenderElement(
-        content: lhs.content,
-        position: lhs.position,
-        transform: lhs.transform * rhs
-    )
 }
 
 public typealias StaticShapeElement = StaticRenderElement<ShapeElement>

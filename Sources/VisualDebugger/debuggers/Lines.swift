@@ -157,17 +157,18 @@ extension Lines: DebugRenderable {
     }
         
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
+        let matrix = self.transform * transform
         // 然后渲染边
         if displayOptions.contains(.edge) {
             for edge in edgeElements {
-                edge.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+                edge.render(with: matrix, in: context, scale: scale, contextHeight: contextHeight)
             }
         }
         
         // 最后渲染顶点
         if displayOptions.contains(.vertex) {
             for vertex in vertexElements {
-                vertex.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+                vertex.render(with: matrix, in: context, scale: scale, contextHeight: contextHeight)
             }
         }
     }

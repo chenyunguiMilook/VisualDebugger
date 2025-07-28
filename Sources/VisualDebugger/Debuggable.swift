@@ -8,10 +8,6 @@
 import CoreGraphics
 import VisualUtils
 
-public protocol Transformable {
-    func applying(transform: Matrix2D) -> Self
-}
-
 public protocol ContextRenderable {
     var logs: [Logger.Log] { get }
     func render(
@@ -61,12 +57,6 @@ extension Array: Debuggable where Element: Debuggable {
     }
     public var debugElements: [any DebugRenderable] {
         self.map{ $0.debugElements }.flatMap{ $0 }
-    }
-}
-
-extension Array: Transformable where Element == any Transformable {
-    public func applying(transform: Matrix2D) -> [Element] {
-        self.map { $0.applying(transform: transform) }
     }
 }
 

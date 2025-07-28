@@ -38,7 +38,7 @@ public final class Path: BaseDebugger {
         case .fill:
             .init(fill: .init(color: color))
         }
-        self.element = ShapeRenderElement(path: path, transform: transform, style: style)
+        self.element = ShapeRenderElement(path: path, style: style)
         super.init(name: name, transform: transform, color: color)
     }
     
@@ -55,7 +55,7 @@ extension Path: DebugRenderable {
     }
     
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
-        element.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+        element.render(with: self.transform * transform, in: context, scale: scale, contextHeight: contextHeight)
     }
 }
 

@@ -8,7 +8,7 @@
 import CoreGraphics
 import VisualUtils
 
-public final class VectorTriangleRenderElement: Transformable, ContextRenderable {
+public final class VectorTriangleRenderElement: ContextRenderable {
     
     public let triangle: VectorTriangle
     public let transform: Matrix2D

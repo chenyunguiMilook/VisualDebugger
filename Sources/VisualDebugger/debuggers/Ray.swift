@@ -134,12 +134,13 @@ extension Ray: DebugRenderable {
     }
     
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
+        let matrix = self.transform * transform
         if displayOptions.contains(.edge) {
-            edge.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+            edge.render(with: matrix, in: context, scale: scale, contextHeight: contextHeight)
         }
         if displayOptions.contains(.vertex) {
             for vertex in self.vertices {
-                vertex.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+                vertex.render(with: matrix, in: context, scale: scale, contextHeight: contextHeight)
             }
         }
     }

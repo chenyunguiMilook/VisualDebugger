@@ -132,41 +132,24 @@ public final class Polygon: GeometryDebugger {
     }
 }
 
-extension Polygon: Transformable {
-    public func applying(transform: Matrix2D) -> Polygon {
-        Polygon(
-            points,
-            transform: self.transform * transform,
-            isClosed: isClosed,
-            vertexShape: vertexShape,
-            edgeShape: edgeShape,
-            color: color,
-            vertexStyleDict: vertexStyleDict,
-            edgeStyleDict: edgeStyleDict,
-            displayOptions: displayOptions,
-            labelStyle: labelStyle,
-            useColorfulLabel: useColorfulLabel
-        )
-    }
-}
-
 extension Polygon: DebugRenderable {
     public var debugBounds: CGRect? {
         guard let bounds = points.bounds else { return nil }
         return bounds * transform
     }
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
+        let matrix = self.transform * transform
         if displayOptions.contains(.face) {
-            face.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+            face.render(with: matrix, in: context, scale: scale, contextHeight: contextHeight)
         }
         if displayOptions.contains(.edge) {
             for edge in edges {
-                edge.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+                edge.render(with: matrix, in: context, scale: scale, contextHeight: contextHeight)
             }
         }
         if displayOptions.contains(.vertex) {
             for vtx in vertices {
-                vtx.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+                vtx.render(with: matrix, in: context, scale: scale, contextHeight: contextHeight)
             }
         }
     }

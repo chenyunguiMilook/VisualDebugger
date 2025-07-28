@@ -8,7 +8,7 @@
 import CoreGraphics
 import VisualUtils
 
-public final class SegmentRenderElement: Transformable, ContextRenderable {
+public final class SegmentRenderElement: ContextRenderable {
     
     public let start: CGPoint
     public let end: CGPoint
@@ -53,10 +53,6 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
         self.offset = offset
         self.startOffset = startOffset
         self.endOffset = endOffset
-    }
-    
-    public func applying(transform: Matrix2D) -> SegmentRenderElement {
-        self * transform
     }
     
     public func render(with matrix: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
@@ -105,21 +101,4 @@ public final class SegmentRenderElement: Transformable, ContextRenderable {
             )
         }
     }
-}
-
-public func *(lhs: SegmentRenderElement, rhs: Matrix2D) -> SegmentRenderElement {
-    let seg = SegmentRenderElement(
-        start: lhs.start,
-        end: lhs.end,
-        transform: lhs.transform * rhs,
-        segmentShape: lhs.segmentShape,
-        segmentStyle: lhs.segmentStyle,
-        offset: lhs.offset,
-        startOffset: lhs.startOffset,
-        endOffset: lhs.endOffset
-    )
-    seg.startElement = lhs.startElement
-    seg.endElement = lhs.endElement
-    seg.centerElement = lhs.centerElement
-    return seg
 }

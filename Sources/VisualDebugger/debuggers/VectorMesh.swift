@@ -141,7 +141,7 @@ public final class VectorMesh: GeometryDebugger {
 }
 
 // MARK: - Transformable, DebugRenderable
-extension VectorMesh: Transformable, DebugRenderable {
+extension VectorMesh: DebugRenderable {
     public var debugBounds: CGRect? {
         // 计算所有三角形的边界框
         var bounds: CGRect?
@@ -165,24 +165,12 @@ extension VectorMesh: Transformable, DebugRenderable {
         return nil
     }
     
-    public func applying(transform: Matrix2D) -> VectorMesh {
-        VectorMesh(
-            faces: faces,
-            name: name,
-            transform: self.transform * transform,
-            color: color,
-            faceStyleDict: faceStyleDict,
-            displayOptions: displayOptions,
-            labelStyle: labelStyle,
-            useColorfulLabel: useColorfulLabel
-        )
-    }
-    
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
+        let matrix = self.transform * transform
         // 只渲染面
         if displayOptions.contains(.face) {
             for face in faceElements {
-                face.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+                face.render(with: matrix, in: context, scale: scale, contextHeight: contextHeight)
             }
         }
     }

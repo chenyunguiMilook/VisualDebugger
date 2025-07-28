@@ -75,26 +75,24 @@ public final class Dot: VertexDebugger {
     }
 }
 
-extension Dot: Transformable {
-    public func applying(transform: Matrix2D) -> Dot {
-        Dot(
-            self.position,
-            transform: self.transform * transform,
-            color: self.color,
-            vertexShape: self.vertexShape,
-            useColorfulLabel: useColorfulLabel
-        )
-    }
-}
-
 extension Dot: DebugRenderable {
     public var debugBounds: CGRect? {
         let rect = CGRect(center: position, size: CGSize(width: 4, height: 4))
         return rect * transform
     }
     
-    public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
-        vertex.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
+    public func render(
+        with transform: Matrix2D,
+        in context: CGContext,
+        scale: CGFloat,
+        contextHeight: Int?
+    ) {
+        vertex.render(
+            with: self.transform * transform,
+            in: context,
+            scale: scale,
+            contextHeight: contextHeight
+        )
     }
 }
 
