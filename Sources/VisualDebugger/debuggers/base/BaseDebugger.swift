@@ -11,7 +11,7 @@ import VisualUtils
 public class BaseDebugger: BaseLogger {
     
     public var name: String?
-    public let transform: Matrix2D
+    public private(set) var transform: Matrix2D
     public let color: AppColor
     
     public init(
@@ -22,6 +22,11 @@ public class BaseDebugger: BaseLogger {
         self.name = name
         self.transform = transform
         self.color = color
+    }
+    
+    public func applying(_ transform: Matrix2D) -> Self {
+        self.transform = self.transform * transform
+        return self
     }
 }
 

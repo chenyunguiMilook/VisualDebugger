@@ -51,28 +51,8 @@ extension Debuggable {
     }
 }
 
-extension Array: Debuggable where Element: Debuggable {
-    public var preferredDebugConfig: DebugContext.Config? {
-        self.first?.preferredDebugConfig
-    }
-    public var debugElements: [any DebugRenderable] {
-        self.map{ $0.debugElements }.flatMap{ $0 }
-    }
-}
-
-extension Array: ContextRenderable where Element == any DebugRenderable {
-    public var logs: [Logger.Log] {
-        self.map{ $0.logs }.flatMap{ $0 }
-    }
-    public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
-        for element in self {
-            element.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
-        }
-    }
-}
-
-extension Array: DebugRenderable where Element == any DebugRenderable {
-    public var debugBounds: CGRect? {
+extension Array where Element == any DebugRenderable {
+    var debugBounds: CGRect? {
         self.compactMap { $0.debugBounds }.bounds
     }
 }

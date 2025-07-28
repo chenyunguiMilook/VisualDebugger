@@ -169,6 +169,7 @@ extension Line {
             edgeShape: .arrow(Arrow(direction: .double))
         )
         .setEdgeStyle(style: .init(color: .red, mode: .fill), label: .string("edge", at: .center))
+        .applying(.init(translationX: 0, y: 10))
     }
     .coordinateVisible(true)
     .coordinateStyle(.default)

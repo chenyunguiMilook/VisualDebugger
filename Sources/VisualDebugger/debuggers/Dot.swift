@@ -100,6 +100,7 @@ extension Dot: DebugRenderable {
     DebugView {
         Dot(.init(x: 150, y: 150), vertexShape: .shape(.circle(radius: 2)))
             .setStyle(style: .init(color: .green), label: "Hello")
+            .applying(.init(translationX: 10, y: 10))
         Dot(.init(x: 200, y: 100), color: .red, vertexShape: .index)
     }
     .coordinateVisible(true)
