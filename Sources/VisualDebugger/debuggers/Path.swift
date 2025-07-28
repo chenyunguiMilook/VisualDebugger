@@ -51,7 +51,11 @@ public final class Path: BaseDebugger {
 extension Path: DebugRenderable {
     
     public var debugBounds: CGRect? {
-        element.debugBounds
+        if let bounds = element.debugBounds {
+            return bounds * transform
+        } else {
+            return nil
+        }
     }
     
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
