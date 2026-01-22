@@ -25,11 +25,20 @@ public final class DebugManager: @unchecked Sendable {
             self.elements.append(element)
         }
     }
+
+    public func clear() {
+        queue.sync {
+            self.elements.removeAll()
+        }
+    }
 }
 
 extension DebugManager: ContextRenderable {
     public func render(with transform: Matrix2D, in context: CGContext, scale: CGFloat, contextHeight: Int?) {
-        for element in elements {
+        let currentElements: [any ContextRenderable] = queue.sync {
+            self.elements
+        }
+        for element in currentElements {
             element.render(with: transform, in: context, scale: scale, contextHeight: contextHeight)
         }
     }

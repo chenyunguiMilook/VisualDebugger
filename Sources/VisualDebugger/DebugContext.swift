@@ -231,7 +231,7 @@ public final class DebugContext: BaseLogger {
                 )
             }
         }
-        var logs: [Logger.Log] = Logger.default.logs + self.logs
+        var logs: [Logger.Log] = Logger.default.getLogs() + self.logs
         for element in self.elements {
             logs.append(contentsOf: element.logs)
             element.render(

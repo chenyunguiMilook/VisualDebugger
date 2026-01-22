@@ -58,7 +58,8 @@ public final class Logger: @unchecked Sendable {
     
     // 线程安全队列
     private let queue = DispatchQueue(label: "logger.queue")
-    public private(set) var logs: [Log] = []
+    private var logs: [Log] = []
+    public var maxLogs: Int = 500
     
     // 私有初始化，确保单例
     private init() {}
@@ -69,6 +70,9 @@ public final class Logger: @unchecked Sendable {
         let log = Logger.Log(message: stringMessage, level: level)
         queue.sync {
             logs.append(log)
+            if logs.count > maxLogs {
+                logs.removeFirst(logs.count - maxLogs)
+            }
             // 打印到控制台，包含时间戳和级别
             //let timestamp = ISO8601DateFormatter().string(from: Date())
             //print("[\(timestamp)] [\(level.displayName)] \(message)")
@@ -100,6 +104,12 @@ public final class Logger: @unchecked Sendable {
     public func getLogs() -> [Log] {
         queue.sync {
             return logs
+        }
+    }
+
+    public func clear() {
+        queue.sync {
+            logs.removeAll()
         }
     }
 }
