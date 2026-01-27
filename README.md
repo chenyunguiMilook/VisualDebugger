@@ -24,6 +24,16 @@ The most elegant and easiest way to visualize your data in source files. VisualD
 - Swift 6.0+
 - Xcode 16+
 
+## 构建与测试
+
+### 核心命令
+- **标准构建**: `swift build`
+- **Mac Catalyst 17**: 
+  ```bash
+  xcodebuild -scheme VisualDebugger -destination "generic/platform=macOS,variant=Mac Catalyst" build
+  ```
+- **运行测试**: `swift test`
+
 ## Installation
 
 ### Swift Package Manager
@@ -271,6 +281,8 @@ struct CustomDebugElement: DebugRenderable {
 }
 ```
 
+
 ## License
+
 
 VisualDebugger is available under the MIT license. See the LICENSE file for more info.

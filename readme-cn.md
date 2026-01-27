@@ -22,6 +22,16 @@
 - Swift 6.0+
 - Xcode 16+
 
+## 构建与测试
+
+### 核心命令
+- **标准构建**: `swift build`
+- **Mac Catalyst 17**: 
+  ```bash
+  xcodebuild -scheme VisualDebugger -destination "generic/platform=macOS,variant=Mac Catalyst" build
+  ```
+- **运行测试**: `swift test`
+
 ## 安装方法
 
 ### Swift Package Manager
